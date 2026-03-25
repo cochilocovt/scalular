@@ -1,26 +1,100 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* 
+  TAILWIND V4 COMPATIBILITY NOTE:
+  - @theme and @utility are part of Tailwind CSS v4.
+  - If your IDE shows "Unknown at rule" warnings, you can safely ignore them.
+  - The build process (PostCSS) correctly handles these rules.
+*/
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Animation for the pulsing effect */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Animation for the ping effect */
+@keyframes ping {
+  75%, 100% {
+    transform: scale(2);
+    opacity: 0;
+  }
 }
+
+@theme {
+  --color-background: #020617;
+  --color-surface: #0F172A;
+  --color-primary: #3B82F6;
+  --color-secondary: #1E40AF;
+  --color-accent: #60A5FA;
+  --color-text-primary: #F8FAFC;
+  --color-text-secondary: #94A3B8;
+  --color-divider: rgba(255, 255, 255, 0.06);
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+:root {
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* Custom Orbital Timeline Utilities - Adjusted for Blue Theme */
+@utility glass-card {
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+@utility text-gradient {
+  background: linear-gradient(135deg, #FFFFFF 0%, #DBEAFE 50%, #3B82F6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+@utility shadow-orbital {
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
+}
+
+@utility bg-gradient-orbital {
+  background: linear-gradient(to bottom right, #1E40AF, #3B82F6, #60A5FA);
+}
+
+/* Custom durations/opacities for the orbital component */
+@utility duration-700 { transition-duration: 700ms; }
+@utility duration-1000 { transition-duration: 1000ms; }
+@utility scale-125 { transform: scale(1.25); }
+@utility scale-150 { transform: scale(1.5); }
+
+/* Ambient float animations — 6 variations */
+@keyframes float-0 { 0%,100%{transform:translate(0,0) rotate(0deg)} 33%{transform:translate(14px,-18px) rotate(12deg)} 66%{transform:translate(-10px,12px) rotate(-8deg)} }
+@keyframes float-1 { 0%,100%{transform:translate(0,0) rotate(0deg)} 33%{transform:translate(-18px,10px) rotate(-14deg)} 66%{transform:translate(12px,-16px) rotate(10deg)} }
+@keyframes float-2 { 0%,100%{transform:translate(0,0) rotate(0deg)} 33%{transform:translate(10px,20px) rotate(8deg)} 66%{transform:translate(-14px,-8px) rotate(-12deg)} }
+@keyframes float-3 { 0%,100%{transform:translate(0,0) rotate(0deg)} 33%{transform:translate(-8px,-20px) rotate(18deg)} 66%{transform:translate(16px,10px) rotate(-10deg)} }
+@keyframes float-4 { 0%,100%{transform:translate(0,0) rotate(0deg)} 33%{transform:translate(20px,8px) rotate(-16deg)} 66%{transform:translate(-8px,-18px) rotate(14deg)} }
+@keyframes float-5 { 0%,100%{transform:translate(0,0) rotate(0deg)} 33%{transform:translate(-12px,16px) rotate(10deg)} 66%{transform:translate(18px,-10px) rotate(-18deg)} }
+
+.float-0 { animation: float-0 6.2s ease-in-out infinite; }
+.float-1 { animation: float-1 7.8s ease-in-out infinite; }
+.float-2 { animation: float-2 5.4s ease-in-out infinite; }
+.float-3 { animation: float-3 8.6s ease-in-out infinite; }
+.float-4 { animation: float-4 6.8s ease-in-out infinite; }
+.float-5 { animation: float-5 9.2s ease-in-out infinite; }
+
+@keyframes glow-pulse { 0%,100%{box-shadow:0 0 20px rgba(59,130,246,0.3)} 50%{box-shadow:0 0 50px rgba(59,130,246,0.7),0 0 100px rgba(59,130,246,0.3)} }
+.glow-pulse { animation: glow-pulse 2.5s ease-in-out infinite; }
+
+@keyframes shimmer { 0%{background-position:-200% 0} 100%{background-position:200% 0} }
+

@@ -17,9 +17,9 @@ import { motion } from "framer-motion";
 const servicesData = [
   {
     id: 1,
-    title: "Instant Quotation",
-    date: "VELOCITY",
-    content: "Get pricing in seconds with AI-powered accuracy. Eliminate the weeks of back-and-forth typical of traditional sourcing.",
+    title: "Instant Quote",
+    date: "FAST",
+    content: "Get a price in seconds. No waiting, no back-and-forth emails with factories you've never met.",
     category: "Core",
     icon: Zap,
     relatedIds: [2, 8],
@@ -28,9 +28,9 @@ const servicesData = [
   },
   {
     id: 2,
-    title: "Competitive Pricing",
-    date: "EFFICIENCY",
-    content: "Direct-from-factory rates with zero hidden broker margins. Our scale unlocks tier-1 pricing for brands of all sizes.",
+    title: "Factory-Direct Pricing",
+    date: "SAVINGS",
+    content: "Pay what the factory charges — no broker fees, no markups. Our volume gets you the best rates.",
     category: "Financial",
     icon: DollarSign,
     relatedIds: [1, 3],
@@ -39,9 +39,9 @@ const servicesData = [
   },
   {
     id: 3,
-    title: "Reliable Factoring",
-    date: "SECURITY",
-    content: "Secure your production without risking your own capital. flexible payment terms that keep your cash flow healthy.",
+    title: "Flexible Payments",
+    date: "CASHFLOW",
+    content: "Don't pay everything upfront. Spread your production costs with terms that keep your cash free.",
     category: "Financial",
     icon: ShieldCheck,
     relatedIds: [2, 5],
@@ -50,9 +50,9 @@ const servicesData = [
   },
   {
     id: 4,
-    title: "Large Supplier Network",
+    title: "115+ Verified Factories",
     date: "NETWORK",
-    content: "Access 115+ pre-audited factories across 9 countries. Instantly find the perfect match for any product category.",
+    content: "Browse 115+ factories across 9 countries — each pre-vetted and matched to your product type.",
     category: "Infrastructure",
     icon: Globe,
     relatedIds: [5, 7],
@@ -61,9 +61,9 @@ const servicesData = [
   },
   {
     id: 5,
-    title: "Certified Factories",
-    date: "QUALITY",
-    content: "GOTS, OEKO-TEX, and social compliance built-in. Every partner in our network meets the highest global standards.",
+    title: "Certified Quality",
+    date: "TRUST",
+    content: "Every factory is audited and certified — GOTS, OEKO-TEX, and more. Quality you can show your customers.",
     category: "Compliance",
     icon: FileCheck,
     relatedIds: [4, 6],
@@ -72,9 +72,9 @@ const servicesData = [
   },
   {
     id: 6,
-    title: "Traceability",
-    date: "INTEGRITY",
-    content: "Full visibility from fiber to finished garment. Digital trail for every SKU to meet modern consumer transparency demands.",
+    title: "Full Transparency",
+    date: "CLARITY",
+    content: "See where your order is at every stage — from cutting room to shipping container. No surprises.",
     category: "Data",
     icon: Search,
     relatedIds: [5, 8],
@@ -83,9 +83,9 @@ const servicesData = [
   },
   {
     id: 7,
-    title: "On-Site Support",
+    title: "On-The-Ground Team",
     date: "LOCAL",
-    content: "Local merchandising and QC teams in every sourcing region. We are your eyes and ears on the factory floor.",
+    content: "Our people are in the factory with yours. Issues caught and fixed before they ever reach you.",
     category: "Support",
     icon: Users,
     relatedIds: [4, 8],
@@ -94,9 +94,9 @@ const servicesData = [
   },
   {
     id: 8,
-    title: "Order Tracking",
-    date: "VISIBILITY",
-    content: "Real-time updates on sampling, production, and shipping. No more black holes in your supply chain.",
+    title: "Live Order Updates",
+    date: "TRACKING",
+    content: "Real-time status on sampling, production, and shipping. Always know exactly where your order stands.",
     category: "Data",
     icon: Activity,
     relatedIds: [1, 6, 7],
@@ -108,7 +108,7 @@ const servicesData = [
 export function ScalularServices() {
   return (
     <section className="relative min-h-screen bg-transparent py-24 overflow-hidden">
-      <div className="absolute inset-0 bg-[#020617] -z-20" />
+      <div className="absolute inset-0 bg-background -z-20" />
       
       {/* Dynamic Background Elements */}
       <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] -z-10 animate-pulse" />
@@ -122,19 +122,19 @@ export function ScalularServices() {
             viewport={{ once: true }}
             className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-black tracking-[0.3em] uppercase mb-8"
           >
-            Capabilities Portfolio
+            What You Get
           </motion.div>
-          
-          <motion.h2 
+
+          <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="text-5xl md:text-7xl font-black text-white leading-tight mb-8 tracking-tighter"
+            className="text-5xl md:text-7xl font-black text-text-primary leading-tight mb-8 tracking-tighter"
           >
-            The Scalular <br/><span className="text-gradient">Ecosystem</span>
+            Everything to <br/><span className="text-gradient">Source Smarter</span>
           </motion.h2>
-          
+
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -142,7 +142,7 @@ export function ScalularServices() {
             transition={{ delay: 0.2 }}
             className="text-xl text-text-secondary leading-relaxed max-w-xl font-medium"
           >
-            A fully integrated manufacturing operating system designed to turn sourcing chaos into a streamlined, high-velocity advantage.
+            Find factories, get quotes, and track orders — all in one place. No middlemen, no surprises.
           </motion.p>
         </div>
 

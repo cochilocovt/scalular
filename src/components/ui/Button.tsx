@@ -36,7 +36,7 @@ export function Button({
   };
 
   const variants = {
-    primary: 'bg-primary text-white hover:bg-primary/90 shadow-[0_0_15px_rgba(34,211,166,0.4)] hover:shadow-[0_0_25px_rgba(34,211,166,0.6)] font-semibold border-none',
+    primary: 'bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_0_15px_var(--glow-primary)] hover:shadow-[0_0_25px_var(--glow-primary)] font-semibold border-none',
     secondary: 'bg-white text-surface hover:bg-white/90 font-semibold border-none',
     outline: 'bg-transparent border border-white/20 text-white hover:bg-white/5',
     ghost: 'bg-transparent text-white hover:text-primary',

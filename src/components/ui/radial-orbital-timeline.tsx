@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/ui-button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/ui-card";
 import Image from "next/image";
-import logo from "@/assets/logo.png";
+import logo from "@/assets/logo-icon.png";
 
 interface TimelineItem {
   id: number;
@@ -38,6 +38,7 @@ export default function RadialOrbitalTimeline({
     y: 0,
   });
   const [activeNodeId, setActiveNodeId] = useState<number | null>(null);
+  const [lureId, setLureId] = useState<number | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const orbitRef = useRef<HTMLDivElement>(null);
   const nodeRefs = useRef<Record<number, HTMLDivElement | null>>({});
@@ -102,6 +103,19 @@ export default function RadialOrbitalTimeline({
       }
     };
   }, [autoRotate, viewMode]);
+
+  // Periodically "lure" a random node to hint it's clickable
+  useEffect(() => {
+    if (!autoRotate) return;
+    const fire = () => {
+      const id = timelineData[Math.floor(Math.random() * timelineData.length)].id;
+      setLureId(id);
+      setTimeout(() => setLureId(null), 1800);
+    };
+    const init = setTimeout(fire, 2000);
+    const interval = setInterval(fire, 4200);
+    return () => { clearTimeout(init); clearInterval(interval); };
+  }, [autoRotate, timelineData]);
 
   const centerViewOnNode = (nodeId: number) => {
     if (viewMode !== "orbital" || !nodeRefs.current[nodeId]) return;
@@ -170,15 +184,8 @@ export default function RadialOrbitalTimeline({
           }}
         >
           {/* Central Logo Node */}
-          <div className="absolute w-28 h-28 rounded-full bg-gradient-to-br from-blue-600 via-blue-500 to-blue-900 animate-pulse flex items-center justify-center z-10 shadow-[0_0_50px_rgba(59,130,246,0.3)]">
-            <div className="absolute w-36 h-36 rounded-full border border-blue-500/20 animate-ping opacity-70"></div>
-            <div
-              className="absolute w-44 h-44 rounded-full border border-blue-500/10 animate-ping opacity-50"
-              style={{ animationDelay: "0.5s" }}
-            ></div>
-            <div className="w-20 h-20 rounded-full bg-[#020617] flex items-center justify-center border border-blue-500/30 overflow-hidden">
-               <Image src={logo} alt="Scalular" width={60} height={60} className="rounded-full" />
-            </div>
+          <div className="absolute w-14 h-14 rounded-full flex items-center justify-center z-10 shadow-[0_0_40px_rgba(59,130,246,0.45)]">
+            <Image src={logo} alt="Scalular" width={56} height={56} className="rounded-full" loading="eager" />
           </div>
 
           <div className="absolute w-[480px] h-[480px] rounded-full border border-white/5 bg-primary/5 blur-3xl opacity-20"></div>
@@ -189,6 +196,7 @@ export default function RadialOrbitalTimeline({
             const isExpanded = expandedItems[item.id];
             const isRelated = isRelatedToActive(item.id);
             const isPulsing = pulseEffect[item.id];
+            const isLured = lureId === item.id && !activeNodeId;
             const Icon = item.icon;
 
             const nodeStyle = {
@@ -213,13 +221,27 @@ export default function RadialOrbitalTimeline({
                     isPulsing ? "animate-pulse duration-1000" : ""
                   }`}
                   style={{
-                    background: `radial-gradient(circle, rgba(34,211,166,0.2) 0%, rgba(34,211,166,0) 70%)`,
+                    background: `radial-gradient(circle, var(--glow-primary) 0%, transparent 70%)`,
                     width: `${item.energy * 0.5 + 40}px`,
                     height: `${item.energy * 0.5 + 40}px`,
                     left: `-${(item.energy * 0.5 + 40 - 40) / 2}px`,
                     top: `-${(item.energy * 0.5 + 40 - 40) / 2}px`,
                   }}
                 ></div>
+
+                {/* Lure ripple ring */}
+                {isLured && (
+                  <div className="absolute inset-0 rounded-full border-2 border-primary/80 animate-ping" style={{ width: 48, height: 48 }} />
+                )}
+
+                {/* Floating chevron hint */}
+                <div
+                  className="absolute -top-7 left-1/2 -translate-x-1/2 flex flex-col items-center gap-0.5 pointer-events-none transition-all duration-500"
+                  style={{ opacity: isLured ? 1 : 0, transform: `translateX(-50%) translateY(${isLured ? 0 : 6}px)` }}
+                >
+                  <span className="text-primary text-[10px] font-black tracking-widest uppercase" style={{ textShadow: '0 0 8px rgba(59,130,246,0.8)' }}>open</span>
+                  <svg width="8" height="5" viewBox="0 0 8 5" fill="none"><path d="M1 1l3 3 3-3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" className="text-primary"/></svg>
+                </div>
 
                 <div
                   className={`
@@ -231,16 +253,18 @@ export default function RadialOrbitalTimeline({
                       ? "bg-primary/50 text-background"
                       : "bg-[#020617] text-white"
                   }
-                  border-2 
+                  border-2
                   ${
                     isExpanded
                       ? "border-primary shadow-lg shadow-primary/30"
                       : isRelated
                       ? "border-primary animate-pulse"
+                      : isLured
+                      ? "border-primary/70 shadow-md shadow-primary/20"
                       : "border-white/20"
                   }
                   transition-all duration-300 transform
-                  ${isExpanded ? "scale-150" : ""}
+                  ${isExpanded ? "scale-150" : isLured ? "scale-110" : ""}
                   hover:border-primary/60
                 `}
                 >
@@ -250,9 +274,9 @@ export default function RadialOrbitalTimeline({
                 <div
                   className={`
                   absolute top-14 left-1/2 -translate-x-1/2 whitespace-nowrap
-                  text-[10px] font-bold tracking-[0.2em] uppercase
+                  text-[11px] font-black tracking-[0.15em] uppercase
                   transition-all duration-300
-                  ${isExpanded ? "text-primary scale-110" : "text-white/40"}
+                  ${isExpanded ? "text-primary scale-110" : "text-text-primary/80"}
                 `}
                 >
                   {item.title}

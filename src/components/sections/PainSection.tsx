@@ -7,7 +7,7 @@ export function PainSection() {
   return (
     <section className="py-32 px-6 md:px-12 max-w-[1600px] mx-auto relative z-20">
       <div className="text-center max-w-3xl mx-auto mb-20">
-        <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">Stop Searching. Start Sourcing.</h2>
+        <h2 className="text-3xl md:text-5xl font-bold text-text-primary mb-6">Stop Searching. Start Sourcing.</h2>
         <p className="text-lg text-text-secondary">Traditional apparel manufacturing is a black box. Scalular brings structure, speed, and transparency to every step of the supply chain.</p>
       </div>
 
@@ -33,7 +33,7 @@ export function PainSection() {
             ].map((text, i) => (
               <li key={i} className="flex items-start gap-3">
                 <span className="text-text-secondary mt-1 block w-1.5 h-1.5 rounded-full bg-red-500/50 shrink-0" />
-                <span className="text-white font-medium">{text}</span>
+                <span className="text-text-primary font-medium">{text}</span>
               </li>
             ))}
           </ul>
@@ -45,7 +45,7 @@ export function PainSection() {
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6 }}
-          className="bg-[#0D1830] border border-secondary/30 rounded-3xl p-8 md:p-12 relative overflow-hidden shadow-[0_0_40px_rgba(34,211,166,0.05)]"
+          className="glass-card neu-card border border-secondary/30 rounded-3xl p-8 md:p-12 relative overflow-hidden"
         >
           <div className="absolute top-0 right-0 w-64 h-64 bg-secondary/10 blur-[80px] rounded-full" />
           <div className="text-secondary font-semibold mb-8 text-xl flex items-center gap-3 relative z-10">
@@ -60,7 +60,7 @@ export function PainSection() {
             ].map((text, i) => (
               <li key={i} className="flex items-start gap-3">
                 <span className="text-text-secondary mt-1.5 block w-1.5 h-1.5 rounded-full bg-secondary shrink-0" />
-                <span className="text-white font-medium">{text}</span>
+                <span className="text-text-primary font-medium">{text}</span>
               </li>
             ))}
           </ul>

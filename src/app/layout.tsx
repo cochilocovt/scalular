@@ -1,10 +1,12 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { M_PLUS_Code_Latin } from 'next/font/google';
 import './globals.css';
+import { ThemeProvider } from '@/components/ui/ThemeProvider';
 
-const inter = Inter({
-  variable: '--font-inter',
+const mPlusCodeLatin = M_PLUS_Code_Latin({
+  variable: '--font-sans',
   subsets: ['latin'],
+  weight: ['100', '200', '300', '400', '500', '600', '700'],
 });
 
 export const metadata: Metadata = {
@@ -18,9 +20,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} antialiased dark`}>
-      <body className="min-h-full flex flex-col bg-background text-text-primary font-sans">
-        {children}
+    <html lang="en" className={`${mPlusCodeLatin.variable} antialiased dark`} suppressHydrationWarning>
+      <body className="relative min-h-full flex flex-col bg-background text-text-primary font-sans" suppressHydrationWarning>
+        <ThemeProvider>
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

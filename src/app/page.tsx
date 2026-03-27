@@ -20,16 +20,16 @@ export default function Home() {
         {/* 4. Final conversion CTA */}
         <CTASection />
         
-        <footer className="bg-[#07111F] py-12 px-6 md:px-12 border-t border-white/10">
+        <footer className="bg-surface py-12 px-6 md:px-12 border-t border-divider">
           <div className="max-w-[1600px] mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-2">
               <Globe className="h-6 w-6 text-primary" />
-              <span className="text-xl font-bold text-white tracking-tight">Scalular</span>
+              <span className="text-xl font-bold text-text-primary tracking-tight">Scalular</span>
             </div>
             <div className="flex items-center gap-6 text-sm text-text-secondary font-medium">
-              <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
-              <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
-              <a href="#" className="hover:text-white transition-colors">Contact</a>
+              <a href="#" className="hover:text-text-primary transition-colors">Privacy Policy</a>
+              <a href="#" className="hover:text-text-primary transition-colors">Terms of Service</a>
+              <a href="#" className="hover:text-text-primary transition-colors">Contact</a>
             </div>
             <div className="text-sm text-text-secondary">
               © 2026 Scalular. All rights reserved.

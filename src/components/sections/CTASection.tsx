@@ -6,7 +6,7 @@ import { LiquidMetalButton } from '../ui/liquid-metal-button';
 
 const TRUST_BADGES = [
   { Icon: ShieldCheck, label: 'Pre-audited Factories' },
-  { Icon: Zap,         label: '48h Quote Turnaround' },
+  { Icon: Zap,         label: 'Instant AI Quote' },
   { Icon: Star,        label: '200+ Brands Served' },
   { Icon: Lock,        label: 'Data Secure & Private' },
 ];
@@ -31,18 +31,18 @@ export function CTASection() {
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
         >
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[10px] font-black tracking-[0.3em] uppercase mb-10">
-            Global Infrastructure Access
+            Start for Free
           </div>
 
-          <h2 className="text-5xl md:text-8xl font-black text-white leading-[1] tracking-tighter mb-10">
-            Ready to <span className="text-gradient">Scale?</span>
+          <h2 className="text-5xl md:text-8xl font-black text-text-primary leading-[1] tracking-tighter mb-10">
+            Your Factory, <span className="text-gradient">Instantly.</span>
           </h2>
 
           <p className="text-xl md:text-2xl text-text-secondary leading-relaxed mb-12 max-w-2xl mx-auto font-medium">
-            Join the elite fashion brands sourcing through Scalular. Get premium factory access and 48-hour quotes today.
+            Hundreds of brands already source smarter with Scalular. Get matched to verified factories and receive your first quote — free.
           </p>
 
-          <div className="flex flex-col items-center gap-8">
+          <div className="flex flex-col items-center gap-8 relative z-30">
             <LiquidMetalButton 
               label="Get Your Instant Quote" 
               onClick={() => window.open('https://app.scalular.com/quote', '_blank')} 
@@ -56,7 +56,7 @@ export function CTASection() {
           </div>
 
           {/* Trust badges footer */}
-          <div className="mt-24 pt-12 border-t border-white/5 flex flex-wrap justify-center gap-x-12 gap-y-6 opacity-60">
+          <div className="mt-24 pt-12 border-t border-divider flex flex-wrap justify-center gap-x-12 gap-y-6 opacity-60">
             {TRUST_BADGES.map(({ Icon, label }) => (
               <div key={label} className="flex items-center gap-2.5">
                 <Icon className="w-4 h-4 text-blue-500" />

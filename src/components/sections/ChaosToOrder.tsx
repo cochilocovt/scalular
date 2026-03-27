@@ -197,12 +197,12 @@ export function ChaosToOrder() {
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.5 }}
               >
-                <h1 className="text-5xl md:text-7xl font-black text-white leading-[1.1] mb-6 tracking-tight">
-                  The supply chain<br />
-                  <span className="text-blue-500/80">is broken.</span>
+                <h1 className="text-5xl md:text-7xl font-black text-text-primary leading-[1.1] mb-6 tracking-tight">
+                  Sourcing is<br />
+                  <span className="text-primary">a mess.</span>
                 </h1>
                 <p className="text-base md:text-lg text-text-secondary mb-10 max-w-md mx-auto font-medium">
-                  Thousands of unvetted factories, lost tech packs, and zero visibility. We're here to change that.
+                  Weeks of emails to strangers, no guarantees, no visibility. There&apos;s a better way.
                 </p>
                 <div className="flex items-center justify-center gap-2 text-text-secondary/40 text-[10px] font-bold uppercase tracking-[0.2em] animate-bounce">
                   <span>Scroll to Organise</span>
@@ -218,11 +218,11 @@ export function ChaosToOrder() {
                 transition={{ duration: 0.7, delay: 0.2 }}
                 className="mt-[320px]"
               >
-                <h2 className="text-4xl md:text-6xl font-black text-white leading-[1.1] mb-6 tracking-tighter">
-                  We <span className="text-gradient">fixed it.</span>
+                <h2 className="text-4xl md:text-6xl font-black text-text-primary leading-[1.1] mb-6 tracking-tighter">
+                  Scalular <span className="text-gradient">changes that.</span>
                 </h2>
                 <p className="text-lg md:text-xl text-text-secondary max-w-lg mx-auto mb-10 font-medium">
-                  One platform to discover, compare, and manage your entire sourcing lifecycle.
+                  One place to find, compare, and order from verified factories — worldwide.
                 </p>
                 <div className="flex flex-col items-center justify-center gap-3 text-blue-500/40 text-[10px] font-bold tracking-[0.3em] uppercase">
                   <span>Explore Our Network</span>

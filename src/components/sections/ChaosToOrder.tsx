@@ -97,11 +97,12 @@ export function ChaosToOrder() {
     offset: ['start start', 'end end'],
   });
 
-  const rawConvergence = useTransform(scrollYProgress, [0.1, 0.7], [0, 1]);
-  const smoothConvergence = useSpring(rawConvergence, { stiffness: 30, damping: 20, mass: 1 });
+  // Extended scroll range for smoother chaos-to-order transition
+  const rawConvergence = useTransform(scrollYProgress, [0.05, 0.65], [0, 1]);
+  const smoothConvergence = useSpring(rawConvergence, { stiffness: 25, damping: 18, mass: 1 });
 
-  const sectionOpacity = useTransform(scrollYProgress, [0.85, 0.98], [1, 0]);
-  const sectionScale = useTransform(scrollYProgress, [0.85, 0.98], [1, 0.96]);
+  const sectionOpacity = useTransform(scrollYProgress, [0.82, 0.95], [1, 0]);
+  const sectionScale = useTransform(scrollYProgress, [0.82, 0.95], [1, 0.97]);
 
   useEffect(() => {
     const unsub = smoothConvergence.on('change', (v) => {
@@ -136,7 +137,7 @@ export function ChaosToOrder() {
   return (
     <section
       ref={containerRef}
-      style={{ height: '220vh' }}
+      style={{ height: '300vh' }}
       className="relative z-20"
     >
       <motion.div 

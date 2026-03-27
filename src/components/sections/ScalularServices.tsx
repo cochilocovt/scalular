@@ -107,20 +107,21 @@ const servicesData = [
 
 export function ScalularServices() {
   return (
-    <section className="relative min-h-screen bg-transparent py-24 overflow-hidden">
+    <section className="relative min-h-screen bg-transparent py-16 overflow-hidden">
       <div className="absolute inset-0 bg-background -z-20" />
       
       {/* Dynamic Background Elements */}
       <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] -z-10 animate-pulse" />
       <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-secondary/5 rounded-full blur-[120px] -z-10" />
 
-      <div className="max-w-[1600px] mx-auto px-6 md:px-12 relative z-10 h-full flex flex-col">
-        <div className="max-w-3xl mb-12">
+      <div className="max-w-[1600px] mx-auto px-6 md:px-12 relative z-10 h-full flex flex-col items-center">
+        {/* Centered header section */}
+        <div className="max-w-3xl mb-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-black tracking-[0.3em] uppercase mb-8"
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-black tracking-[0.3em] uppercase mb-6"
           >
             What You Get
           </motion.div>
@@ -130,9 +131,9 @@ export function ScalularServices() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="text-5xl md:text-7xl font-black text-text-primary leading-tight mb-8 tracking-tighter"
+            className="text-5xl md:text-6xl lg:text-7xl font-black text-text-primary leading-tight mb-6 tracking-tighter"
           >
-            Everything to <br/><span className="text-gradient">Source Smarter</span>
+            The Tools to <br/><span className="text-gradient">Ship Smarter</span>
           </motion.h2>
 
           <motion.p
@@ -140,13 +141,14 @@ export function ScalularServices() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="text-xl text-text-secondary leading-relaxed max-w-xl font-medium"
+            className="text-lg md:text-xl text-text-secondary leading-relaxed max-w-xl mx-auto font-medium"
           >
-            Find factories, get quotes, and track orders — all in one place. No middlemen, no surprises.
+            Everything you need to source, quote, and deliver — without the chaos.
           </motion.p>
         </div>
 
-        <div className="flex-grow min-h-[700px]">
+        {/* Reduced spacing to wheel */}
+        <div className="flex-grow min-h-[600px] w-full max-w-5xl">
           <RadialOrbitalTimeline timelineData={servicesData} />
         </div>
       </div>

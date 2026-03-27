@@ -145,21 +145,23 @@ export function ScrollStory() {
     offset: ['start start', 'end end'],
   });
 
-  const smooth = useSpring(scrollYProgress, { stiffness: 60, damping: 20 });
+  const smooth = useSpring(scrollYProgress, { stiffness: 80, damping: 25, mass: 0.8 });
 
-  // Globe: full at 0, starts fading at 50%, gone at 90%
-  const globeOpacity = useTransform(smooth, [0, 0.40, 0.78, 0.92], [1, 1, 0.12, 0]);
-  const globeScale   = useTransform(smooth, [0, 0.50, 0.92],       [1, 1,    0.88]);
+  // Globe: full at 0, starts fading at 50%, stays visible until 85%, then fades
+  const globeOpacity = useTransform(smooth, [0, 0.45, 0.75, 0.88], [1, 1, 0.85, 0]);
+  // Globe scale: zooms slightly on scroll but stops at original size (no infinite zoom)
+  const globeScale   = useTransform(smooth, [0, 0.20, 0.50, 1], [0.85, 1, 1, 0.95]);
 
   // "Click a country" hint fades out at 18%
   const hintOpacity  = useTransform(smooth, [0, 0.15, 0.25], [1, 1, 0]);
 
-  // Hero text: fades in 22–40%, stays, fades out 80–92%
-  const textOpacity  = useTransform(smooth, [0.22, 0.40, 0.78, 0.92], [0, 1, 1, 0]);
-  const textY        = useTransform(smooth, [0.22, 0.42], [50, 0]);
+  // Hero text: fades in 25–40%, stays, fades out 75–88%
+  // Positioned in lower half of the globe
+  const textOpacity  = useTransform(smooth, [0.25, 0.40, 0.72, 0.88], [0, 1, 1, 0]);
+  const textY        = useTransform(smooth, [0.25, 0.42], [40, 0]);
 
-  // Gradient veil — darker at edges/top, lighter at center so text is readable
-  const veilOpacity  = useTransform(smooth, [0.20, 0.42], [0, 0.55]);
+  // Gradient veil — darker at top, lighter at bottom so text is readable
+  const veilOpacity  = useTransform(smooth, [0.22, 0.42], [0, 0.6]);
 
   // Trigger futuristic word-reveal when text crosses threshold
   useMotionValueEvent(smooth, 'change', (v) => {
@@ -191,10 +193,13 @@ export function ScrollStory() {
           />
         </div>
 
-        {/* ── Radial veil so text is readable over globe ── */}
+        {/* ── Gradient veil so text is readable over globe (stronger at bottom) ── */}
         <motion.div
-          style={{ opacity: veilOpacity }}
-          className="absolute inset-0 bg-[radial-gradient(ellipse_120%_100%_at_50%_50%,rgba(2,10,24,0.55)_0%,rgba(2,10,24,0.72)_55%,rgba(2,10,24,0.9)_100%)] pointer-events-none"
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            opacity: veilOpacity,
+            background: 'linear-gradient(to top, rgba(2,10,24,0.95) 0%, rgba(2,10,24,0.8) 35%, rgba(2,10,24,0.4) 55%, rgba(2,10,24,0.1) 70%, transparent 100%)'
+          }}
         />
 
         {/* ── "Click a country" hint ───────────────────── */}
@@ -222,10 +227,10 @@ export function ScrollStory() {
           )}
         </AnimatePresence>
 
-        {/* ── Hero text overlay (scroll-driven) ─────────── */}
+        {/* ── Hero text overlay (scroll-driven) — positioned in lower half ─────────── */}
         <motion.div
           style={{ opacity: textOpacity, y: textY }}
-          className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center pointer-events-none"
+          className="absolute inset-0 flex flex-col items-center justify-end pb-[15vh] px-6 text-center pointer-events-none"
         >
           {/* Tag */}
           {textActive && (

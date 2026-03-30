@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { M_PLUS_Code_Latin } from 'next/font/google';
 import './globals.css';
-import { ThemeProvider } from '@/components/ui/ThemeProvider';
+// ThemeProvider removed: static theming
 
 const mPlusCodeLatin = M_PLUS_Code_Latin({
   variable: '--font-sans',
@@ -22,9 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${mPlusCodeLatin.variable} antialiased dark`} suppressHydrationWarning>
       <body className="relative min-h-full flex flex-col bg-background text-text-primary font-sans" suppressHydrationWarning>
-        <ThemeProvider>
-          {children}
-        </ThemeProvider>
+        {children}
       </body>
     </html>
   );

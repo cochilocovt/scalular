@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState, useRef, useMemo } from 'react';
+import React, { useEffect, useState, useRef, useMemo, useCallback } from 'react';
 import dynamic from 'next/dynamic';
 
 const GlobeGL = dynamic(() => import('react-globe.gl'), { ssr: false });
@@ -56,20 +56,22 @@ export function ScalularGlobe({ activeRegion = 'global', className, onPointClick
   const globeRef = useRef<any>(null);
   const [dimensions, setDimensions] = useState({ width: 800, height: 800 });
   const [countries, setCountries] = useState<any>({ features: [] });
-  
-  // Track interaction state for pause/resume
-  const isInteracting = useRef(false);
+
   const resumeTimeout = useRef<NodeJS.Timeout | null>(null);
 
-  // Responsive sizing
+  // Measure container after first paint (getBoundingClientRect returns 0 before layout)
   useEffect(() => {
-    if (!containerRef.current) return;
-    const ro = new ResizeObserver((entries) => {
-      const { width, height } = entries[0].contentRect;
-      setDimensions({ width, height });
-    });
-    ro.observe(containerRef.current);
-    return () => ro.disconnect();
+    const measure = () => {
+      if (!containerRef.current) return;
+      const { width, height } = containerRef.current.getBoundingClientRect();
+      if (width > 0 && height > 0) {
+        setDimensions({ width, height });
+      } else {
+        // Container not yet laid out — retry next frame
+        requestAnimationFrame(measure);
+      }
+    };
+    requestAnimationFrame(measure);
   }, []);
 
   // Load country GeoJSON
@@ -80,111 +82,76 @@ export function ScalularGlobe({ activeRegion = 'global', className, onPointClick
       .catch(() => {});
   }, []);
 
-  // Custom off-axis rotation animation
+  // Horizontal auto-rotation — runs once on mount, never restarts
   useEffect(() => {
     let animationId: number;
-    let rotationAngle = 0;
-    
-    const startRotation = () => {
-      if (!globeRef.current) return;
-      
+
+    const setup = () => {
+      if (!globeRef.current) { setTimeout(setup, 100); return; }
       const globe = globeRef.current;
-      
-      // Get controls
+
       let controls;
       try {
         controls = globe.controls();
-        if (!controls) {
-          setTimeout(startRotation, 100);
-          return;
-        }
-      } catch (e) {
-        setTimeout(startRotation, 100);
-        return;
-      }
+        if (!controls) { setTimeout(setup, 100); return; }
+      } catch { setTimeout(setup, 100); return; }
 
-      // Configure controls - disable built-in autoRotate, we'll do custom rotation
-      controls.autoRotate = false;
+      // Use OrbitControls built-in autoRotate — most reliable approach
+      controls.autoRotate = true;
+      controls.autoRotateSpeed = 0.6;       // degrees per second
       controls.enableDamping = true;
       controls.dampingFactor = 0.05;
-      controls.enableZoom = true;
+      controls.enableZoom = false;
       controls.enablePan = false;
       controls.enableRotate = true;
+      controls.minDistance = 200;           // prevent any zoom-in
+      controls.maxDistance = 200;           // prevent any zoom-out
 
-      // Set zoom limits
-      controls.minDistance = 1.5;
-      controls.maxDistance = 4.0;
+      // Fixed initial view
+      globe.pointOfView({ lat: 20, lng: 5, altitude: 2.0 }, 0);
 
-      // Set initial camera position with slight tilt for off-axis view
-      globe.pointOfView({ lat: 15, lng: 5, altitude: 2.0 }, 0);
-
-      // Custom rotation with off-axis tilt
-      const animate = () => {
-        if (!isInteracting.current) {
-          rotationAngle += 0.002; // Slow rotation speed
-          
-          // Apply rotation with slight off-axis tilt
-          // This creates a more interesting, tilted rotation rather than purely horizontal
-          const lat = 15 + Math.sin(rotationAngle * 0.3) * 3; // Slight vertical wobble
-          const lng = 5 + (rotationAngle * 180 / Math.PI) % 360;
-          
-          globe.pointOfView({ lat, lng, altitude: 2.0 }, 50);
-        }
-        
+      // Tick loop so controls.update() is called every frame
+      const tick = () => {
         controls.update();
-        animationId = requestAnimationFrame(animate);
+        animationId = requestAnimationFrame(tick);
       };
-      
-      animationId = requestAnimationFrame(animate);
+      animationId = requestAnimationFrame(tick);
 
-      // Handle interaction pause/resume
       const canvas = globe.renderer().domElement;
-      
-      const onPointerDown = (e: PointerEvent) => {
-        isInteracting.current = true;
-        if (resumeTimeout.current) {
-          clearTimeout(resumeTimeout.current);
-          resumeTimeout.current = null;
-        }
+
+      // Block ALL wheel events on canvas — prevents Lenis scroll from zooming globe
+      const blockWheel = (e: WheelEvent) => {
+        e.stopPropagation();
+        e.preventDefault();
       };
-      
-      const onPointerUp = (e: PointerEvent) => {
-        // Resume rotation after 2 seconds of no interaction
+      canvas.addEventListener('wheel', blockWheel, { passive: false });
+
+      // Pause autoRotate on drag; resume 2 s after pointer released
+      const onPointerDown = () => {
+        controls.autoRotate = false;
+        if (resumeTimeout.current) clearTimeout(resumeTimeout.current);
+      };
+      const onPointerUp = () => {
+        if (resumeTimeout.current) clearTimeout(resumeTimeout.current);
         resumeTimeout.current = setTimeout(() => {
-          isInteracting.current = false;
+          controls.autoRotate = true;
         }, 2000);
       };
-
-      const onWheel = (e: WheelEvent) => {
-        // Also pause rotation briefly when zooming
-        isInteracting.current = true;
-        if (resumeTimeout.current) {
-          clearTimeout(resumeTimeout.current);
-        }
-        resumeTimeout.current = setTimeout(() => {
-          isInteracting.current = false;
-        }, 2000);
-      };
-
       canvas.addEventListener('pointerdown', onPointerDown);
       canvas.addEventListener('pointerup', onPointerUp);
-      canvas.addEventListener('wheel', onWheel, { passive: true });
 
       return () => {
+        cancelAnimationFrame(animationId);
+        canvas.removeEventListener('wheel', blockWheel);
         canvas.removeEventListener('pointerdown', onPointerDown);
         canvas.removeEventListener('pointerup', onPointerUp);
-        canvas.removeEventListener('wheel', onWheel);
+        if (resumeTimeout.current) clearTimeout(resumeTimeout.current);
       };
     };
 
-    const cleanup = startRotation();
-
-    return () => {
-      if (animationId) cancelAnimationFrame(animationId);
-      if (resumeTimeout.current) clearTimeout(resumeTimeout.current);
-      if (cleanup) cleanup();
-    };
-  }, [dimensions]);
+    const cleanup = setup();
+    return () => { if (cleanup) cleanup(); };
+  }, []); // runs once on mount
 
   // Custom rings for factory locations (pulsing rings)
   const factoryRingsData = useMemo(() => 
@@ -216,7 +183,7 @@ export function ScalularGlobe({ activeRegion = 'global', className, onPointClick
         width={dimensions.width}
         height={dimensions.height}
         backgroundColor="rgba(0,0,0,0)"
-        globeImageUrl="//unpkg.com/three-globe/example/img/earth-dark.jpg"
+        globeImageUrl="//unpkg.com/three-globe/example/img/earth-blue-marble.jpg"
         bumpImageUrl="//unpkg.com/three-globe/example/img/earth-topology.png"
         showAtmosphere={true}
         atmosphereColor="#3B82F6"
@@ -269,14 +236,14 @@ export function ScalularGlobe({ activeRegion = 'global', className, onPointClick
         
         // Enhanced tooltips
         pointLabel={(d: any) => `
-          <div style="font-family:system-ui,sans-serif;background:rgba(2,6,23,0.97);border:1px solid ${d.color}40;padding:14px 16px;border-radius:14px;box-shadow:0 12px 40px rgba(0,0,0,0.7),0 0 30px ${d.color}15;min-width:180px;backdrop-filter:blur(10px)">
+          <div style="font-family:system-ui,sans-serif;background:rgba(255,255,255,0.97);border:1px solid ${d.color}40;padding:14px 16px;border-radius:14px;box-shadow:0 12px 40px rgba(0,0,0,0.15),0 0 30px ${d.color}15;min-width:180px;backdrop-filter:blur(10px)">
             <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
               <div style="width:10px;height:10px;border-radius:${d.isBuyer ? '2px' : '50%'};background:${d.color};box-shadow:0 0 12px ${d.color}"></div>
-              <div style="font-weight:800;font-size:14px;color:#F8FAFC;letter-spacing:-0.02em">${d.label}</div>
+              <div style="font-weight:800;font-size:14px;color:#0F172A;letter-spacing:-0.02em">${d.label}</div>
             </div>
             <div style="font-size:11px;color:${d.color};font-weight:600;margin-bottom:4px">${d.sub}</div>
-            ${d.factoryCount ? `<div style="font-size:10px;color:#94A3B8;font-weight:500">${d.factoryCount} certified factories</div>` : ''}
-            <div style="font-size:9px;color:#64748B;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,0.08)">
+            ${d.factoryCount ? `<div style="font-size:10px;color:#475569;font-weight:500">${d.factoryCount} certified factories</div>` : ''}
+            <div style="font-size:9px;color:#64748B;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;margin-top:8px;padding-top:8px;border-top:1px solid rgba(0,0,0,0.08)">
               ${d.isBuyer ? '📍 Buyer Hub' : '🏭 Sourcing Region'}
             </div>
           </div>

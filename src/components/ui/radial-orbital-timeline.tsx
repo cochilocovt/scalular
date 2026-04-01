@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
-import { ArrowRight, Link, Zap } from "lucide-react";
+import { ArrowRight, Link, Zap, type LucideIcon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/ui-button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/ui-card";
@@ -13,7 +13,7 @@ interface TimelineItem {
   date: string;
   content: string;
   category: string;
-  icon: React.ElementType;
+  icon: LucideIcon;
   relatedIds: number[];
   status: "completed" | "in-progress" | "pending";
   energy: number;
@@ -162,9 +162,9 @@ export default function RadialOrbitalTimeline({
       case "in-progress":
         return "text-black bg-white border-black";
       case "pending":
-        return "text-white bg-white/10 border-white/20";
+        return "text-text-primary bg-surface-hover border-border";
       default:
-        return "text-white bg-white/10 border-white/20";
+        return "text-text-primary bg-surface-hover border-border";
     }
   };
 
@@ -188,8 +188,8 @@ export default function RadialOrbitalTimeline({
             <Image src={logo} alt="Scalular" width={56} height={56} className="rounded-full" loading="eager" />
           </div>
 
-          <div className="absolute w-[480px] h-[480px] rounded-full border border-white/5 bg-primary/5 blur-3xl opacity-20"></div>
-          <div className="absolute w-[480px] h-[480px] rounded-full border border-white/10"></div>
+          <div className="absolute w-[480px] h-[480px] rounded-full border border-divider bg-primary/5 blur-3xl opacity-20"></div>
+          <div className="absolute w-[480px] h-[480px] rounded-full border border-border"></div>
 
           {timelineData.map((item, index) => {
             const position = calculateNodePosition(index, timelineData.length);
@@ -251,7 +251,7 @@ export default function RadialOrbitalTimeline({
                       ? "bg-primary text-background"
                       : isRelated
                       ? "bg-primary/50 text-background"
-                      : "bg-[#020617] text-white"
+                      : "bg-surface text-text-primary"
                   }
                   border-2
                   ${
@@ -261,7 +261,7 @@ export default function RadialOrbitalTimeline({
                       ? "border-primary animate-pulse"
                       : isLured
                       ? "border-primary/70 shadow-md shadow-primary/20"
-                      : "border-white/20"
+                      : "border-border"
                   }
                   transition-all duration-300 transform
                   ${isExpanded ? "scale-150" : isLured ? "scale-110" : ""}
@@ -294,26 +294,26 @@ export default function RadialOrbitalTimeline({
                         >
                           {item.status.replace('-', ' ')}
                         </Badge>
-                        <span className="text-[10px] font-bold text-white/30 tracking-widest uppercase">
+                        <span className="text-[10px] font-bold text-text-secondary/60 tracking-widest uppercase">
                           {item.date}
                         </span>
                       </div>
-                      <CardTitle className="text-lg mt-3 font-black text-white tracking-tight">
+                      <CardTitle className="text-lg mt-3 font-black text-text-primary tracking-tight">
                         {item.title}
                       </CardTitle>
                     </CardHeader>
                     <CardContent className="text-sm text-text-secondary leading-relaxed px-5 pb-6">
                       <p>{item.content}</p>
 
-                      <div className="mt-6 pt-4 border-t border-white/5">
+                      <div className="mt-6 pt-4 border-t border-divider">
                         <div className="flex justify-between items-center text-[10px] font-bold uppercase tracking-widest mb-2">
                           <span className="flex items-center text-primary">
                             <Zap size={10} className="mr-1 fill-current" />
                             System Velocity
                           </span>
-                          <span className="text-white/60">{item.energy}%</span>
+                          <span className="text-text-secondary">{item.energy}%</span>
                         </div>
-                        <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
+                        <div className="w-full h-1 bg-surface-hover rounded-full overflow-hidden">
                           <div
                             className="h-full bg-gradient-to-r from-primary to-secondary"
                             style={{ width: `${item.energy}%` }}
@@ -322,10 +322,10 @@ export default function RadialOrbitalTimeline({
                       </div>
 
                       {item.relatedIds.length > 0 && (
-                        <div className="mt-6 pt-4 border-t border-white/5">
+                        <div className="mt-6 pt-4 border-t border-divider">
                           <div className="flex items-center mb-3">
                             <Link size={10} className="text-primary mr-1" />
-                            <h4 className="text-[10px] uppercase tracking-[0.2em] font-black text-white/40">
+                            <h4 className="text-[10px] uppercase tracking-[0.2em] font-black text-text-secondary/60">
                               Connected Workflows
                             </h4>
                           </div>
@@ -337,7 +337,7 @@ export default function RadialOrbitalTimeline({
                               return (
                                 <button
                                   key={relatedId}
-                                  className="flex items-center h-7 px-3 text-[10px] font-bold uppercase tracking-wider rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 text-white/80 hover:text-white transition-all"
+                                  className="flex items-center h-7 px-3 text-[10px] font-bold uppercase tracking-wider rounded-lg border border-border bg-surface-hover hover:bg-surface-active text-text-secondary hover:text-text-primary transition-all"
                                   onClick={(e) => {
                                     e.stopPropagation();
                                     toggleItem(relatedId);

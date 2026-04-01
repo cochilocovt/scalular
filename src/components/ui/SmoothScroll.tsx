@@ -22,8 +22,23 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
 
     requestAnimationFrame(raf);
 
+    // Intercept anchor hash clicks so Lenis handles them smoothly
+    const handleAnchorClick = (e: MouseEvent) => {
+      const target = (e.target as Element).closest('a');
+      if (!target) return;
+      const href = target.getAttribute('href');
+      if (!href || !href.startsWith('#')) return;
+      const el = document.querySelector(href);
+      if (!el) return;
+      e.preventDefault();
+      lenis.scrollTo(el as HTMLElement, { offset: -80 }); // 80px for fixed navbar
+    };
+
+    document.addEventListener('click', handleAnchorClick);
+
     return () => {
       lenis.destroy();
+      document.removeEventListener('click', handleAnchorClick);
     };
   }, []);
 

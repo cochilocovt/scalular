@@ -1,7 +1,9 @@
 import type { Metadata } from 'next';
 import { M_PLUS_Code_Latin } from 'next/font/google';
 import './globals.css';
-// ThemeProvider removed: static theming
+import { Navbar } from '@/components/ui/Navbar';
+import { SharedFooter } from '@/components/ui/SharedFooter';
+import { SmoothScroll } from '@/components/ui/SmoothScroll';
 
 const mPlusCodeLatin = M_PLUS_Code_Latin({
   variable: '--font-sans',
@@ -20,9 +22,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${mPlusCodeLatin.variable} antialiased dark`} suppressHydrationWarning>
+    <html lang="en" className={`${mPlusCodeLatin.variable} antialiased light`} suppressHydrationWarning>
       <body className="relative min-h-full flex flex-col bg-background text-text-primary font-sans" suppressHydrationWarning>
-        {children}
+        <SmoothScroll>
+          <Navbar />
+          {children}
+          <SharedFooter />
+        </SmoothScroll>
       </body>
     </html>
   );

@@ -8,6 +8,67 @@ import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Environment } from '@react-three/drei';
 import { GARMENT_CATALOG, type GarmentEntry } from '@/components/3d/GarmentModels';
 
+/* ─── T-Shirt Image Sequence ────────────────────────────── */
+const TSHIRT_FRAMES = [
+  '/images/tshirt_seq/-01.png',
+  '/images/tshirt_seq/-02.png',
+  '/images/tshirt_seq/-03.png',
+  '/images/tshirt_seq/-04.png',
+  '/images/tshirt_seq/-05.png',
+  '/images/tshirt_seq/-06.png',
+  '/images/tshirt_seq/-07.png',
+  '/images/tshirt_seq/-09.png',
+  '/images/tshirt_seq/-10.png',
+  '/images/tshirt_seq/-11.png',
+  '/images/tshirt_seq/-12.png',
+  '/images/tshirt_seq/-13.png',
+  '/images/tshirt_seq/-14.png',
+  '/images/tshirt_seq/-15.png',
+  '/images/tshirt_seq/-16.png',
+  '/images/tshirt_seq/-17.png',
+];
+
+function ImageSequenceViewer({ frames }: { frames: string[] }) {
+  const [frameIndex, setFrameIndex] = useState(0);
+  const dragRef = useRef(0);
+  
+  // pre-load images
+  useEffect(() => {
+    frames.forEach(src => {
+      const img = new globalThis.Image();
+      img.src = src;
+    });
+  }, [frames]);
+
+  return (
+    <div 
+      className="absolute inset-0 cursor-ew-resize"
+      onPointerDown={(e) => {
+        e.stopPropagation();
+        dragRef.current = e.clientX;
+        e.currentTarget.setPointerCapture(e.pointerId);
+      }}
+      onPointerMove={(e) => {
+        if (e.buttons === 1) {
+          e.stopPropagation();
+          const diff = e.clientX - dragRef.current;
+          if (Math.abs(diff) > 10) {
+            setFrameIndex((prev) => (prev + (diff > 0 ? 1 : -1) + frames.length) % frames.length);
+            dragRef.current = e.clientX;
+          }
+        }
+      }}
+    >
+      <img 
+        src={frames[frameIndex]} 
+        alt="Product rotation" 
+        className="w-full h-full object-contain pointer-events-none p-2 drop-shadow-2xl" 
+        draggable={false}
+      />
+    </div>
+  );
+}
+
 /* ─── Lazy 3D scene per garment ─────────────────────────── */
 function GarmentScene({ entry }: { entry: GarmentEntry }) {
   const { Component, color } = entry;
@@ -43,7 +104,10 @@ function GarmentCard({ entry, isActive }: { entry: GarmentEntry; isActive: boole
     >
       {/* 3D viewport — only mount for active ±1 items */}
       <div className="h-52 w-full relative bg-gradient-to-b from-background to-surface-raised">
-        {isActive && (
+        {isActive && entry.id === 'tshirt' && (
+          <ImageSequenceViewer frames={TSHIRT_FRAMES} />
+        )}
+        {isActive && entry.id !== 'tshirt' && (
           <div className="absolute inset-0">
             <GarmentSceneClient entry={entry} />
           </div>

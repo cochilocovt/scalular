@@ -184,7 +184,7 @@ export function ScrollStory() {
 
         {/* ── Globe layer ─────────────────────────────────── */}
         <motion.div
-          className="absolute inset-0"
+          className="absolute inset-0 overflow-hidden"
           style={{ opacity: globeOpacity }}
         >
           <ScalularGlobe

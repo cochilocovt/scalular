@@ -21,28 +21,25 @@ function useRotation(speed = 0.5) {
 /* ─── T-Shirt ───────────────────────────────────────────── */
 export function TShirtModel({ color = '#3B82F6' }: GarmentProps) {
   const ref = useRotation();
-  const mat = <meshStandardMaterial color={color} roughness={0.7} metalness={0.05} />;
+  const mat = <meshPhysicalMaterial color={color} roughness={0.8} metalness={0.1} clearcoat={0.1} clearcoatRoughness={0.8} />;
   return (
     <group ref={ref}>
       {/* Body */}
-      <mesh position={[0, 0, 0]}>
-        <boxGeometry args={[1.2, 1.4, 0.3]} />
+      <RoundedBox args={[1.2, 1.4, 0.3]} radius={0.120} smoothness={4} position={[0, 0, 0]}>
         {mat}
-      </mesh>
+      </RoundedBox>
       {/* Left sleeve */}
-      <mesh position={[-0.9, 0.45, 0]} rotation={[0, 0, -0.5]}>
-        <boxGeometry args={[0.7, 0.3, 0.28]} />
+      <RoundedBox args={[0.7, 0.3, 0.28]} radius={0.112} smoothness={4} position={[-0.9, 0.45, 0]} rotation={[0, 0, -0.5]}>
         {mat}
-      </mesh>
+      </RoundedBox>
       {/* Right sleeve */}
-      <mesh position={[0.9, 0.45, 0]} rotation={[0, 0, 0.5]}>
-        <boxGeometry args={[0.7, 0.3, 0.28]} />
+      <RoundedBox args={[0.7, 0.3, 0.28]} radius={0.112} smoothness={4} position={[0.9, 0.45, 0]} rotation={[0, 0, 0.5]}>
         {mat}
-      </mesh>
+      </RoundedBox>
       {/* Collar */}
       <mesh position={[0, 0.75, 0]}>
-        <torusGeometry args={[0.22, 0.06, 8, 20, Math.PI]} />
-        <meshStandardMaterial color={color} roughness={0.8} />
+        <torusGeometry args={[0.22, 0.06, 16, 64, Math.PI]} />
+        <meshPhysicalMaterial color={color} roughness={0.8} metalness={0.1} clearcoat={0.1} clearcoatRoughness={0.8} />
       </mesh>
     </group>
   );
@@ -51,30 +48,25 @@ export function TShirtModel({ color = '#3B82F6' }: GarmentProps) {
 /* ─── Polo Shirt ──────────────────────────────────────────── */
 export function PoloShirtModel({ color = '#10B981' }: GarmentProps) {
   const ref = useRotation();
-  const mat = <meshStandardMaterial color={color} roughness={0.7} metalness={0.05} />;
+  const mat = <meshPhysicalMaterial color={color} roughness={0.8} metalness={0.1} clearcoat={0.1} clearcoatRoughness={0.8} />;
   return (
     <group ref={ref}>
-      <mesh position={[0, 0, 0]}>
-        <boxGeometry args={[1.2, 1.5, 0.3]} />
+      <RoundedBox args={[1.2, 1.5, 0.3]} radius={0.120} smoothness={4} position={[0, 0, 0]}>
         {mat}
-      </mesh>
-      <mesh position={[-0.85, 0.5, 0]} rotation={[0, 0, -0.4]}>
-        <boxGeometry args={[0.6, 0.28, 0.28]} />
+      </RoundedBox>
+      <RoundedBox args={[0.6, 0.28, 0.28]} radius={0.112} smoothness={4} position={[-0.85, 0.5, 0]} rotation={[0, 0, -0.4]}>
         {mat}
-      </mesh>
-      <mesh position={[0.85, 0.5, 0]} rotation={[0, 0, 0.4]}>
-        <boxGeometry args={[0.6, 0.28, 0.28]} />
+      </RoundedBox>
+      <RoundedBox args={[0.6, 0.28, 0.28]} radius={0.112} smoothness={4} position={[0.85, 0.5, 0]} rotation={[0, 0, 0.4]}>
         {mat}
-      </mesh>
+      </RoundedBox>
       {/* Polo collar */}
-      <mesh position={[0, 0.82, 0]}>
-        <boxGeometry args={[0.5, 0.18, 0.15]} />
+      <RoundedBox args={[0.5, 0.18, 0.15]} radius={0.060} smoothness={4} position={[0, 0.82, 0]}>
         {mat}
-      </mesh>
-      <mesh position={[0, 0.72, 0.08]}>
-        <boxGeometry args={[0.12, 0.3, 0.06]} />
+      </RoundedBox>
+      <RoundedBox args={[0.12, 0.3, 0.06]} radius={0.024} smoothness={4} position={[0, 0.72, 0.08]}>
         {mat}
-      </mesh>
+      </RoundedBox>
     </group>
   );
 }
@@ -82,32 +74,28 @@ export function PoloShirtModel({ color = '#10B981' }: GarmentProps) {
 /* ─── Hoodie ──────────────────────────────────────────────── */
 export function HoodieModel({ color = '#8B5CF6' }: GarmentProps) {
   const ref = useRotation();
-  const mat = <meshStandardMaterial color={color} roughness={0.8} metalness={0.02} />;
+  const mat = <meshPhysicalMaterial color={color} roughness={0.8} metalness={0.1} clearcoat={0.1} clearcoatRoughness={0.8} />;
   return (
     <group ref={ref}>
-      <mesh position={[0, -0.05, 0]}>
-        <boxGeometry args={[1.35, 1.5, 0.38]} />
+      <RoundedBox args={[1.35, 1.5, 0.38]} radius={0.120} smoothness={4} position={[0, -0.05, 0]}>
         {mat}
-      </mesh>
+      </RoundedBox>
       {/* Long sleeves */}
-      <mesh position={[-1.0, 0.1, 0]} rotation={[0, 0, -0.15]}>
-        <boxGeometry args={[0.75, 0.35, 0.32]} />
+      <RoundedBox args={[0.75, 0.35, 0.32]} radius={0.120} smoothness={4} position={[-1.0, 0.1, 0]} rotation={[0, 0, -0.15]}>
         {mat}
-      </mesh>
-      <mesh position={[1.0, 0.1, 0]} rotation={[0, 0, 0.15]}>
-        <boxGeometry args={[0.75, 0.35, 0.32]} />
+      </RoundedBox>
+      <RoundedBox args={[0.75, 0.35, 0.32]} radius={0.120} smoothness={4} position={[1.0, 0.1, 0]} rotation={[0, 0, 0.15]}>
         {mat}
-      </mesh>
+      </RoundedBox>
       {/* Hood */}
       <mesh position={[0, 1.0, -0.1]}>
-        <sphereGeometry args={[0.42, 12, 12, 0, Math.PI * 2, 0, Math.PI * 0.7]} />
+        <sphereGeometry args={[0.42, 32, 32, 0, Math.PI * 2, 0, Math.PI * 0.7]} />
         {mat}
       </mesh>
       {/* Kangaroo pocket */}
-      <mesh position={[0, -0.35, 0.2]}>
-        <boxGeometry args={[0.7, 0.35, 0.05]} />
-        <meshStandardMaterial color={color} roughness={0.9} />
-      </mesh>
+      <RoundedBox args={[0.7, 0.35, 0.05]} radius={0.020} smoothness={4} position={[0, -0.35, 0.2]}>
+        <meshPhysicalMaterial color={color} roughness={0.8} metalness={0.1} clearcoat={0.1} clearcoatRoughness={0.8} />
+      </RoundedBox>
     </group>
   );
 }
@@ -115,26 +103,22 @@ export function HoodieModel({ color = '#8B5CF6' }: GarmentProps) {
 /* ─── Sweatshirt ──────────────────────────────────────────── */
 export function SweatshirtModel({ color = '#F59E0B' }: GarmentProps) {
   const ref = useRotation();
-  const mat = <meshStandardMaterial color={color} roughness={0.8} metalness={0.02} />;
+  const mat = <meshPhysicalMaterial color={color} roughness={0.8} metalness={0.1} clearcoat={0.1} clearcoatRoughness={0.8} />;
   return (
     <group ref={ref}>
-      <mesh position={[0, 0, 0]}>
-        <boxGeometry args={[1.3, 1.5, 0.35]} />
+      <RoundedBox args={[1.3, 1.5, 0.35]} radius={0.120} smoothness={4} position={[0, 0, 0]}>
         {mat}
-      </mesh>
-      <mesh position={[-1.0, 0.15, 0]} rotation={[0, 0, -0.1]}>
-        <boxGeometry args={[0.72, 0.33, 0.3]} />
+      </RoundedBox>
+      <RoundedBox args={[0.72, 0.33, 0.3]} radius={0.120} smoothness={4} position={[-1.0, 0.15, 0]} rotation={[0, 0, -0.1]}>
         {mat}
-      </mesh>
-      <mesh position={[1.0, 0.15, 0]} rotation={[0, 0, 0.1]}>
-        <boxGeometry args={[0.72, 0.33, 0.3]} />
+      </RoundedBox>
+      <RoundedBox args={[0.72, 0.33, 0.3]} radius={0.120} smoothness={4} position={[1.0, 0.15, 0]} rotation={[0, 0, 0.1]}>
         {mat}
-      </mesh>
+      </RoundedBox>
       {/* Ribbed hem */}
-      <mesh position={[0, -0.82, 0]}>
-        <boxGeometry args={[1.35, 0.12, 0.36]} />
-        <meshStandardMaterial color={color} roughness={0.9} />
-      </mesh>
+      <RoundedBox args={[1.35, 0.12, 0.36]} radius={0.048} smoothness={4} position={[0, -0.82, 0]}>
+        <meshPhysicalMaterial color={color} roughness={0.8} metalness={0.1} clearcoat={0.1} clearcoatRoughness={0.8} />
+      </RoundedBox>
     </group>
   );
 }
@@ -142,41 +126,34 @@ export function SweatshirtModel({ color = '#F59E0B' }: GarmentProps) {
 /* ─── Jacket ────────────────────────────────────────────── */
 export function JacketModel({ color = '#1E293B' }: GarmentProps) {
   const ref = useRotation();
-  const mat = <meshStandardMaterial color={color} roughness={0.6} metalness={0.1} />;
+  const mat = <meshPhysicalMaterial color={color} roughness={0.8} metalness={0.1} clearcoat={0.1} clearcoatRoughness={0.8} />;
   return (
     <group ref={ref}>
       {/* Main body — two panels (open front) */}
-      <mesh position={[-0.32, 0, 0.01]}>
-        <boxGeometry args={[0.62, 1.6, 0.32]} />
+      <RoundedBox args={[0.62, 1.6, 0.32]} radius={0.120} smoothness={4} position={[-0.32, 0, 0.01]}>
         {mat}
-      </mesh>
-      <mesh position={[0.32, 0, 0.01]}>
-        <boxGeometry args={[0.62, 1.6, 0.32]} />
+      </RoundedBox>
+      <RoundedBox args={[0.62, 1.6, 0.32]} radius={0.120} smoothness={4} position={[0.32, 0, 0.01]}>
         {mat}
-      </mesh>
+      </RoundedBox>
       {/* Back panel */}
-      <mesh position={[0, 0, -0.03]}>
-        <boxGeometry args={[1.3, 1.6, 0.26]} />
+      <RoundedBox args={[1.3, 1.6, 0.26]} radius={0.104} smoothness={4} position={[0, 0, -0.03]}>
         {mat}
-      </mesh>
+      </RoundedBox>
       {/* Sleeves */}
-      <mesh position={[-1.02, 0.05, 0]} rotation={[0, 0, -0.12]}>
-        <boxGeometry args={[0.76, 0.38, 0.3]} />
+      <RoundedBox args={[0.76, 0.38, 0.3]} radius={0.120} smoothness={4} position={[-1.02, 0.05, 0]} rotation={[0, 0, -0.12]}>
         {mat}
-      </mesh>
-      <mesh position={[1.02, 0.05, 0]} rotation={[0, 0, 0.12]}>
-        <boxGeometry args={[0.76, 0.38, 0.3]} />
+      </RoundedBox>
+      <RoundedBox args={[0.76, 0.38, 0.3]} radius={0.120} smoothness={4} position={[1.02, 0.05, 0]} rotation={[0, 0, 0.12]}>
         {mat}
-      </mesh>
+      </RoundedBox>
       {/* Collar */}
-      <mesh position={[-0.15, 0.88, 0.08]} rotation={[0, 0, 0.2]}>
-        <boxGeometry args={[0.28, 0.28, 0.1]} />
+      <RoundedBox args={[0.28, 0.28, 0.1]} radius={0.040} smoothness={4} position={[-0.15, 0.88, 0.08]} rotation={[0, 0, 0.2]}>
         {mat}
-      </mesh>
-      <mesh position={[0.15, 0.88, 0.08]} rotation={[0, 0, -0.2]}>
-        <boxGeometry args={[0.28, 0.28, 0.1]} />
+      </RoundedBox>
+      <RoundedBox args={[0.28, 0.28, 0.1]} radius={0.040} smoothness={4} position={[0.15, 0.88, 0.08]} rotation={[0, 0, -0.2]}>
         {mat}
-      </mesh>
+      </RoundedBox>
     </group>
   );
 }
@@ -184,24 +161,21 @@ export function JacketModel({ color = '#1E293B' }: GarmentProps) {
 /* ─── Pants ─────────────────────────────────────────────── */
 export function PantsModel({ color = '#334155' }: GarmentProps) {
   const ref = useRotation();
-  const mat = <meshStandardMaterial color={color} roughness={0.75} metalness={0.05} />;
+  const mat = <meshPhysicalMaterial color={color} roughness={0.8} metalness={0.1} clearcoat={0.1} clearcoatRoughness={0.8} />;
   return (
     <group ref={ref}>
       {/* Waistband */}
-      <mesh position={[0, 0.82, 0]}>
-        <boxGeometry args={[1.1, 0.2, 0.32]} />
+      <RoundedBox args={[1.1, 0.2, 0.32]} radius={0.080} smoothness={4} position={[0, 0.82, 0]}>
         {mat}
-      </mesh>
+      </RoundedBox>
       {/* Left leg */}
-      <mesh position={[-0.3, -0.2, 0]}>
-        <boxGeometry args={[0.46, 1.8, 0.3]} />
+      <RoundedBox args={[0.46, 1.8, 0.3]} radius={0.120} smoothness={4} position={[-0.3, -0.2, 0]}>
         {mat}
-      </mesh>
+      </RoundedBox>
       {/* Right leg */}
-      <mesh position={[0.3, -0.2, 0]}>
-        <boxGeometry args={[0.46, 1.8, 0.3]} />
+      <RoundedBox args={[0.46, 1.8, 0.3]} radius={0.120} smoothness={4} position={[0.3, -0.2, 0]}>
         {mat}
-      </mesh>
+      </RoundedBox>
     </group>
   );
 }
@@ -209,21 +183,18 @@ export function PantsModel({ color = '#334155' }: GarmentProps) {
 /* ─── Shorts ─────────────────────────────────────────────── */
 export function ShortsModel({ color = '#0EA5E9' }: GarmentProps) {
   const ref = useRotation();
-  const mat = <meshStandardMaterial color={color} roughness={0.75} metalness={0.03} />;
+  const mat = <meshPhysicalMaterial color={color} roughness={0.8} metalness={0.1} clearcoat={0.1} clearcoatRoughness={0.8} />;
   return (
     <group ref={ref}>
-      <mesh position={[0, 0.3, 0]}>
-        <boxGeometry args={[1.1, 0.18, 0.32]} />
+      <RoundedBox args={[1.1, 0.18, 0.32]} radius={0.072} smoothness={4} position={[0, 0.3, 0]}>
         {mat}
-      </mesh>
-      <mesh position={[-0.3, -0.3, 0]}>
-        <boxGeometry args={[0.46, 0.9, 0.3]} />
+      </RoundedBox>
+      <RoundedBox args={[0.46, 0.9, 0.3]} radius={0.120} smoothness={4} position={[-0.3, -0.3, 0]}>
         {mat}
-      </mesh>
-      <mesh position={[0.3, -0.3, 0]}>
-        <boxGeometry args={[0.46, 0.9, 0.3]} />
+      </RoundedBox>
+      <RoundedBox args={[0.46, 0.9, 0.3]} radius={0.120} smoothness={4} position={[0.3, -0.3, 0]}>
         {mat}
-      </mesh>
+      </RoundedBox>
     </group>
   );
 }
@@ -241,23 +212,20 @@ export function DressModel({ color = '#EC4899' }: GarmentProps) {
   return (
     <group ref={ref}>
       <mesh>
-        <latheGeometry args={[points, 24]} />
-        <meshStandardMaterial color={color} roughness={0.7} metalness={0.02} side={THREE.DoubleSide} />
+        <latheGeometry args={[points, 64]} />
+        <meshPhysicalMaterial color={color} roughness={0.8} metalness={0.1} clearcoat={0.1} clearcoatRoughness={0.8} side={THREE.DoubleSide} />
       </mesh>
       {/* Bodice */}
-      <mesh position={[0, 0.75, 0]}>
-        <boxGeometry args={[0.72, 0.55, 0.28]} />
-        <meshStandardMaterial color={color} roughness={0.65} />
-      </mesh>
+      <RoundedBox args={[0.72, 0.55, 0.28]} radius={0.112} smoothness={4} position={[0, 0.75, 0]}>
+        <meshPhysicalMaterial color={color} roughness={0.8} metalness={0.1} clearcoat={0.1} clearcoatRoughness={0.8} />
+      </RoundedBox>
       {/* Straps */}
-      <mesh position={[-0.2, 1.07, 0]}>
-        <boxGeometry args={[0.1, 0.22, 0.08]} />
-        <meshStandardMaterial color={color} roughness={0.65} />
-      </mesh>
-      <mesh position={[0.2, 1.07, 0]}>
-        <boxGeometry args={[0.1, 0.22, 0.08]} />
-        <meshStandardMaterial color={color} roughness={0.65} />
-      </mesh>
+      <RoundedBox args={[0.1, 0.22, 0.08]} radius={0.032} smoothness={4} position={[-0.2, 1.07, 0]}>
+        <meshPhysicalMaterial color={color} roughness={0.8} metalness={0.1} clearcoat={0.1} clearcoatRoughness={0.8} />
+      </RoundedBox>
+      <RoundedBox args={[0.1, 0.22, 0.08]} radius={0.032} smoothness={4} position={[0.2, 1.07, 0]}>
+        <meshPhysicalMaterial color={color} roughness={0.8} metalness={0.1} clearcoat={0.1} clearcoatRoughness={0.8} />
+      </RoundedBox>
     </group>
   );
 }
@@ -275,13 +243,13 @@ export function SkirtModel({ color = '#A855F7' }: GarmentProps) {
   return (
     <group ref={ref}>
       <mesh>
-        <latheGeometry args={[points, 24]} />
-        <meshStandardMaterial color={color} roughness={0.7} metalness={0.02} side={THREE.DoubleSide} />
+        <latheGeometry args={[points, 64]} />
+        <meshPhysicalMaterial color={color} roughness={0.8} metalness={0.1} clearcoat={0.1} clearcoatRoughness={0.8} side={THREE.DoubleSide} />
       </mesh>
       {/* Waistband */}
       <mesh position={[0, 0.45, 0]}>
-        <cylinderGeometry args={[0.31, 0.31, 0.14, 24]} />
-        <meshStandardMaterial color={color} roughness={0.8} />
+        <cylinderGeometry args={[0.31, 0.31, 0.14, 32]} />
+        <meshPhysicalMaterial color={color} roughness={0.8} metalness={0.1} clearcoat={0.1} clearcoatRoughness={0.8} />
       </mesh>
     </group>
   );
@@ -290,30 +258,29 @@ export function SkirtModel({ color = '#A855F7' }: GarmentProps) {
 /* ─── Joggers ─────────────────────────────────────────────── */
 export function JoggersModel({ color = '#64748B' }: GarmentProps) {
   const ref = useRotation();
-  const mat = <meshStandardMaterial color={color} roughness={0.8} metalness={0.02} />;
+  const mat = <meshPhysicalMaterial color={color} roughness={0.8} metalness={0.1} clearcoat={0.1} clearcoatRoughness={0.8} />;
   return (
     <group ref={ref}>
-      <mesh position={[0, 0.82, 0]}>
-        <boxGeometry args={[1.12, 0.22, 0.34]} />
+      <RoundedBox args={[1.12, 0.22, 0.34]} radius={0.088} smoothness={4} position={[0, 0.82, 0]}>
         {mat}
-      </mesh>
+      </RoundedBox>
       {/* Tapered legs */}
       <mesh position={[-0.28, -0.15, 0]}>
-        <cylinderGeometry args={[0.22, 0.16, 1.9, 16]} />
+        <cylinderGeometry args={[0.22, 0.16, 1.9, 32]} />
         {mat}
       </mesh>
       <mesh position={[0.28, -0.15, 0]}>
-        <cylinderGeometry args={[0.22, 0.16, 1.9, 16]} />
+        <cylinderGeometry args={[0.22, 0.16, 1.9, 32]} />
         {mat}
       </mesh>
       {/* Cuffs */}
       <mesh position={[-0.28, -1.12, 0]}>
-        <cylinderGeometry args={[0.17, 0.17, 0.12, 16]} />
-        <meshStandardMaterial color={color} roughness={0.9} />
+        <cylinderGeometry args={[0.17, 0.17, 0.12, 32]} />
+        <meshPhysicalMaterial color={color} roughness={0.8} metalness={0.1} clearcoat={0.1} clearcoatRoughness={0.8} />
       </mesh>
       <mesh position={[0.28, -1.12, 0]}>
-        <cylinderGeometry args={[0.17, 0.17, 0.12, 16]} />
-        <meshStandardMaterial color={color} roughness={0.9} />
+        <cylinderGeometry args={[0.17, 0.17, 0.12, 32]} />
+        <meshPhysicalMaterial color={color} roughness={0.8} metalness={0.1} clearcoat={0.1} clearcoatRoughness={0.8} />
       </mesh>
     </group>
   );
@@ -322,27 +289,23 @@ export function JoggersModel({ color = '#64748B' }: GarmentProps) {
 /* ─── Jeans ─────────────────────────────────────────────── */
 export function JeansModel({ color = '#1D4ED8' }: GarmentProps) {
   const ref = useRotation();
-  const mat = <meshStandardMaterial color={color} roughness={0.6} metalness={0.08} />;
+  const mat = <meshPhysicalMaterial color={color} roughness={0.8} metalness={0.1} clearcoat={0.1} clearcoatRoughness={0.8} />;
   return (
     <group ref={ref}>
-      <mesh position={[0, 0.82, 0]}>
-        <boxGeometry args={[1.1, 0.22, 0.32]} />
+      <RoundedBox args={[1.1, 0.22, 0.32]} radius={0.088} smoothness={4} position={[0, 0.82, 0]}>
         {mat}
-      </mesh>
-      <mesh position={[-0.29, -0.18, 0]}>
-        <boxGeometry args={[0.44, 1.85, 0.3]} />
+      </RoundedBox>
+      <RoundedBox args={[0.44, 1.85, 0.3]} radius={0.120} smoothness={4} position={[-0.29, -0.18, 0]}>
         {mat}
-      </mesh>
-      <mesh position={[0.29, -0.18, 0]}>
-        <boxGeometry args={[0.44, 1.85, 0.3]} />
+      </RoundedBox>
+      <RoundedBox args={[0.44, 1.85, 0.3]} radius={0.120} smoothness={4} position={[0.29, -0.18, 0]}>
         {mat}
-      </mesh>
+      </RoundedBox>
       {/* Belt loops */}
       {[-0.4, 0, 0.4].map((x, i) => (
-        <mesh key={i} position={[x, 0.82, 0.17]}>
-          <boxGeometry args={[0.08, 0.18, 0.04]} />
-          <meshStandardMaterial color="#1E3A8A" roughness={0.7} />
-        </mesh>
+        <RoundedBox args={[0.08, 0.18, 0.04]} radius={0.016} smoothness={4} key={i} position={[x, 0.82, 0.17]}>
+        <meshPhysicalMaterial roughness={0.8} metalness={0.1} clearcoat={0.1} clearcoatRoughness={0.8} />
+      </RoundedBox>
       ))}
     </group>
   );
@@ -351,21 +314,18 @@ export function JeansModel({ color = '#1D4ED8' }: GarmentProps) {
 /* ─── Boxers ─────────────────────────────────────────────── */
 export function BoxersModel({ color = '#F97316' }: GarmentProps) {
   const ref = useRotation();
-  const mat = <meshStandardMaterial color={color} roughness={0.75} metalness={0.02} />;
+  const mat = <meshPhysicalMaterial color={color} roughness={0.8} metalness={0.1} clearcoat={0.1} clearcoatRoughness={0.8} />;
   return (
     <group ref={ref}>
-      <mesh position={[0, 0.25, 0]}>
-        <boxGeometry args={[1.0, 0.18, 0.3]} />
+      <RoundedBox args={[1.0, 0.18, 0.3]} radius={0.072} smoothness={4} position={[0, 0.25, 0]}>
         {mat}
-      </mesh>
-      <mesh position={[-0.28, -0.22, 0]}>
-        <boxGeometry args={[0.42, 0.7, 0.28]} />
+      </RoundedBox>
+      <RoundedBox args={[0.42, 0.7, 0.28]} radius={0.112} smoothness={4} position={[-0.28, -0.22, 0]}>
         {mat}
-      </mesh>
-      <mesh position={[0.28, -0.22, 0]}>
-        <boxGeometry args={[0.42, 0.7, 0.28]} />
+      </RoundedBox>
+      <RoundedBox args={[0.42, 0.7, 0.28]} radius={0.112} smoothness={4} position={[0.28, -0.22, 0]}>
         {mat}
-      </mesh>
+      </RoundedBox>
     </group>
   );
 }
@@ -373,19 +333,18 @@ export function BoxersModel({ color = '#F97316' }: GarmentProps) {
 /* ─── Boxer Briefs ───────────────────────────────────────── */
 export function BoxerBriefsModel({ color = '#059669' }: GarmentProps) {
   const ref = useRotation();
-  const mat = <meshStandardMaterial color={color} roughness={0.75} metalness={0.02} />;
+  const mat = <meshPhysicalMaterial color={color} roughness={0.8} metalness={0.1} clearcoat={0.1} clearcoatRoughness={0.8} />;
   return (
     <group ref={ref}>
-      <mesh position={[0, 0.12, 0]}>
-        <boxGeometry args={[0.95, 0.16, 0.3]} />
+      <RoundedBox args={[0.95, 0.16, 0.3]} radius={0.064} smoothness={4} position={[0, 0.12, 0]}>
         {mat}
-      </mesh>
+      </RoundedBox>
       <mesh position={[-0.25, -0.28, 0]}>
-        <cylinderGeometry args={[0.2, 0.18, 0.55, 16]} />
+        <cylinderGeometry args={[0.2, 0.18, 0.55, 32]} />
         {mat}
       </mesh>
       <mesh position={[0.25, -0.28, 0]}>
-        <cylinderGeometry args={[0.2, 0.18, 0.55, 16]} />
+        <cylinderGeometry args={[0.2, 0.18, 0.55, 32]} />
         {mat}
       </mesh>
     </group>
@@ -398,18 +357,16 @@ export function UndershirtModel({ color = '#F1F5F9' }: GarmentProps) {
   return (
     <group ref={ref}>
       <mesh position={[0, 0, 0]}>
-        <cylinderGeometry args={[0.5, 0.45, 1.6, 24]} />
-        <meshStandardMaterial color={color} roughness={0.8} metalness={0.0} />
+        <cylinderGeometry args={[0.5, 0.45, 1.6, 32]} />
+        <meshPhysicalMaterial color={color} roughness={0.8} metalness={0.1} clearcoat={0.1} clearcoatRoughness={0.8} />
       </mesh>
       {/* Shoulder straps */}
-      <mesh position={[-0.2, 0.88, 0]}>
-        <boxGeometry args={[0.14, 0.3, 0.1]} />
-        <meshStandardMaterial color={color} roughness={0.8} />
-      </mesh>
-      <mesh position={[0.2, 0.88, 0]}>
-        <boxGeometry args={[0.14, 0.3, 0.1]} />
-        <meshStandardMaterial color={color} roughness={0.8} />
-      </mesh>
+      <RoundedBox args={[0.14, 0.3, 0.1]} radius={0.040} smoothness={4} position={[-0.2, 0.88, 0]}>
+        <meshPhysicalMaterial color={color} roughness={0.8} metalness={0.1} clearcoat={0.1} clearcoatRoughness={0.8} />
+      </RoundedBox>
+      <RoundedBox args={[0.14, 0.3, 0.1]} radius={0.040} smoothness={4} position={[0.2, 0.88, 0]}>
+        <meshPhysicalMaterial color={color} roughness={0.8} metalness={0.1} clearcoat={0.1} clearcoatRoughness={0.8} />
+      </RoundedBox>
     </group>
   );
 }
@@ -417,23 +374,23 @@ export function UndershirtModel({ color = '#F1F5F9' }: GarmentProps) {
 /* ─── Socks ─────────────────────────────────────────────── */
 export function SocksModel({ color = '#94A3B8' }: GarmentProps) {
   const ref = useRotation();
-  const mat = <meshStandardMaterial color={color} roughness={0.85} metalness={0.0} />;
+  const mat = <meshPhysicalMaterial color={color} roughness={0.8} metalness={0.1} clearcoat={0.1} clearcoatRoughness={0.8} />;
   return (
     <group ref={ref} scale={[1.4, 1.4, 1.4]}>
       {/* Leg tube */}
       <mesh position={[0, 0.4, 0]}>
-        <cylinderGeometry args={[0.28, 0.25, 1.0, 16]} />
+        <cylinderGeometry args={[0.28, 0.25, 1.0, 32]} />
         {mat}
       </mesh>
       {/* Foot */}
       <mesh position={[0.25, -0.3, 0]} rotation={[0, 0, -Math.PI / 2]}>
-        <capsuleGeometry args={[0.22, 0.55, 8, 16]} />
+        <capsuleGeometry args={[0.22, 0.55, 16, 32]} />
         {mat}
       </mesh>
       {/* Toe cap */}
       <mesh position={[0.62, -0.3, 0]}>
-        <sphereGeometry args={[0.22, 12, 12]} />
-        <meshStandardMaterial color={color} roughness={0.9} />
+        <sphereGeometry args={[0.22, 32, 32]} />
+        <meshPhysicalMaterial color={color} roughness={0.8} metalness={0.1} clearcoat={0.1} clearcoatRoughness={0.8} />
       </mesh>
     </group>
   );
@@ -442,24 +399,21 @@ export function SocksModel({ color = '#94A3B8' }: GarmentProps) {
 /* ─── Sweater ─────────────────────────────────────────────── */
 export function SweaterModel({ color = '#D97706' }: GarmentProps) {
   const ref = useRotation();
-  const mat = <meshStandardMaterial color={color} roughness={0.9} metalness={0.0} />;
+  const mat = <meshPhysicalMaterial color={color} roughness={0.8} metalness={0.1} clearcoat={0.1} clearcoatRoughness={0.8} />;
   return (
     <group ref={ref}>
-      <mesh position={[0, 0, 0]}>
-        <boxGeometry args={[1.3, 1.5, 0.38]} />
+      <RoundedBox args={[1.3, 1.5, 0.38]} radius={0.120} smoothness={4} position={[0, 0, 0]}>
         {mat}
-      </mesh>
-      <mesh position={[-1.0, 0.1, 0]} rotation={[0, 0, -0.12]}>
-        <boxGeometry args={[0.7, 0.34, 0.32]} />
+      </RoundedBox>
+      <RoundedBox args={[0.7, 0.34, 0.32]} radius={0.120} smoothness={4} position={[-1.0, 0.1, 0]} rotation={[0, 0, -0.12]}>
         {mat}
-      </mesh>
-      <mesh position={[1.0, 0.1, 0]} rotation={[0, 0, 0.12]}>
-        <boxGeometry args={[0.7, 0.34, 0.32]} />
+      </RoundedBox>
+      <RoundedBox args={[0.7, 0.34, 0.32]} radius={0.120} smoothness={4} position={[1.0, 0.1, 0]} rotation={[0, 0, 0.12]}>
         {mat}
-      </mesh>
+      </RoundedBox>
       {/* Ribbed collar */}
       <mesh position={[0, 0.86, 0]}>
-        <cylinderGeometry args={[0.27, 0.3, 0.22, 24]} />
+        <cylinderGeometry args={[0.27, 0.3, 0.22, 32]} />
         {mat}
       </mesh>
     </group>
@@ -479,22 +433,20 @@ export function SweaterDressModel({ color = '#BE185D' }: GarmentProps) {
   return (
     <group ref={ref}>
       <mesh>
-        <latheGeometry args={[points, 24]} />
-        <meshStandardMaterial color={color} roughness={0.85} side={THREE.DoubleSide} />
+        <latheGeometry args={[points, 64]} />
+        <meshPhysicalMaterial color={color} roughness={0.8} metalness={0.1} clearcoat={0.1} clearcoatRoughness={0.8} side={THREE.DoubleSide} />
       </mesh>
       <mesh position={[0, 1.05, 0]}>
-        <cylinderGeometry args={[0.28, 0.32, 0.22, 24]} />
-        <meshStandardMaterial color={color} roughness={0.85} />
+        <cylinderGeometry args={[0.28, 0.32, 0.22, 32]} />
+        <meshPhysicalMaterial color={color} roughness={0.8} metalness={0.1} clearcoat={0.1} clearcoatRoughness={0.8} />
       </mesh>
       {/* Sleeves */}
-      <mesh position={[-0.7, 0.7, 0]} rotation={[0, 0, -0.25]}>
-        <boxGeometry args={[0.6, 0.3, 0.28]} />
-        <meshStandardMaterial color={color} roughness={0.85} />
-      </mesh>
-      <mesh position={[0.7, 0.7, 0]} rotation={[0, 0, 0.25]}>
-        <boxGeometry args={[0.6, 0.3, 0.28]} />
-        <meshStandardMaterial color={color} roughness={0.85} />
-      </mesh>
+      <RoundedBox args={[0.6, 0.3, 0.28]} radius={0.112} smoothness={4} position={[-0.7, 0.7, 0]} rotation={[0, 0, -0.25]}>
+        <meshPhysicalMaterial color={color} roughness={0.8} metalness={0.1} clearcoat={0.1} clearcoatRoughness={0.8} />
+      </RoundedBox>
+      <RoundedBox args={[0.6, 0.3, 0.28]} radius={0.112} smoothness={4} position={[0.7, 0.7, 0]} rotation={[0, 0, 0.25]}>
+        <meshPhysicalMaterial color={color} roughness={0.8} metalness={0.1} clearcoat={0.1} clearcoatRoughness={0.8} />
+      </RoundedBox>
     </group>
   );
 }

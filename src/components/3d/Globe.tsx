@@ -104,8 +104,6 @@ export function ScalularGlobe({ activeRegion = 'global', className, onPointClick
       controls.enableZoom = false;
       controls.enablePan = false;
       controls.enableRotate = true;
-      controls.minDistance = 200;           // prevent any zoom-in
-      controls.maxDistance = 200;           // prevent any zoom-out
 
       // Fixed initial view
       globe.pointOfView({ lat: 20, lng: 5, altitude: 2.0 }, 0);
@@ -118,13 +116,6 @@ export function ScalularGlobe({ activeRegion = 'global', className, onPointClick
       animationId = requestAnimationFrame(tick);
 
       const canvas = globe.renderer().domElement;
-
-      // Block ALL wheel events on canvas — prevents Lenis scroll from zooming globe
-      const blockWheel = (e: WheelEvent) => {
-        e.stopPropagation();
-        e.preventDefault();
-      };
-      canvas.addEventListener('wheel', blockWheel, { passive: false });
 
       // Pause autoRotate on drag; resume 2 s after pointer released
       const onPointerDown = () => {
@@ -142,7 +133,6 @@ export function ScalularGlobe({ activeRegion = 'global', className, onPointClick
 
       return () => {
         cancelAnimationFrame(animationId);
-        canvas.removeEventListener('wheel', blockWheel);
         canvas.removeEventListener('pointerdown', onPointerDown);
         canvas.removeEventListener('pointerup', onPointerUp);
         if (resumeTimeout.current) clearTimeout(resumeTimeout.current);

@@ -235,7 +235,7 @@ export function LiquidMetalButton({
             <Sparkles
               size={16}
               style={{
-                color: "#666666",
+                color: "#DDDDDD",
                 filter: "drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.5))",
               }}
             />
@@ -244,7 +244,7 @@ export function LiquidMetalButton({
             <span
               style={{
                 fontSize: "14px",
-                color: "#666666",
+                color: "#DDDDDD",
                 fontWeight: 400,
                 textShadow: "0px 1px 2px rgba(0, 0, 0, 0.5)",
                 whiteSpace: "nowrap",

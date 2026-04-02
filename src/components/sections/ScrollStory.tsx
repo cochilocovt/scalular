@@ -6,7 +6,7 @@ import {
   useScroll, useTransform, useSpring, useMotionValueEvent,
 } from 'framer-motion';
 import { ScalularGlobe } from '../3d/Globe';
-import { LiquidMetalButton } from '../ui/liquid-metal-button';
+import { GlowCTAButton } from '../ui/GlowCTAButton';
 import { ShieldCheck, Zap, Globe, X, MapPin, Award } from 'lucide-react';
 
 /* ─── Factory data for glassmorphism cards ─────────────────────────────── */
@@ -55,7 +55,7 @@ function FactoryCard({ id, onClose }: { id: string; onClose: () => void }) {
         </div>
         <button
           onClick={onClose}
-          className="w-6 h-6 rounded-full flex items-center justify-center text-text-secondary hover:text-text-primary bg-white/5 hover:bg-white/10 transition-colors"
+          className="w-6 h-6 rounded-full flex items-center justify-center text-text-secondary hover:text-text-primary bg-black/5 hover:bg-black/10 transition-colors"
         >
           <X className="w-3.5 h-3.5" />
         </button>
@@ -147,10 +147,9 @@ export function ScrollStory() {
 
   const smooth = useSpring(scrollYProgress, { stiffness: 80, damping: 25, mass: 0.8 });
 
-  // Globe: full at 0, starts fading at 50%, stays visible until 85%, then fades
-  const globeOpacity = useTransform(smooth, [0, 0.45, 0.75, 0.88], [1, 1, 0.85, 0]);
-  // Globe scale: zooms slightly on scroll but stops at original size (no infinite zoom)
-  const globeScale   = useTransform(smooth, [0, 0.20, 0.50, 1], [0.85, 1, 1, 0.95]);
+  // Globe: full opacity, fades out as hero text appears
+  const globeOpacity = useTransform(smooth, [0, 0.55, 0.80, 0.92], [1, 1, 0.8, 0]);
+  // No scroll-driven scale — globe stays at fixed size
 
   // "Click a country" hint fades out at 18%
   const hintOpacity  = useTransform(smooth, [0, 0.15, 0.25], [1, 1, 0]);
@@ -179,26 +178,27 @@ export function ScrollStory() {
       ref={containerRef}
       id="regions"
       className="relative w-full bg-background"
-      style={{ height: '260vh' }}
+      style={{ height: '200vh' }}
     >
       <div className="sticky top-0 h-[100dvh] w-full overflow-hidden">
 
         {/* ── Globe layer ─────────────────────────────────── */}
-        <div
-          className="absolute inset-0"
+        <motion.div
+          className="absolute inset-0 overflow-hidden"
+          style={{ opacity: globeOpacity }}
         >
           <ScalularGlobe
             activeRegion="global"
             onPointClick={handlePointClick}
           />
-        </div>
+        </motion.div>
 
         {/* ── Gradient veil so text is readable over globe (stronger at bottom) ── */}
         <motion.div
           className="absolute inset-0 pointer-events-none"
           style={{
             opacity: veilOpacity,
-            background: 'linear-gradient(to top, rgba(2,10,24,0.95) 0%, rgba(2,10,24,0.8) 35%, rgba(2,10,24,0.4) 55%, rgba(2,10,24,0.1) 70%, transparent 100%)'
+            background: 'linear-gradient(to top, var(--background) 0%, color-mix(in srgb, var(--background) 80%, transparent) 35%, color-mix(in srgb, var(--background) 40%, transparent) 55%, color-mix(in srgb, var(--background) 10%, transparent) 70%, transparent 100%)'
           }}
         />
 
@@ -279,10 +279,9 @@ export function ScrollStory() {
               transition={{ duration: 0.5, delay: 0.75 }}
               className="relative group pointer-events-auto mb-14"
             >
-              {/* Glow halo on hover */}
-              <div className="absolute -inset-4 rounded-full bg-primary/20 blur-2xl opacity-0 group-hover:opacity-100 transition-all duration-500" />
-              <LiquidMetalButton
+              <GlowCTAButton
                 label="Get Your Free Quote"
+                size="lg"
                 onClick={() => window.open('https://app.scalular.com/quote', '_blank')}
               />
             </motion.div>
@@ -335,7 +334,7 @@ export function ScrollStory() {
               <div
                 className="w-1.5 h-1.5 rounded-full transition-all duration-300"
                 style={{
-                  background: selectedId === id ? d.accent : 'rgba(255,255,255,0.25)',
+                  background: selectedId === id ? d.accent : 'rgba(0,0,0,0.2)',
                   boxShadow: selectedId === id ? `0 0 8px ${d.accent}` : 'none',
                   width: selectedId === id ? 6 : 5,
                   height: selectedId === id ? 6 : 5,

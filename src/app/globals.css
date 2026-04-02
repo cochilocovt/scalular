@@ -535,7 +535,7 @@ p, li, td, th, label, input { font-weight: 400; }
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
   border: 1px solid var(--glass-border);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255,255,255,0.05);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08), 0 1px 0 rgba(255,255,255,0.6) inset;
 }
 
 @utility glass-card {
@@ -543,7 +543,7 @@ p, li, td, th, label, input { font-weight: 400; }
   backdrop-filter: blur(24px) saturate(180%);
   -webkit-backdrop-filter: blur(24px) saturate(180%);
   border: 1px solid var(--glass-border);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255,255,255,0.05);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06), 0 1px 0 rgba(255,255,255,0.7) inset;
 }
 
 @utility glass-nav {
@@ -551,7 +551,7 @@ p, li, td, th, label, input { font-weight: 400; }
   backdrop-filter: blur(28px) saturate(200%);
   -webkit-backdrop-filter: blur(28px) saturate(200%);
   border-bottom: 1px solid var(--glass-border);
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -638,6 +638,18 @@ p, li, td, th, label, input { font-weight: 400; }
 /* Glow Pulse */
 @keyframes glow-pulse { 0%,100%{box-shadow:0 0 20px var(--glow-primary)} 50%{box-shadow:0 0 50px var(--glow-primary),0 0 100px var(--glow-accent)} }
 .glow-pulse { animation: glow-pulse 2.5s ease-in-out infinite; }
+
+/* GlowCTAButton animations */
+@property --glow-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+@keyframes spin-border { to { --glow-angle: 360deg; } }
+@keyframes cta-ripple {
+  0%   { transform: scale(0);   opacity: 0.6; }
+  100% { transform: scale(20);  opacity: 0; }
+}
 
 /* Smooth transitions for all elements */
 *, *::before, *::after {

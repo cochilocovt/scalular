@@ -1,0 +1,72 @@
+'use client';
+
+import { motion } from 'framer-motion';
+import { ProductShowcase } from './ProductShowcase';
+import { CertificationsDisplay } from './CertificationsDisplay';
+import { ClientLogos } from './ClientLogos';
+
+export function ShowcaseSection() {
+  return (
+    <section className="relative w-full bg-mesh-gradient py-20 overflow-hidden">
+      {/* Subtle top border */}
+      <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
+
+      <div className="max-w-[1400px] mx-auto px-6 md:px-12">
+        {/* Section intro */}
+        <div className="text-center mb-16">
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-[11px] font-black tracking-[0.4em] uppercase text-primary mb-4"
+          >
+            The Scalular Platform
+          </motion.p>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="text-5xl md:text-6xl lg:text-7xl font-black text-text-primary tracking-tighter leading-tight"
+          >
+            Simplified.{' '}
+            <span className="text-gradient">Streamlined.</span>
+            <br />
+            Sourced.
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            className="text-lg text-text-secondary max-w-2xl mx-auto mt-4 font-medium"
+          >
+            From product catalogue to certified factories to global brand partners —
+            Scalular is the complete apparel sourcing platform.
+          </motion.p>
+        </div>
+
+        {/* Divider */}
+        <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent mb-4" />
+
+        {/* Product Showcase */}
+        <ProductShowcase />
+
+        {/* Divider */}
+        <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent my-4" />
+
+        {/* Certifications */}
+        <CertificationsDisplay />
+
+        {/* Divider */}
+        <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent my-4" />
+
+        {/* Client Logos */}
+        <ClientLogos />
+      </div>
+
+      {/* Subtle bottom border */}
+      <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
+    </section>
+  );
+}

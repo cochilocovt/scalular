@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { Leaf, ShieldCheck, Zap, Award, Globe, Users, Package, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import { AnimatedCounter } from '@/components/ui/AnimatedCounter';
-import { GlowCTAButton } from '@/components/ui/GlowCTAButton';
+import { GetStartedButton } from '@/components/ui/get-started-button';
 
 const VALUES = [
   {
@@ -255,7 +255,7 @@ export default function AboutPage() {
             transition={{ delay: 0.2 }}
             className="flex flex-col sm:flex-row items-center justify-center gap-4"
           >
-            <GlowCTAButton
+            <GetStartedButton
               label="Get a Free Quote"
               size="lg"
               href="https://app.scalular.com/quote"

@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { Globe, Package, TrendingUp, Users, CheckCircle, ArrowRight, Building2, ClipboardCheck, Handshake, Truck } from 'lucide-react';
 import { PartnerForm } from '@/components/sections/PartnerForm';
 import { FAQAccordion } from '@/components/ui/FAQAccordion';
-import { GlowCTAButton } from '@/components/ui/GlowCTAButton';
+import { GetStartedButton } from '@/components/ui/get-started-button';
 
 const BENEFITS = [
   {
@@ -144,7 +144,7 @@ export default function PartnerPage() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="flex flex-col sm:flex-row items-center justify-center gap-4"
           >
-            <GlowCTAButton
+            <GetStartedButton
               label="Apply Now"
               size="lg"
               href="#apply"

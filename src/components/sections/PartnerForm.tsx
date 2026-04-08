@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle2 } from 'lucide-react';
-import { GlowCTAButton } from '@/components/ui/GlowCTAButton';
+import { GetStartedButton } from '@/components/ui/get-started-button';
 
 const PRODUCT_TYPES = [
   'T-Shirt', 'Polo Shirt', 'Hoodie', 'Sweatshirt', 'Jacket',
@@ -250,7 +250,7 @@ export function PartnerForm() {
             </div>
 
             <div className="flex justify-center pt-2">
-              <GlowCTAButton label="Submit Application" size="lg" />
+              <GetStartedButton label="Submit Application" size="lg" />
             </div>
           </motion.form>
         )}

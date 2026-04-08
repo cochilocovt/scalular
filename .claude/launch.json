@@ -3,16 +3,10 @@
   "configurations": [
     {
       "name": "Next.js Dev Server",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev"],
+      "runtimeExecutable": "/opt/homebrew/bin/node",
+      "runtimeArgs": [".claude/dev-launcher.js", "start"],
       "port": 3000,
       "autoPort": true
-    },
-    {
-      "name": "Next.js Production Preview",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "start"],
-      "port": 3000
     }
   ]
 }

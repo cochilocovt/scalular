@@ -2,8 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { ShieldCheck, Zap, Star, Lock, ArrowRight, Calendar } from 'lucide-react';
-import { GlowCTAButton } from '../ui/GlowCTAButton';
-
+import { GetStartedButton } from '../ui/get-started-button';
 const TRUST_BADGES = [
   { Icon: ShieldCheck, label: 'Pre-audited Factories' },
   { Icon: Zap,         label: 'Instant AI Quote' },
@@ -13,55 +12,55 @@ const TRUST_BADGES = [
 
 export function CTASection() {
   return (
-    <section id="cta" className="relative bg-background overflow-hidden py-32 md:py-48 px-6 md:px-12 border-t border-divider">
-      {/* Background layers */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_100%,rgba(59,130,246,0.06),transparent)]" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_40%_40%_at_80%_20%,rgba(30,64,175,0.04),transparent)]" />
+    <section id="cta" className="relative bg-background overflow-hidden py-24 md:py-36 px-6 md:px-12 border-t border-divider">
 
-      {/* Grid texture */}
-      <div className="absolute inset-0 opacity-[0.025]"
-        style={{ backgroundImage: 'linear-gradient(rgba(59,130,246,1) 1px, transparent 1px), linear-gradient(90deg, rgba(59,130,246,1) 1px, transparent 1px)', backgroundSize: '60px 60px' }}
-      />
-
-      <div className="relative z-10 max-w-5xl mx-auto text-center">
+      <div className="relative z-10 max-w-4xl mx-auto text-center">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         >
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-black tracking-[0.3em] uppercase mb-10">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary mb-6">
             Start for Free
-          </div>
+          </p>
 
-          <h2 className="text-5xl md:text-8xl font-black text-text-primary leading-[1] tracking-tighter mb-10">
-            Your Factory, <span className="text-gradient">Instantly.</span>
+          <h2
+            className="text-4xl md:text-6xl lg:text-7xl font-bold text-text-primary leading-[1.05] tracking-tighter mb-6"
+            style={{ fontFamily: 'var(--font-display)' }}
+          >
+            Your factory is waiting.
           </h2>
 
-          <p className="text-xl md:text-2xl text-text-secondary leading-relaxed mb-12 max-w-2xl mx-auto font-medium">
+          <p className="text-lg md:text-xl text-text-secondary leading-relaxed mb-10 max-w-xl mx-auto">
             Hundreds of brands already source smarter with Scalular. Get matched to verified factories and receive your first quote — free.
           </p>
 
-          <div className="flex flex-col items-center gap-8 relative z-30">
-            <GlowCTAButton
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 relative z-30">
+            <GetStartedButton
               label="Get Your Instant Quote"
               size="lg"
-              onClick={() => window.open('https://app.scalular.com/quote', '_blank')}
+              href="https://app.scalular.com/quote"
+              target="_blank"
             />
 
-            <a href="https://calendly.com/scalular" target="_blank" className="inline-flex items-center gap-2 text-primary/80 text-sm font-semibold hover:text-primary transition-colors group">
-              <Calendar className="w-4 h-4" />
+            <a
+              href="https://calendly.com/scalular"
+              target="_blank"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-border bg-surface hover:bg-surface-hover text-text-primary text-sm font-semibold transition-colors group"
+            >
+              <Calendar className="w-4 h-4 text-primary" />
               Book a Strategy Call
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </a>
           </div>
 
-          {/* Trust badges footer */}
-          <div className="mt-24 pt-12 border-t border-divider flex flex-wrap justify-center gap-x-12 gap-y-6 opacity-60">
+          {/* Trust badges — FULL OPACITY, not faded */}
+          <div className="mt-16 pt-10 border-t border-divider flex flex-wrap justify-center gap-x-10 gap-y-4">
             {TRUST_BADGES.map(({ Icon, label }) => (
-              <div key={label} className="flex items-center gap-2.5">
-                <Icon className="w-4 h-4 text-primary" />
-                <span className="text-xs text-text-secondary font-bold tracking-tight uppercase tracking-[0.1em]">{label}</span>
+              <div key={label} className="flex items-center gap-2">
+                <Icon className="w-4 h-4 text-primary" aria-hidden="true" />
+                <span className="text-xs text-text-secondary font-semibold tracking-wider uppercase">{label}</span>
               </div>
             ))}
           </div>

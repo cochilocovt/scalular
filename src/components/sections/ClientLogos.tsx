@@ -22,12 +22,12 @@ interface Brand {
 }
 
 const BRANDS: Brand[] = [
-  { id: 'amazon',  name: 'amazon',  svgPath: '/assets/clients/amazon.svg',  textStyle: 'font-black italic tracking-tighter' },
-  { id: 'walmart', name: 'Walmart', svgPath: '/assets/clients/walmart.svg', textStyle: 'font-black tracking-tight' },
-  { id: 'disney',  name: 'DISNEY',  svgPath: '/assets/clients/disney.svg',  textStyle: 'font-black tracking-widest' },
-  { id: 'gap',     name: 'GAP',     svgPath: '/assets/clients/gap.svg',     textStyle: 'font-black tracking-[0.4em]' },
-  { id: 'levis',   name: "Levi's",  svgPath: '/assets/clients/levis.svg',   textStyle: 'font-black italic' },
-  { id: 'reebok',  name: 'REEBOK',  svgPath: '/assets/clients/reebok.svg',  textStyle: 'font-black tracking-widest' },
+  { id: 'amazon', name: 'amazon', svgPath: '/assets/clients/amazon.svg', textStyle: 'font-bold italic tracking-tighter' },
+  { id: 'walmart', name: 'Walmart', svgPath: '/assets/clients/walmart.svg', textStyle: 'font-bold tracking-tight' },
+  { id: 'disney', name: 'DISNEY', svgPath: '/assets/clients/disney.svg', textStyle: 'font-bold tracking-widest' },
+  { id: 'gap', name: 'GAP', svgPath: '/assets/clients/gap.svg', textStyle: 'font-bold tracking-[0.4em]' },
+  { id: 'levis', name: "Levi's", svgPath: '/assets/clients/levis.svg', textStyle: 'font-bold italic' },
+  { id: 'reebok', name: 'REEBOK', svgPath: '/assets/clients/reebok.svg', textStyle: 'font-bold tracking-widest' },
 ];
 
 function BrandItem({ brand }: { brand: Brand }) {
@@ -70,25 +70,25 @@ function Marquee({ children, speed = 40 }: { children: React.ReactNode; speed?: 
 
 export function ClientLogos() {
   return (
-    <div className="w-full py-10">
+    <div className="w-full py-12 md:py-20">
       {/* Header */}
-      <div className="text-center mb-10">
-        <motion.div
+      <div className="text-center mb-8 md:mb-10">
+        <motion.p
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-black tracking-[0.3em] uppercase mb-4"
+          className="text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.25em] text-primary mb-3"
         >
           Trusted By
-        </motion.div>
+        </motion.p>
         <motion.h3
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.08 }}
-          className="text-3xl md:text-4xl font-black text-text-primary tracking-tighter mb-2"
+          className="text-2xl md:text-4xl font-bold text-text-primary tracking-tighter mb-2"
         >
-          Brands That Source <span className="text-gradient">Smarter</span>
+          Brands That Source <span className="text-primary">Smarter</span>
         </motion.h3>
         <motion.p
           initial={{ opacity: 0, y: 16 }}
@@ -121,7 +121,7 @@ export function ClientLogos() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ delay: 0.3 }}
-        className="flex flex-wrap items-center justify-center gap-10 mt-12 px-4"
+        className="flex flex-wrap items-center justify-center gap-6 md:gap-10 mt-8 md:mt-12 px-4"
       >
         {[
           { value: '200+', label: 'Brands Served' },
@@ -129,8 +129,8 @@ export function ClientLogos() {
           { value: '20+', label: 'Years Experience' },
         ].map(({ value, label }) => (
           <div key={label} className="text-center">
-            <div className="text-3xl font-black text-gradient tracking-tighter">{value}</div>
-            <div className="text-xs font-bold text-text-secondary uppercase tracking-widest mt-0.5">{label}</div>
+            <div className="text-2xl md:text-3xl font-bold text-primary tracking-tighter">{value}</div>
+            <div className="text-[10px] md:text-xs font-bold text-text-secondary uppercase tracking-widest mt-1 md:mt-0.5">{label}</div>
           </div>
         ))}
       </motion.div>

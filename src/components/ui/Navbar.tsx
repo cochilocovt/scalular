@@ -9,7 +9,7 @@ import logo from '@/assets/logo-black-horizontal.png';
 
 const NAV_LINKS = [
   { label: 'Network',    href: '/#regions' },
-  { label: 'Services',   href: '/#cta' },
+  { label: 'Services',   href: '/#services' },
   { label: 'About',      href: '/about' },
   { label: 'Partner',    href: '/partner' },
 ];
@@ -60,7 +60,7 @@ export function Navbar() {
             <Link
               key={label}
               href={href}
-              className="hover:text-primary transition-colors duration-200"
+              className="hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-background transition-colors duration-200 rounded-sm"
             >
               {label}
             </Link>
@@ -71,7 +71,7 @@ export function Navbar() {
         <div className="flex items-center gap-3">
           <Link
             href="https://app.scalular.com/login"
-            className="hidden md:inline-flex text-sm font-medium text-text-secondary hover:text-text-primary transition-colors duration-200"
+            className="hidden md:inline-flex text-sm font-medium text-text-secondary hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-background transition-colors duration-200 rounded-sm px-1"
           >
             Sign In
           </Link>
@@ -80,22 +80,20 @@ export function Navbar() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Get an instant quote"
-            className="relative w-10 h-10 rounded-full flex items-center justify-center neu-btn cursor-pointer hover:scale-105 active:scale-95 text-text-secondary hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+            className="relative w-10 h-10 rounded-full flex items-center justify-center border border-border bg-surface hover:bg-surface-hover cursor-pointer text-text-secondary hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 transition-colors"
           >
-            <span
-              className="absolute inset-0 rounded-full opacity-0 hover:opacity-100 transition-opacity duration-300"
-              style={{ background: 'radial-gradient(circle at 50% 50%, rgba(59,130,246,0.12), transparent 70%)' }}
-            />
-            <FileText className="w-4 h-4 relative z-10" />
+            <FileText className="w-4 h-4" />
           </Link>
 
           {/* Mobile hamburger */}
           <button
-            className="md:hidden w-10 h-10 rounded-full flex items-center justify-center neu-btn text-text-secondary hover:text-primary transition-colors"
+            className="md:hidden w-10 h-10 rounded-full flex items-center justify-center border border-border bg-surface hover:bg-surface-hover text-text-secondary hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 transition-colors"
             onClick={() => setMobileOpen((v) => !v)}
             aria-label="Toggle menu"
+            aria-expanded={mobileOpen}
+            aria-controls="mobile-menu"
           >
-            {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            {mobileOpen ? <X className="w-5 h-5 flex-shrink-0" /> : <Menu className="w-5 h-5 flex-shrink-0" />}
           </button>
         </div>
       </motion.header>
@@ -104,6 +102,7 @@ export function Navbar() {
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
+            id="mobile-menu"
             initial={{ opacity: 0, y: -16 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -16 }}
@@ -115,14 +114,14 @@ export function Navbar() {
                 key={label}
                 href={href}
                 onClick={() => setMobileOpen(false)}
-                className="text-base font-semibold text-text-primary hover:text-primary transition-colors py-1 border-b border-divider last:border-0"
+                className="text-base font-semibold text-text-primary hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 transition-colors py-1 border-b border-divider last:border-0 rounded-sm"
               >
                 {label}
               </Link>
             ))}
             <Link
               href="https://app.scalular.com/login"
-              className="text-base font-medium text-text-secondary hover:text-primary transition-colors py-1"
+              className="text-base font-medium text-text-secondary hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 transition-colors py-1 rounded-sm"
               onClick={() => setMobileOpen(false)}
             >
               Sign In
@@ -130,7 +129,7 @@ export function Navbar() {
             <Link
               href="https://app.scalular.com/quote"
               target="_blank"
-              className="text-base font-bold text-primary py-1"
+              className="text-base font-bold text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 py-1 rounded-sm"
               onClick={() => setMobileOpen(false)}
             >
               Get a Quote →

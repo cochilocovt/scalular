@@ -1,22 +1,16 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
-import { ArrowRight, Link, Zap, type LucideIcon } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/ui-button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/ui-card";
+import { ArrowRight, type LucideIcon } from "lucide-react";
 import Image from "next/image";
 import logo from "@/assets/logo-icon.png";
 
 interface TimelineItem {
   id: number;
   title: string;
-  date: string;
   content: string;
   category: string;
   icon: LucideIcon;
   relatedIds: number[];
-  status: "completed" | "in-progress" | "pending";
-  energy: number;
 }
 
 interface RadialOrbitalTimelineProps {
@@ -26,69 +20,49 @@ interface RadialOrbitalTimelineProps {
 export default function RadialOrbitalTimeline({
   timelineData,
 }: RadialOrbitalTimelineProps) {
-  const [expandedItems, setExpandedItems] = useState<Record<number, boolean>>(
-    {}
-  );
-  const [viewMode, setViewMode] = useState<"orbital">("orbital");
   const [rotationAngle, setRotationAngle] = useState<number>(0);
   const [autoRotate, setAutoRotate] = useState<boolean>(true);
-  const [pulseEffect, setPulseEffect] = useState<Record<number, boolean>>({});
-  const [centerOffset, setCenterOffset] = useState<{ x: number; y: number }>({
-    x: 0,
-    y: 0,
-  });
   const [activeNodeId, setActiveNodeId] = useState<number | null>(null);
-  const [lureId, setLureId] = useState<number | null>(null);
+  const [centerOffset] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const containerRef = useRef<HTMLDivElement>(null);
   const orbitRef = useRef<HTMLDivElement>(null);
   const nodeRefs = useRef<Record<number, HTMLDivElement | null>>({});
 
+  // Auto-select first node on mount to teach the interaction pattern
+  useEffect(() => {
+    if (timelineData.length > 0 && activeNodeId === null) {
+      const timer = setTimeout(() => {
+        setActiveNodeId(timelineData[0].id);
+        setAutoRotate(false);
+        centerViewOnNode(timelineData[0].id);
+      }, 800);
+      return () => clearTimeout(timer);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [timelineData]);
+
   const handleContainerClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === containerRef.current || e.target === orbitRef.current) {
-      setExpandedItems({});
       setActiveNodeId(null);
-      setPulseEffect({});
       setAutoRotate(true);
     }
   };
 
-  const toggleItem = (id: number) => {
-    setExpandedItems((prev) => {
-      const newState = { ...prev };
-      Object.keys(newState).forEach((key) => {
-        if (parseInt(key) !== id) {
-          newState[parseInt(key)] = false;
-        }
-      });
-
-      newState[id] = !prev[id];
-
-      if (!prev[id]) {
-        setActiveNodeId(id);
-        setAutoRotate(false);
-
-        const relatedItems = getRelatedItems(id);
-        const newPulseEffect: Record<number, boolean> = {};
-        relatedItems.forEach((relId) => {
-          newPulseEffect[relId] = true;
-        });
-        setPulseEffect(newPulseEffect);
-
-        centerViewOnNode(id);
-      } else {
-        setActiveNodeId(null);
-        setAutoRotate(true);
-        setPulseEffect({});
-      }
-
-      return newState;
-    });
+  const selectNode = (id: number) => {
+    if (activeNodeId === id) {
+      setActiveNodeId(null);
+      setAutoRotate(true);
+    } else {
+      setActiveNodeId(id);
+      setAutoRotate(false);
+      centerViewOnNode(id);
+    }
   };
 
   useEffect(() => {
     let rotationTimer: any;
 
-    if (autoRotate && viewMode === "orbital") {
+    if (autoRotate) {
       rotationTimer = setInterval(() => {
         setRotationAngle((prev) => {
           const newAngle = (prev + 0.3) % 360;
@@ -102,34 +76,18 @@ export default function RadialOrbitalTimeline({
         clearInterval(rotationTimer);
       }
     };
-  }, [autoRotate, viewMode]);
-
-  // Periodically "lure" a random node to hint it's clickable
-  useEffect(() => {
-    if (!autoRotate) return;
-    const fire = () => {
-      const id = timelineData[Math.floor(Math.random() * timelineData.length)].id;
-      setLureId(id);
-      setTimeout(() => setLureId(null), 1800);
-    };
-    const init = setTimeout(fire, 2000);
-    const interval = setInterval(fire, 4200);
-    return () => { clearTimeout(init); clearInterval(interval); };
-  }, [autoRotate, timelineData]);
+  }, [autoRotate]);
 
   const centerViewOnNode = (nodeId: number) => {
-    if (viewMode !== "orbital" || !nodeRefs.current[nodeId]) return;
-
     const nodeIndex = timelineData.findIndex((item) => item.id === nodeId);
     const totalNodes = timelineData.length;
     const targetAngle = (nodeIndex / totalNodes) * 360;
-
     setRotationAngle(270 - targetAngle);
   };
 
   const calculateNodePosition = (index: number, total: number) => {
     const angle = ((index / total) * 360 + rotationAngle) % 360;
-    const radius = 240; // Increased radius for better spacing
+    const radius = 200;
     const radian = (angle * Math.PI) / 180;
 
     const x = radius * Math.cos(radian) + centerOffset.x;
@@ -137,231 +95,165 @@ export default function RadialOrbitalTimeline({
 
     const zIndex = Math.round(100 + 50 * Math.cos(radian));
     const opacity = Math.max(
-      0.4,
-      Math.min(1, 0.4 + 0.6 * ((1 + Math.sin(radian)) / 2))
+      0.5,
+      Math.min(1, 0.5 + 0.5 * ((1 + Math.sin(radian)) / 2))
     );
 
     return { x, y, angle, zIndex, opacity };
   };
 
-  const getRelatedItems = (itemId: number): number[] => {
-    const currentItem = timelineData.find((item) => item.id === itemId);
-    return currentItem ? currentItem.relatedIds : [];
-  };
-
-  const isRelatedToActive = (itemId: number): boolean => {
-    if (!activeNodeId) return false;
-    const relatedItems = getRelatedItems(activeNodeId);
-    return relatedItems.includes(itemId);
-  };
-
-  const getStatusStyles = (status: TimelineItem["status"]): string => {
-    switch (status) {
-      case "completed":
-        return "text-white bg-primary border-primary/20";
-      case "in-progress":
-        return "text-black bg-white border-black";
-      case "pending":
-        return "text-text-primary bg-surface-hover border-border";
-      default:
-        return "text-text-primary bg-surface-hover border-border";
-    }
-  };
+  const activeItem = timelineData.find((item) => item.id === activeNodeId);
 
   return (
     <div
-      className="w-full h-screen flex flex-col items-center justify-center bg-transparent overflow-hidden relative"
+      className="w-full min-h-[600px] md:min-h-[700px] flex items-center justify-center bg-transparent overflow-hidden relative"
       ref={containerRef}
       onClick={handleContainerClick}
     >
-      <div className="relative w-full max-w-5xl h-full flex items-center justify-center">
-        <div
-          className="absolute w-full h-full flex items-center justify-center"
-          ref={orbitRef}
-          style={{
-            perspective: "1200px",
-            transform: `translate(${centerOffset.x}px, ${centerOffset.y}px)`,
-          }}
-        >
-          {/* Central Logo Node */}
-          <div className="absolute w-14 h-14 rounded-full flex items-center justify-center z-10 shadow-[0_0_40px_rgba(59,130,246,0.45)]">
-            <Image src={logo} alt="Scalular" width={56} height={56} className="rounded-full" loading="eager" />
-          </div>
+      <div className="relative w-full max-w-6xl mx-auto flex flex-col lg:flex-row items-center justify-center gap-10 lg:gap-16 px-6">
 
-          <div className="absolute w-[480px] h-[480px] rounded-full border border-divider bg-primary/5 blur-3xl opacity-20"></div>
-          <div className="absolute w-[480px] h-[480px] rounded-full border border-border"></div>
+        {/* ── Orbital wheel — left side on desktop ──────────────── */}
+        <div className="w-full lg:w-1/2 flex items-center justify-center h-[300px] sm:h-[380px] lg:h-[440px] overflow-visible mb-2 sm:mb-6 lg:mb-0">
+          <div className="relative w-[440px] h-[440px] flex-shrink-0 flex items-center justify-center scale-[0.65] sm:scale-[0.85] lg:scale-100 origin-center">
+            <div
+              className="absolute w-full h-full flex items-center justify-center"
+              ref={orbitRef}
+              style={{ perspective: '1200px' }}
+            >
+              {/* Central Logo Node */}
+              <div className="absolute w-14 h-14 rounded-full flex items-center justify-center z-10 shadow-md">
+              <Image src={logo} alt="Scalular" width={56} height={56} className="rounded-full" loading="eager" />
+            </div>
 
-          {timelineData.map((item, index) => {
-            const position = calculateNodePosition(index, timelineData.length);
-            const isExpanded = expandedItems[item.id];
-            const isRelated = isRelatedToActive(item.id);
-            const isPulsing = pulseEffect[item.id];
-            const isLured = lureId === item.id && !activeNodeId;
-            const Icon = item.icon;
+            <div className="absolute w-[400px] h-[400px] rounded-full border border-border opacity-40"></div>
+            <div className="absolute w-[400px] h-[400px] rounded-full bg-primary/3 blur-3xl opacity-15"></div>
 
-            const nodeStyle = {
-              transform: `translate(${position.x}px, ${position.y}px)`,
-              zIndex: isExpanded ? 200 : position.zIndex,
-              opacity: isExpanded ? 1 : position.opacity,
-            };
+            {timelineData.map((item, index) => {
+              const position = calculateNodePosition(index, timelineData.length);
+              const isActive = activeNodeId === item.id;
+              const Icon = item.icon;
 
-            return (
-              <div
-                key={item.id}
-                ref={(el) => { nodeRefs.current[item.id] = el; }}
-                className="absolute transition-all duration-700 cursor-pointer"
-                style={nodeStyle}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  toggleItem(item.id);
-                }}
-              >
+              const nodeStyle = {
+                transform: `translate(${position.x}px, ${position.y}px)`,
+                zIndex: isActive ? 200 : position.zIndex,
+                opacity: isActive ? 1 : position.opacity,
+              };
+
+              return (
                 <div
-                  className={`absolute rounded-full -inset-1 ${
-                    isPulsing ? "animate-pulse duration-1000" : ""
-                  }`}
+                  key={item.id}
+                  ref={(el) => { nodeRefs.current[item.id] = el; }}
+                  className="absolute cursor-pointer"
                   style={{
-                    background: `radial-gradient(circle, var(--glow-primary) 0%, transparent 70%)`,
-                    width: `${item.energy * 0.5 + 40}px`,
-                    height: `${item.energy * 0.5 + 40}px`,
-                    left: `-${(item.energy * 0.5 + 40 - 40) / 2}px`,
-                    top: `-${(item.energy * 0.5 + 40 - 40) / 2}px`,
+                    ...nodeStyle,
+                    transition: 'transform 0.7s ease, opacity 0.3s ease',
                   }}
-                ></div>
-
-                {/* Lure ripple ring */}
-                {isLured && (
-                  <div className="absolute inset-0 rounded-full border-2 border-primary/80 animate-ping" style={{ width: 48, height: 48 }} />
-                )}
-
-                {/* Floating chevron hint */}
-                <div
-                  className="absolute -top-7 left-1/2 -translate-x-1/2 flex flex-col items-center gap-0.5 pointer-events-none transition-all duration-500"
-                  style={{ opacity: isLured ? 1 : 0, transform: `translateX(-50%) translateY(${isLured ? 0 : 6}px)` }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    selectNode(item.id);
+                  }}
                 >
-                  <span className="text-primary text-[10px] font-black tracking-widest uppercase" style={{ textShadow: '0 0 8px rgba(59,130,246,0.8)' }}>open</span>
-                  <svg width="8" height="5" viewBox="0 0 8 5" fill="none"><path d="M1 1l3 3 3-3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" className="text-primary"/></svg>
+                  {/* Node circle */}
+                  <div
+                    className={`
+                    w-11 h-11 rounded-full flex items-center justify-center
+                    ${isActive
+                      ? 'bg-primary text-white border-primary shadow-lg shadow-primary/20'
+                      : 'bg-surface text-text-primary border-border hover:border-primary/40'
+                    }
+                    border-2 transition-all duration-300
+                    ${isActive ? 'scale-125' : 'hover:scale-110'}
+                  `}
+                  >
+                    <Icon size={18} />
+                  </div>
+
+                  {/* Always-visible label */}
+                  <div
+                    className={`
+                    absolute top-13 left-1/2 -translate-x-1/2 whitespace-nowrap
+                    text-[10px] font-bold tracking-wide uppercase
+                    transition-all duration-300
+                    ${isActive ? 'text-primary' : 'text-text-secondary/70'}
+                  `}
+                    style={{ marginTop: '4px' }}
+                  >
+                    {item.title}
+                  </div>
                 </div>
+              );
+            })}
+          </div>
+        </div>
+        </div>
 
-                <div
-                  className={`
-                  w-12 h-12 rounded-full flex items-center justify-center
-                  ${
-                    isExpanded
-                      ? "bg-primary text-background"
-                      : isRelated
-                      ? "bg-primary/50 text-background"
-                      : "bg-surface text-text-primary"
-                  }
-                  border-2
-                  ${
-                    isExpanded
-                      ? "border-primary shadow-lg shadow-primary/30"
-                      : isRelated
-                      ? "border-primary animate-pulse"
-                      : isLured
-                      ? "border-primary/70 shadow-md shadow-primary/20"
-                      : "border-border"
-                  }
-                  transition-all duration-300 transform
-                  ${isExpanded ? "scale-150" : isLured ? "scale-110" : ""}
-                  hover:border-primary/60
-                `}
-                >
-                  <Icon size={20} />
-                </div>
-
-                <div
-                  className={`
-                  absolute top-14 left-1/2 -translate-x-1/2 whitespace-nowrap
-                  text-[11px] font-black tracking-[0.15em] uppercase
-                  transition-all duration-300
-                  ${isExpanded ? "text-primary scale-110" : "text-text-primary/80"}
-                `}
-                >
-                  {item.title}
-                </div>
-
-                {isExpanded && (
-                  <Card className="absolute top-24 left-1/2 -translate-x-1/2 w-72 glass-card border-primary/20 shadow-2xl shadow-primary/10 overflow-visible z-[300]">
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-px h-3 bg-primary/50"></div>
-                    <CardHeader className="pb-3 px-5">
-                      <div className="flex justify-between items-center">
-                        <Badge
-                          className={`px-2 py-0.5 text-[10px] uppercase tracking-wider ${getStatusStyles(
-                            item.status
-                          )}`}
-                        >
-                          {item.status.replace('-', ' ')}
-                        </Badge>
-                        <span className="text-[10px] font-bold text-text-secondary/60 tracking-widest uppercase">
-                          {item.date}
-                        </span>
-                      </div>
-                      <CardTitle className="text-lg mt-3 font-black text-text-primary tracking-tight">
-                        {item.title}
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="text-sm text-text-secondary leading-relaxed px-5 pb-6">
-                      <p>{item.content}</p>
-
-                      <div className="mt-6 pt-4 border-t border-divider">
-                        <div className="flex justify-between items-center text-[10px] font-bold uppercase tracking-widest mb-2">
-                          <span className="flex items-center text-primary">
-                            <Zap size={10} className="mr-1 fill-current" />
-                            System Velocity
-                          </span>
-                          <span className="text-text-secondary">{item.energy}%</span>
-                        </div>
-                        <div className="w-full h-1 bg-surface-hover rounded-full overflow-hidden">
-                          <div
-                            className="h-full bg-gradient-to-r from-primary to-secondary"
-                            style={{ width: `${item.energy}%` }}
-                          ></div>
-                        </div>
-                      </div>
-
-                      {item.relatedIds.length > 0 && (
-                        <div className="mt-6 pt-4 border-t border-divider">
-                          <div className="flex items-center mb-3">
-                            <Link size={10} className="text-primary mr-1" />
-                            <h4 className="text-[10px] uppercase tracking-[0.2em] font-black text-text-secondary/60">
-                              Connected Workflows
-                            </h4>
-                          </div>
-                          <div className="flex flex-wrap gap-2">
-                            {item.relatedIds.map((relatedId) => {
-                              const relatedItem = timelineData.find(
-                                (i) => i.id === relatedId
-                              );
-                              return (
-                                <button
-                                  key={relatedId}
-                                  className="flex items-center h-7 px-3 text-[10px] font-bold uppercase tracking-wider rounded-lg border border-border bg-surface-hover hover:bg-surface-active text-text-secondary hover:text-text-primary transition-all"
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    toggleItem(relatedId);
-                                  }}
-                                >
-                                  {relatedItem?.title}
-                                  <ArrowRight
-                                    size={10}
-                                    className="ml-1.5 text-primary"
-                                  />
-                                </button>
-                              );
-                            })}
-                          </div>
-                        </div>
-                      )}
-                    </CardContent>
-                  </Card>
-                )}
+        {/* ── Detail panel — right side ─────────────────────────── */}
+        <div className="w-full lg:w-1/2 flex-1 min-w-0 max-w-md lg:max-w-none">
+          {activeItem ? (
+            <div
+              key={activeItem.id}
+              className="animate-in fade-in slide-in-from-right-4 duration-300"
+              style={{
+                animation: 'fadeSlideIn 0.35s ease forwards',
+              }}
+            >
+              <div className="text-xs font-semibold uppercase tracking-[0.2em] text-primary mb-2">
+                {activeItem.category}
               </div>
-            );
-          })}
+              <h3
+                className="text-2xl md:text-3xl font-bold text-text-primary tracking-tight mb-4"
+                style={{ fontFamily: 'var(--font-display)' }}
+              >
+                {activeItem.title}
+              </h3>
+              <p className="text-base text-text-secondary leading-relaxed mb-6">
+                {activeItem.content}
+              </p>
+
+              {/* Related services */}
+              {activeItem.relatedIds.length > 0 && (
+                <div>
+                  <div className="text-[10px] font-semibold uppercase tracking-[0.15em] text-text-secondary/60 mb-3">
+                    Related Services
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {activeItem.relatedIds.map((relatedId) => {
+                      const relatedItem = timelineData.find(
+                        (i) => i.id === relatedId
+                      );
+                      return (
+                        <button
+                          key={relatedId}
+                          className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg border border-border bg-surface hover:bg-surface-hover text-text-secondary hover:text-text-primary transition-colors"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            selectNode(relatedId);
+                          }}
+                        >
+                          {relatedItem?.title}
+                          <ArrowRight size={10} className="text-primary" />
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="text-text-secondary/50">
+              <p className="text-sm font-medium">Select a service to learn more</p>
+            </div>
+          )}
         </div>
       </div>
+
+      {/* Inline keyframes for panel animation */}
+      <style jsx>{`
+        @keyframes fadeSlideIn {
+          from { opacity: 0; transform: translateX(12px); }
+          to   { opacity: 1; transform: translateX(0); }
+        }
+      `}</style>
     </div>
   );
 }

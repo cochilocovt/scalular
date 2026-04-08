@@ -5,8 +5,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls, Environment } from '@react-three/drei';
-import { GARMENT_CATALOG, type GarmentEntry } from '@/components/3d/GarmentModels';
+import { OrbitControls, Environment, Html } from '@react-three/drei';
+import { Suspense } from 'react';
+import { GARMENT_CATALOG, type GarmentEntry, GLBModel } from '@/components/3d/GarmentModels';
 
 /* ─── T-Shirt Image Sequence ────────────────────────────── */
 const TSHIRT_FRAMES = [
@@ -31,7 +32,7 @@ const TSHIRT_FRAMES = [
 function ImageSequenceViewer({ frames }: { frames: string[] }) {
   const [frameIndex, setFrameIndex] = useState(0);
   const dragRef = useRef(0);
-  
+
   // pre-load images
   useEffect(() => {
     frames.forEach(src => {
@@ -41,7 +42,7 @@ function ImageSequenceViewer({ frames }: { frames: string[] }) {
   }, [frames]);
 
   return (
-    <div 
+    <div
       className="absolute inset-0 cursor-ew-resize"
       onPointerDown={(e) => {
         e.stopPropagation();
@@ -59,30 +60,41 @@ function ImageSequenceViewer({ frames }: { frames: string[] }) {
         }
       }}
     >
-      <img 
-        src={frames[frameIndex]} 
-        alt="Product rotation" 
-        className="w-full h-full object-contain pointer-events-none p-2 drop-shadow-2xl" 
+      <img
+        src={frames[frameIndex]}
+        alt="Product rotation"
+        className="w-full h-full object-contain pointer-events-none p-2 drop-shadow-2xl"
         draggable={false}
       />
     </div>
   );
 }
 
+/* ─── Loader ────────────────────────────────────────────── */
+function Loader() {
+  return (
+    <Html center>
+      <div className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin opacity-50"></div>
+    </Html>
+  );
+}
+
 /* ─── Lazy 3D scene per garment ─────────────────────────── */
-function GarmentScene({ entry }: { entry: GarmentEntry }) {
-  const { Component, color } = entry;
+function GarmentScene({ entry, isActive }: { entry: GarmentEntry; isActive: boolean }) {
   return (
     <Canvas
       camera={{ position: [0, 0, 3.8], fov: 38 }}
       gl={{ antialias: true, alpha: true }}
       style={{ background: 'transparent' }}
     >
-      <ambientLight intensity={0.7} />
-      <directionalLight position={[5, 8, 5]} intensity={1.2} castShadow />
-      <directionalLight position={[-5, -3, -5]} intensity={0.3} />
-      <Component color={color} />
-      <OrbitControls enableZoom={false} enablePan={false} autoRotate={false} />
+      <Environment preset="studio" />
+      <ambientLight intensity={0.5} />
+      <directionalLight position={[4, 6, 4]} intensity={1.2} />
+      <directionalLight position={[-4, 2, -2]} intensity={0.4} />
+
+      <Suspense fallback={<Loader />}>
+        <GLBModel url={entry.url} isActive={isActive} />
+      </Suspense>
     </Canvas>
   );
 }
@@ -95,37 +107,24 @@ function GarmentCard({ entry, isActive }: { entry: GarmentEntry; isActive: boole
   return (
     <motion.div
       layout
-      animate={{ scale: isActive ? 1 : 0.85, opacity: isActive ? 1 : 0.55 }}
+      animate={{ scale: isActive ? 1 : 0.85, opacity: isActive ? 1 : 0.4 }}
       transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-      className={`relative flex flex-col rounded-3xl overflow-hidden transition-all duration-300 ${
-        isActive ? 'glass-card shadow-xl' : 'glass-panel'
-      }`}
-      style={{ width: 220, minWidth: 220, border: isActive ? `2px solid var(--primary-border)` : '1px solid var(--glass-border)' }}
+      className={`relative flex flex-col rounded-3xl overflow-hidden transition-all duration-300 ${isActive ? 'glass-card shadow-xl z-20' : 'glass-panel z-10'
+        }`}
+      style={{ width: 220, minWidth: 220, border: isActive ? `2px solid var(--primary-border)` : '1px solid transparent' }}
     >
-      {/* 3D viewport — only mount for active ±1 items */}
-      <div className="h-52 w-full relative bg-gradient-to-b from-background to-surface-raised">
-        {isActive && entry.id === 'tshirt' && (
-          <ImageSequenceViewer frames={TSHIRT_FRAMES} />
-        )}
-        {isActive && entry.id !== 'tshirt' && (
-          <div className="absolute inset-0">
-            <GarmentSceneClient entry={entry} />
-          </div>
-        )}
-        {!isActive && (
-          <div className="absolute inset-0 flex items-center justify-center text-5xl select-none opacity-30">
-            👕
-          </div>
-        )}
-        {/* Category pill */}
-        <div className="absolute top-3 left-3 px-2 py-0.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-[9px] font-black tracking-widest uppercase">
-          {entry.category}
+      {/* 3D viewport — Mount for all visible items to show non-rotating previews */}
+      <div className="h-52 w-full relative bg-surface-raised">
+        <div className="absolute inset-0">
+          <GarmentSceneClient entry={entry} isActive={isActive} />
         </div>
+
+        {/* Category badge removed to maintain minimalist design */}
       </div>
 
       {/* Info */}
       <div className="px-4 py-3">
-        <h3 className="text-sm font-black text-text-primary tracking-tight mb-0.5">{entry.name}</h3>
+        <h3 className="text-sm font-semibold text-text-primary tracking-tight mb-0.5">{entry.name}</h3>
         <p className="text-[11px] text-text-secondary leading-snug">{entry.description}</p>
       </div>
     </motion.div>
@@ -160,23 +159,23 @@ export function ProductShowcase() {
   ];
 
   return (
-    <div className="relative w-full py-10">
+    <div className="relative w-full py-8 md:py-10">
       {/* Section header */}
-      <div className="text-center mb-10">
-        <motion.div
+      <div className="text-center mb-8 md:mb-10">
+        <motion.p
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-black tracking-[0.3em] uppercase mb-4"
+          className="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.2em] text-primary mb-3"
         >
           Product Range
-        </motion.div>
+        </motion.p>
         <motion.h3
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.08 }}
-          className="text-3xl md:text-4xl font-black text-text-primary tracking-tighter mb-2"
+          className="text-2xl md:text-4xl font-bold text-text-primary tracking-tighter mb-2"
         >
           17 Garment Categories
         </motion.h3>

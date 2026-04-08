@@ -18,7 +18,7 @@ export function ShowcaseSection() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-[11px] font-black tracking-[0.4em] uppercase text-primary mb-4"
+            className="text-[11px] font-semibold tracking-[0.4em] uppercase text-primary mb-4"
           >
             The Scalular Platform
           </motion.p>
@@ -27,10 +27,10 @@ export function ShowcaseSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="text-5xl md:text-6xl lg:text-7xl font-black text-text-primary tracking-tighter leading-tight"
+            className="text-5xl md:text-6xl lg:text-7xl font-bold text-text-primary tracking-tighter leading-tight"
           >
             Simplified.{' '}
-            <span className="text-gradient">Streamlined.</span>
+            <span className="text-primary">Streamlined.</span>
             <br />
             Sourced.
           </motion.h2>
@@ -39,7 +39,7 @@ export function ShowcaseSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="text-lg text-text-secondary max-w-2xl mx-auto mt-4 font-medium"
+            className="text-lg text-text-secondary max-w-2xl mx-auto mt-4"
           >
             From product catalogue to certified factories to global brand partners —
             Scalular is the complete apparel sourcing platform.
@@ -47,19 +47,19 @@ export function ShowcaseSection() {
         </div>
 
         {/* Divider */}
-        <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent mb-4" />
+        <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent mb-12" />
 
         {/* Product Showcase */}
         <ProductShowcase />
 
         {/* Divider */}
-        <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent my-4" />
+        <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent my-12" />
 
         {/* Certifications */}
         <CertificationsDisplay />
 
         {/* Divider */}
-        <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent my-4" />
+        <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent my-12" />
 
         {/* Client Logos */}
         <ClientLogos />

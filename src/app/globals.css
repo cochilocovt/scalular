@@ -4,7 +4,8 @@
    THEME 1: OCEANIC ELITE (Default) - Blue with Bronze Highlights
    ═══════════════════════════════════════════════════════════════ */
 :root {
-  --font-family: 'Inter', ui-monospace, monospace;
+  --font-family: var(--font-sans), 'Outfit', system-ui, sans-serif;
+  --font-display: var(--font-display), 'Plus Jakarta Sans', system-ui, sans-serif;
   
   /* Background & Surface */
   --background: #0A0E1A;
@@ -488,30 +489,16 @@ body {
 
 ::selection { background: var(--selection-bg); color: inherit; }
 
-h1, h2, h3, h4, h5, h6 { font-weight: 700; }
-p, li, td, th, label, input { font-weight: 400; }
+h1, h2, h3, h4, h5, h6 { font-weight: 700; font-family: var(--font-display); letter-spacing: -0.03em; line-height: 1.15; }
+h1, h2 { letter-spacing: -0.04em; line-height: 1.1; }
+p, li, td, th, label, input { font-weight: 400; line-height: 1.6; }
 
 /* ═══════════════════════════════════════════════════════════════
    DYNAMIC BACKGROUND ANIMATIONS
    ═══════════════════════════════════════════════════════════════ */
-@keyframes gradientShift {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-}
-
 @keyframes float { 
   0%, 100% { transform: translateY(0) rotate(0deg); } 
   50% { transform: translateY(-20px) rotate(5deg); } 
-}
-
-@keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 20px var(--glow-primary); }
-  50% { box-shadow: 0 0 40px var(--glow-primary), 0 0 80px var(--glow-accent); }
-}
-
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
 }
 
 @keyframes grain {
@@ -582,27 +569,6 @@ p, li, td, th, label, input { font-weight: 400; }
 /* ═══════════════════════════════════════════════════════════════
    GRADIENT UTILITIES
    ═══════════════════════════════════════════════════════════════ */
-@utility text-gradient {
-  background: linear-gradient(135deg, var(--text-primary) 0%, var(--primary) 50%, var(--accent) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-@utility text-gradient-accent {
-  background: linear-gradient(135deg, var(--accent) 0%, var(--primary) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-@utility shadow-glow {
-  box-shadow: 0 0 15px var(--glow-primary);
-}
-
-@utility bg-gradient-orbital {
-  background: linear-gradient(to bottom right, var(--secondary), var(--primary), var(--accent));
-}
 
 /* ═══════════════════════════════════════════════════════════════
    DYNAMIC BACKGROUND CLASSES
@@ -635,25 +601,18 @@ p, li, td, th, label, input { font-weight: 400; }
 .float-4 { animation: float-4 6.8s ease-in-out infinite; }
 .float-5 { animation: float-5 9.2s ease-in-out infinite; }
 
-/* Glow Pulse */
-@keyframes glow-pulse { 0%,100%{box-shadow:0 0 20px var(--glow-primary)} 50%{box-shadow:0 0 50px var(--glow-primary),0 0 100px var(--glow-accent)} }
-.glow-pulse { animation: glow-pulse 2.5s ease-in-out infinite; }
 
-/* GlowCTAButton animations */
-@property --glow-angle {
-  syntax: '<angle>';
-  initial-value: 0deg;
-  inherits: false;
-}
-@keyframes spin-border { to { --glow-angle: 360deg; } }
+
+/* CTA ripple animation */
 @keyframes cta-ripple {
   0%   { transform: scale(0);   opacity: 0.6; }
   100% { transform: scale(20);  opacity: 0; }
 }
 
-/* Smooth transitions for all elements */
-*, *::before, *::after {
-  transition-property: background-color, border-color, color, box-shadow;
-  transition-duration: 0.3s;
+/* Targeted transitions on interactive elements only — NOT wildcard * */
+a, button, [role="button"], input, select, textarea,
+.glass-card, .glass-panel, .neu-card, .neu-btn {
+  transition-property: background-color, border-color, color, box-shadow, opacity, transform;
+  transition-duration: 0.2s;
   transition-timing-function: ease;
 }

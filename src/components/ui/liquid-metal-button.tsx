@@ -203,7 +203,7 @@ export function LiquidMetalButton({
             width: "98%",
             height: "98%",
             borderRadius: "100px",
-            background: "linear-gradient(180deg, #202020 0%, #000000 100%)",
+            background: "linear-gradient(180deg, var(--color-neutral-700) 0%, var(--color-neutral-900) 100%)",
             boxShadow: isPressed
               ? "inset 0px 2px 4px rgba(0, 0, 0, 0.4), inset 0px 1px 2px rgba(0, 0, 0, 0.3)"
               : isHovered
@@ -235,7 +235,7 @@ export function LiquidMetalButton({
             <Sparkles
               size={16}
               style={{
-                color: "#DDDDDD",
+                color: "var(--color-neutral-200)",
                 filter: "drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.5))",
               }}
             />
@@ -244,7 +244,7 @@ export function LiquidMetalButton({
             <span
               style={{
                 fontSize: "14px",
-                color: "#DDDDDD",
+                color: "var(--color-neutral-200)",
                 fontWeight: 400,
                 textShadow: "0px 1px 2px rgba(0, 0, 0, 0.5)",
                 whiteSpace: "nowrap",

@@ -5,22 +5,22 @@ import { ShieldCheck, Award, Leaf, Globe, CheckCircle2, Star, Heart, Factory, Pa
 
 /* ─── Tier 1: Featured certifications (most recognizable) ──────────── */
 const FEATURED = [
-  { name: 'GOTS', icon: Leaf, color: '#16A34A', desc: 'Global Organic Textile Standard' },
-  { name: 'OEKO-TEX', icon: ShieldCheck, color: '#2563EB', desc: 'Tested safe for people & environment' },
-  { name: 'Fairtrade', icon: Heart, color: '#DC2626', desc: 'Fair wages & safe conditions' },
-  { name: 'ISO 9001', icon: Package, color: '#6D28D9', desc: 'Quality management certified' },
-  { name: 'WRAP', icon: Factory, color: '#9333EA', desc: 'Ethical factory standards' },
+  { name: 'GOTS', icon: Leaf, color: 'var(--color-blue-700)', desc: 'Global Organic Textile Standard' },
+  { name: 'OEKO-TEX', icon: ShieldCheck, color: 'var(--color-blue-400)', desc: 'Tested safe for people & environment' },
+  { name: 'Fairtrade', icon: Heart, color: 'var(--color-neutral-900)', desc: 'Fair wages & safe conditions' },
+  { name: 'ISO 9001', icon: Package, color: 'var(--color-primary)', desc: 'Quality management certified' },
+  { name: 'WRAP', icon: Factory, color: 'var(--color-primary-alt)', desc: 'Ethical factory standards' },
 ];
 
 /* ─── Tier 2: Additional certifications (compact display) ──────────── */
 const ADDITIONAL = [
-  { name: 'Higg Index', icon: Layers, color: '#0891B2' },
-  { name: 'BCI', icon: Recycle, color: '#15803D' },
-  { name: 'Sedex', icon: Globe, color: '#7C3AED' },
-  { name: 'CTPAT', icon: CheckCircle2, color: '#1D4ED8' },
-  { name: 'SGS', icon: Award, color: '#B45309' },
-  { name: 'Amfori', icon: Star, color: '#BE185D' },
-  { name: 'SA8000', icon: ShieldCheck, color: '#0F766E' },
+  { name: 'Higg Index', icon: Layers, color: 'var(--color-blue-400)' },
+  { name: 'BCI', icon: Recycle, color: 'var(--color-neutral-700)' },
+  { name: 'Sedex', icon: Globe, color: 'var(--color-blue-700)' },
+  { name: 'CTPAT', icon: CheckCircle2, color: 'var(--color-blue-900)' },
+  { name: 'SGS', icon: Award, color: 'var(--color-neutral-700)' },
+  { name: 'Amfori', icon: Star, color: 'var(--color-neutral-900)' },
+  { name: 'SA8000', icon: ShieldCheck, color: 'var(--color-blue-700)' },
 ];
 
 export function CertificationsDisplay() {
@@ -75,7 +75,7 @@ export function CertificationsDisplay() {
               >
                 <div
                   className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0"
-                  style={{ background: `${cert.color}12`, border: `1px solid ${cert.color}20` }}
+                  style={{ background: `color-mix(in srgb, ${cert.color} 7%, transparent)`, border: `1px solid color-mix(in srgb, ${cert.color} 12%, transparent)` }}
                 >
                   <Icon className="w-4 h-4" style={{ color: cert.color }} />
                 </div>

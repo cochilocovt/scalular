@@ -5,7 +5,7 @@ export function StatPill({ className, children, ...props }: React.HTMLAttributes
   return (
     <div
       className={cn(
-        'inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium text-white/90 shadow-sm backdrop-blur-md border border-white/10 bg-[#0D1830]/60',
+        'inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium text-neutral-100 shadow-sm backdrop-blur-md border border-neutral-200/20 bg-primary/60',
         className
       )}
       {...props}

@@ -30,22 +30,22 @@ interface GlobeCdnProps {
 
 /* ── Scalular factory countries ─────────────────────────────── */
 const defaultMarkers: GlobeMarker[] = [
-  { id: "india",      location: [20.59, 78.96],   region: "India",       specialty: "Cotton · Knitwear · Embroidery",       color: "#F97316", factoryCount: 24 },
-  { id: "bangladesh", location: [23.69, 90.36],   region: "Bangladesh",  specialty: "Basics · Volume · Jersey",             color: "#22C55E", factoryCount: 42 },
-  { id: "turkey",     location: [38.96, 35.24],   region: "Turkey",      specialty: "Premium Fashion · Cut & Sew",          color: "#EF4444", factoryCount: 18 },
-  { id: "vietnam",    location: [14.06, 108.28],  region: "Vietnam",     specialty: "Technical · Activewear",               color: "#DC2626", factoryCount: 31 },
-  { id: "china",      location: [31.23, 121.47],  region: "China",       specialty: "Scale · Technology · Accessories",      color: "#EAB308", factoryCount: 22 },
-  { id: "pakistan",    location: [30.38, 69.35],   region: "Pakistan",    specialty: "Denim · Woven Basics",                 color: "#16A34A", factoryCount: 15 },
-  { id: "portugal",   location: [39.40, -8.22],   region: "Portugal",    specialty: "Luxury · Sustainable · EU Made",        color: "#7C3AED", factoryCount: 8 },
-  { id: "morocco",    location: [31.79, -7.09],   region: "Morocco",     specialty: "EU-Nearshore · Fast Fashion",           color: "#BE123C", factoryCount: 12 },
-  { id: "srilanka",   location: [7.87, 80.77],    region: "Sri Lanka",   specialty: "Lingerie · Intimate Apparel",           color: "#0891B2", factoryCount: 14 },
+  { id: "india",      location: [20.59, 78.96],   region: "India",       specialty: "Cotton · Knitwear · Embroidery",       color: "#727cb1", factoryCount: 24 },
+  { id: "bangladesh", location: [23.69, 90.36],   region: "Bangladesh",  specialty: "Basics · Volume · Jersey",             color: "#41413d", factoryCount: 42 },
+  { id: "turkey",     location: [38.96, 35.24],   region: "Turkey",      specialty: "Premium Fashion · Cut & Sew",          color: "#222220", factoryCount: 18 },
+  { id: "vietnam",    location: [14.06, 108.28],  region: "Vietnam",     specialty: "Technical · Activewear",               color: "#323959", factoryCount: 31 },
+  { id: "china",      location: [31.23, 121.47],  region: "China",       specialty: "Scale · Technology · Accessories",      color: "#ADACA4", factoryCount: 22 },
+  { id: "pakistan",    location: [30.38, 69.35],   region: "Pakistan",    specialty: "Denim · Woven Basics",                 color: "#d5d3ca", factoryCount: 15 },
+  { id: "portugal",   location: [39.40, -8.22],   region: "Portugal",    specialty: "Luxury · Sustainable · EU Made",        color: "#171B2E", factoryCount: 8 },
+  { id: "morocco",    location: [31.79, -7.09],   region: "Morocco",     specialty: "EU-Nearshore · Fast Fashion",           color: "#1A1E31", factoryCount: 12 },
+  { id: "srilanka",   location: [7.87, 80.77],    region: "Sri Lanka",   specialty: "Lingerie · Intimate Apparel",           color: "#eff0f6", factoryCount: 14 },
   // Buyer hubs
-  { id: "usa",       location: [40.71, -74.01],   region: "New York",    specialty: "Americas Hub",  color: "#3B82F6", isBuyer: true },
-  { id: "uk",        location: [51.51, -0.13],    region: "London",      specialty: "Europe Hub",    color: "#6366F1", isBuyer: true },
-  { id: "germany",   location: [52.52, 13.41],    region: "Berlin",      specialty: "EU Hub",        color: "#8B5CF6", isBuyer: true },
-  { id: "uae",       location: [25.20, 55.27],    region: "Dubai",       specialty: "MENA Hub",      color: "#A855F7", isBuyer: true },
-  { id: "australia",  location: [-33.87, 151.21], region: "Sydney",      specialty: "APAC Hub",      color: "#06B6D4", isBuyer: true },
-  { id: "canada",    location: [43.65, -79.38],   region: "Toronto",     specialty: "NA Hub",        color: "#14B8A6", isBuyer: true },
+  { id: "usa",       location: [40.71, -74.01],   region: "New York",    specialty: "Americas Hub",  color: "#727cb1", isBuyer: true },
+  { id: "uk",        location: [51.51, -0.13],    region: "London",      specialty: "Europe Hub",    color: "#323959", isBuyer: true },
+  { id: "germany",   location: [52.52, 13.41],    region: "Berlin",      specialty: "EU Hub",        color: "#171B2E", isBuyer: true },
+  { id: "uae",       location: [25.20, 55.27],    region: "Dubai",       specialty: "MENA Hub",      color: "#1A1E31", isBuyer: true },
+  { id: "australia",  location: [-33.87, 151.21], region: "Sydney",      specialty: "APAC Hub",      color: "#41413d", isBuyer: true },
+  { id: "canada",    location: [43.65, -79.38],   region: "Toronto",     specialty: "NA Hub",        color: "#ADACA4", isBuyer: true },
 ]
 
 /* ── Supply chain arcs (factory → buyer hub) ─────────────────── */
@@ -129,7 +129,7 @@ export function GlobeCdn({
     const container = containerRef.current
     let globe: ReturnType<typeof createGlobe> | null = null
     let animationId: number
-    let phi = 0
+    let phi = 2.59 // Start exactly at the first marker (China) so arcs show without hover
     let theta = 0.2
 
     function init() {
@@ -173,9 +173,9 @@ export function GlobeCdn({
       function animate() {
         const now = Date.now()
         
-        // Dynamically reduce speed if a country is actively highlighted so it stays visible for ~3s
+        // Dynamically reduce speed if a country is actively highlighted so it stays visible for ~1.8s
         let currentSpeed = speed
-        if (activeMarkerRef.current && (now - activeStartTimeRef.current) < 3000) {
+        if (activeMarkerRef.current && (now - activeStartTimeRef.current) < 1800) {
           currentSpeed = speed * 0.1 // Extreme slow down (crawl)
         }
 
@@ -277,7 +277,7 @@ export function GlobeCdn({
       "rotateY(240deg) translateZ(4px) rotateX(19.5deg)",
       "rotateX(-90deg) rotateZ(60deg) translateY(4px)",
     ]
-    const defaultColors = ["#111", "#333", "#555", "#222"]
+    const defaultColors = ["#171B2E", "#323959", "#41413d", "#222220"]
     const color = baseColor || defaultColors[nth]
     
     // Shading multiplier if baseColor is provided
@@ -374,10 +374,10 @@ export function GlobeCdn({
                 display: "flex",
                 alignItems: "center",
                 gap: 6,
-                background: "#ffffff",
+                background: "var(--background)",
                 padding: "6px 10px",
                 borderRadius: 6,
-                boxShadow: "0 4px 12px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,0,0,0.05)",
+                boxShadow: "0 4px 12px var(--neu-shadow-dark), 0 0 0 1px var(--glass-border)",
                 whiteSpace: "nowrap" as const,
                 opacity: isActive ? 1 : 0,
                 transform: isActive ? "translateY(-24px) scale(1)" : "translateY(-14px) scale(0.95)",
@@ -394,9 +394,9 @@ export function GlobeCdn({
                     transform: "translateX(-50%) rotate(45deg)",
                     width: 8,
                     height: 8,
-                    background: "#ffffff",
-                    borderBottom: "1px solid rgba(0,0,0,0.05)",
-                    borderRight: "1px solid rgba(0,0,0,0.05)",
+                    background: "var(--background)",
+                    borderBottom: "1px solid var(--glass-border)",
+                    borderRight: "1px solid var(--glass-border)",
                   }}
                 />
               )}
@@ -405,7 +405,7 @@ export function GlobeCdn({
                   fontFamily: "var(--font-family)",
                   fontSize: "0.6rem",
                   fontWeight: 600,
-                  color: "#1a1a1a",
+                  color: "var(--text-primary)",
                   letterSpacing: "0.02em",
                   textTransform: "uppercase",
                 }}
@@ -456,7 +456,7 @@ export function GlobeCdn({
               }}
             >
               {[0, 1, 2, 3].map((n) => (
-                <div key={n} style={pyramidFaceStyle(n, m.color || "#3B82F6")} />
+                <div key={n} style={pyramidFaceStyle(n, m.color || "#171B2E")} />
               ))}
             </div>
             
@@ -466,10 +466,10 @@ export function GlobeCdn({
                 display: "flex",
                 alignItems: "center",
                 gap: 6,
-                background: "#ffffff",
+                background: "var(--background)",
                 padding: "6px 10px",
                 borderRadius: 6,
-                boxShadow: "0 4px 12px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,0,0,0.05)",
+                boxShadow: "0 4px 12px var(--neu-shadow-dark), 0 0 0 1px var(--glass-border)",
                 whiteSpace: "nowrap",
                 opacity: isConnected ? 1 : 0,
                 transform: isConnected ? "translateY(-4px) scale(1)" : "translateY(-14px) scale(0.95)",
@@ -488,9 +488,9 @@ export function GlobeCdn({
                     transform: "translateX(-50%) rotate(45deg)",
                     width: 8,
                     height: 8,
-                    background: "#ffffff",
-                    borderTop: "1px solid rgba(0,0,0,0.05)",
-                    borderLeft: "1px solid rgba(0,0,0,0.05)",
+                    background: "var(--background)",
+                    borderTop: "1px solid var(--glass-border)",
+                    borderLeft: "1px solid var(--glass-border)",
                   }}
                 />
               )}
@@ -499,7 +499,7 @@ export function GlobeCdn({
                   fontFamily: "var(--font-family)",
                   fontSize: "0.55rem",
                   fontWeight: 700,
-                  color: m.color || "#3B82F6",
+                  color: m.color || "#171B2E",
                   letterSpacing: "0.06em",
                   textTransform: "uppercase",
                 }}

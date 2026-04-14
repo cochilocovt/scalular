@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence, Variants, Easing } from 'framer-motion';
 import { GlobeCdn } from '../ui/cobe-globe-cdn';
 import { GetStartedButton } from '../ui/get-started-button';
@@ -11,15 +11,15 @@ const FACTORY_DATA: Record<string, {
   flag: string; name: string; factories: number;
   specialties: string[]; certs: string[]; accent: string;
 }> = {
-  india: { flag: '🇮🇳', name: 'India', factories: 24, specialties: ['Cotton', 'Knitwear', 'Embroidery', 'Sustainable'], certs: ['GOTS', 'OEKO-TEX', 'OCS'], accent: '#F97316' },
-  bangladesh: { flag: '🇧🇩', name: 'Bangladesh', factories: 42, specialties: ['Basics', 'Volume Production', 'Jersey', 'Woven'], certs: ['BSCI', 'WRAP', 'ISO 9001'], accent: '#22C55E' },
-  turkey: { flag: '🇹🇷', name: 'Turkey', factories: 18, specialties: ['Premium Fashion', 'Speed', 'Cut & Sew'], certs: ['EU Standards', 'SA8000'], accent: '#EF4444' },
-  vietnam: { flag: '🇻🇳', name: 'Vietnam', factories: 31, specialties: ['Technical', 'Performance', 'Activewear'], certs: ['Bluesign®', 'Higg Index'], accent: '#DC2626' },
-  china: { flag: '🇨🇳', name: 'China', factories: 22, specialties: ['Scale', 'Technology', 'Accessories'], certs: ['ISO 9001', 'OEKO-TEX'], accent: '#EAB308' },
-  pakistan: { flag: '🇵🇰', name: 'Pakistan', factories: 15, specialties: ['Denim', 'Woven Basics', 'Cotton'], certs: ['OEKO-TEX', 'GOTS'], accent: '#16A34A' },
-  portugal: { flag: '🇵🇹', name: 'Portugal', factories: 8, specialties: ['Luxury', 'Sustainable', 'EU Made'], certs: ['GOTS', 'EU Ecolabel'], accent: '#7C3AED' },
-  morocco: { flag: '🇲🇦', name: 'Morocco', factories: 12, specialties: ['EU-Nearshore', 'Fast Fashion', 'Quick Turn'], certs: ['SA8000', 'OEKO-TEX'], accent: '#BE123C' },
-  srilanka: { flag: '��🇰', name: 'Sri Lanka', factories: 14, specialties: ['Lingerie', 'Activewear', 'Intimate Apparel'], certs: ['ISO 9001', 'OEKO-TEX'], accent: '#0891B2' },
+  china: { flag: '🇨🇳', name: 'China', factories: 22, specialties: ['Scale', 'Technology', 'Accessories'], certs: ['ISO 9001', 'OEKO-TEX'], accent: 'var(--color-surface-muted)' },
+  vietnam: { flag: '🇻🇳', name: 'Vietnam', factories: 31, specialties: ['Technical', 'Performance', 'Activewear'], certs: ['Bluesign®', 'Higg Index'], accent: 'var(--color-blue-700)' },
+  bangladesh: { flag: '🇧🇩', name: 'Bangladesh', factories: 42, specialties: ['Basics', 'Volume Production', 'Jersey', 'Woven'], certs: ['BSCI', 'WRAP', 'ISO 9001'], accent: 'var(--color-neutral-700)' },
+  srilanka: { flag: '🇱🇰', name: 'Sri Lanka', factories: 14, specialties: ['Lingerie', 'Activewear', 'Intimate Apparel'], certs: ['ISO 9001', 'OEKO-TEX'], accent: 'var(--color-blue-900)' },
+  india: { flag: '🇮🇳', name: 'India', factories: 24, specialties: ['Cotton', 'Knitwear', 'Embroidery', 'Sustainable'], certs: ['GOTS', 'OEKO-TEX', 'OCS'], accent: 'var(--color-blue-400)' },
+  pakistan: { flag: '🇵🇰', name: 'Pakistan', factories: 15, specialties: ['Denim', 'Woven Basics', 'Cotton'], certs: ['OEKO-TEX', 'GOTS'], accent: 'var(--color-neutral-200)' },
+  turkey: { flag: '🇹🇷', name: 'Turkey', factories: 18, specialties: ['Premium Fashion', 'Speed', 'Cut & Sew'], certs: ['EU Standards', 'SA8000'], accent: 'var(--color-neutral-900)' },
+  morocco: { flag: '🇲🇦', name: 'Morocco', factories: 12, specialties: ['EU-Nearshore', 'Fast Fashion', 'Quick Turn'], certs: ['SA8000', 'OEKO-TEX'], accent: 'var(--color-primary-alt)' },
+  portugal: { flag: '🇵🇹', name: 'Portugal', factories: 8, specialties: ['Luxury', 'Sustainable', 'EU Made'], certs: ['GOTS', 'EU Ecolabel'], accent: 'var(--color-primary)' },
 };
 
 /* ─── Clean, professional country card ───────────────────────────────────────── */
@@ -57,7 +57,7 @@ function FactoryCard({ id }: { id: string }) {
         <div className="text-[10px] font-bold text-text-secondary uppercase tracking-[0.2em] mb-3">Specializations</div>
         <div className="flex flex-wrap gap-2">
           {d.specialties.map((s) => (
-            <span key={s} className="text-[10px] font-bold px-3 py-1.5 bg-black/5 dark:bg-white/5 rounded-full border border-black/5 dark:border-white/5 text-text-primary">
+            <span key={s} className="text-[10px] font-bold px-3 py-1.5 bg-neutral-200/50 rounded-full border border-neutral-200 text-text-primary">
               {s}
             </span>
           ))}
@@ -93,10 +93,32 @@ const textVariants: Variants = {
   })
 };
 
+const rotatingPhrases = [
+  "Instant Quote",
+  "Factory Direct Pricing",
+  "Flexible Payments",
+  "115+ Verified Factories",
+  "Certified Quality",
+  "Full Transparency",
+  "On-The Ground Time",
+  "Live Order Updates",
+];
+
 /* ─── Main component ───────────────────────────────────────────────────── */
 export function ScrollStory() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const keys = Object.keys(FACTORY_DATA);
+  const [titleNumber, setTitleNumber] = useState(0);
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      setTitleNumber((prev) =>
+        prev === rotatingPhrases.length - 1 ? 0 : prev + 1
+      );
+    }, 2000);
+
+    return () => clearTimeout(timeoutId);
+  }, [titleNumber, rotatingPhrases.length]);
 
   return (
     <div id="regions" className="relative w-full bg-background min-h-screen pt-24 md:pt-32 pb-16 flex flex-col items-center overflow-hidden">
@@ -122,7 +144,28 @@ export function ScrollStory() {
           style={{ fontFamily: 'var(--font-display)' }}
         >
           Direct Access to <br />
-          <span className="text-primary">World-Class Sourcing.</span>
+          <span className="text-primary inline-grid overflow-hidden w-full py-1 -my-1">
+            {rotatingPhrases.map((phrase, index) => {
+              const isActive = titleNumber === index;
+              const isPrevious = (titleNumber - 1 + rotatingPhrases.length) % rotatingPhrases.length === index;
+
+              return (
+                <motion.span
+                  key={index}
+                  initial={false}
+                  animate={{
+                    opacity: isActive ? 1 : 0,
+                    y: isActive ? "0%" : isPrevious ? "-100%" : "100%",
+                  }}
+                  transition={{ type: "spring", stiffness: 150, damping: 20 }}
+                  className={`col-start-1 row-start-1 w-full text-center ${isActive ? '' : 'pointer-events-none'}`}
+                  aria-hidden={!isActive}
+                >
+                  {phrase}.
+                </motion.span>
+              );
+            })}
+          </span>
         </motion.h1>
 
         <motion.p
@@ -205,7 +248,7 @@ export function ScrollStory() {
                       className="rounded-full transition-all duration-300 shrink-0"
                       style={{
                         background: isActive ? d.accent : 'var(--border)',
-                        boxShadow: isActive ? `0 0 16px ${d.accent}b0` : 'none',
+                        boxShadow: isActive ? `0 0 16px color-mix(in srgb, ${d.accent} 69%, transparent)` : 'none',
                         width: isActive ? 12 : 8,
                         height: isActive ? 12 : 8,
                       }}
@@ -233,7 +276,7 @@ export function ScrollStory() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.2, duration: 1 }}
-            className="flex flex-wrap justify-center gap-2 bg-white/5 backdrop-blur-md p-4 rounded-2xl border border-white/10 w-full"
+            className="flex flex-wrap justify-center gap-2 bg-neutral-200/40 backdrop-blur-md p-4 rounded-2xl border border-neutral-200 w-full"
             role="tablist"
             aria-label="Sourcing Regions"
           >
@@ -254,7 +297,7 @@ export function ScrollStory() {
                     className="rounded-full transition-all duration-300 shrink-0"
                     style={{
                       background: isActive ? d.accent : 'var(--border)',
-                      boxShadow: isActive ? `0 0 12px ${d.accent}b0` : 'none',
+                      boxShadow: isActive ? `0 0 12px color-mix(in srgb, ${d.accent} 69%, transparent)` : 'none',
                       width: isActive ? 8 : 6,
                       height: isActive ? 8 : 6,
                     }}

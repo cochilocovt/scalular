@@ -24,15 +24,15 @@ export function GetStartedButton({
       <span className="mr-8 font-semibold tracking-wide transition-opacity duration-500 group-hover:opacity-0 relative z-20">
         {label}
       </span>
-      <i className="absolute right-1 top-1 bottom-1 rounded-sm z-10 grid w-1/4 place-items-center transition-all duration-500 bg-surface-active/50 group-hover:bg-primary group-hover:shadow-[0_0_20px_var(--glow-primary)] group-hover:w-[calc(100%-0.5rem)] group-active:scale-95 text-primary group-hover:text-primary-foreground">
+      <i className="absolute right-1 top-1 bottom-1 rounded-sm z-10 grid w-1/4 place-items-center transition-all duration-500 bg-white/10 group-hover:bg-white group-hover:shadow-[0_0_20px_var(--glow-primary)] group-hover:w-[calc(100%-0.5rem)] group-active:scale-95 text-white group-hover:text-primary">
         <ChevronRight size={16} strokeWidth={2.5} aria-hidden="true" />
       </i>
       {/* Decorative colored glow underneath */}
-      <div className="absolute inset-0 z-0 bg-gradient-to-r from-transparent via-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+      <div className="absolute inset-0 z-0 bg-gradient-to-r from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
     </>
   );
 
-  const sharedClasses = `group relative overflow-hidden bg-surface text-text-primary border border-border shadow-[0_2_8px_rgba(0,0,0,0.08)] hover:bg-surface-hover hover:border-primary/40 hover:shadow-[0_4_20px_var(--glow-primary)] transition-all duration-500 ${className || ''}`;
+  const sharedClasses = `group relative overflow-hidden bg-primary text-white border border-primary-hover shadow-lg hover:bg-primary-hover transition-all duration-500 ${className || ''}`;
 
   if (href) {
     return (

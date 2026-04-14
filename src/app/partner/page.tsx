@@ -9,25 +9,25 @@ import { GetStartedButton } from '@/components/ui/get-started-button';
 const BENEFITS = [
   {
     icon: Globe,
-    color: '#3B82F6',
+    color: 'var(--color-blue-400)',
     title: 'Global Market Access',
     description: 'Reach 200+ fashion brands across the USA, UK, Germany, UAE, Australia, and Canada — all actively sourcing through Scalular.',
   },
   {
     icon: Package,
-    color: '#16A34A',
+    color: 'var(--color-blue-700)',
     title: 'Volume Orders',
     description: 'Consistent, high-volume purchase orders from verified brands. No more chasing small buyers — get orders that fill your production capacity.',
   },
   {
     icon: TrendingUp,
-    color: '#D97706',
+    color: 'var(--color-neutral-700)',
     title: 'Factoring Solutions',
     description: 'Access working capital through our integrated factoring partners. Get paid faster without waiting on buyer payment terms.',
   },
   {
     icon: Users,
-    color: '#9333EA',
+    color: 'var(--color-primary)',
     title: 'Brand Connections',
     description: 'Join a curated network. Our platform directly matches your specialties, capacities, and certifications with the right buyers.',
   },
@@ -105,7 +105,7 @@ export default function PartnerPage() {
 
       {/* ── Hero ─────────────────────────────────────────────── */}
       <section className="relative overflow-hidden py-24 md:py-36 px-6 md:px-12 bg-mesh-gradient">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_50%_80%,rgba(59,130,246,0.07),transparent)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_50%_80%,var(--primary-muted),transparent)]" />
         <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
 
         <div className="max-w-4xl mx-auto text-center relative z-10">
@@ -199,7 +199,7 @@ export default function PartnerPage() {
                 >
                   <div
                     className="w-12 h-12 rounded-2xl flex items-center justify-center mb-5"
-                    style={{ background: `${b.color}15`, border: `1px solid ${b.color}30` }}
+                    style={{ background: `color-mix(in srgb, ${b.color} 8%, transparent)`, border: `1px solid color-mix(in srgb, ${b.color} 18%, transparent)` }}
                   >
                     <Icon className="w-6 h-6" style={{ color: b.color }} />
                   </div>

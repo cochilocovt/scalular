@@ -14,23 +14,23 @@ interface ScalularGlobeProps {
 // Enhanced marker data with distinct factory vs hub markers
 const ALL_PLACES = [
   // Factory locations (supply side) - pulsing rings with distinct colors
-  { id: 'india', lat: 20.5937, lng: 78.9629, label: 'India', sub: 'Cotton · Knitwear · Embroidery', isBuyer: false, color: '#F97316', factoryCount: 24 },
-  { id: 'bangladesh', lat: 23.685, lng: 90.3563, label: 'Bangladesh', sub: 'Basics · Volume', isBuyer: false, color: '#22C55E', factoryCount: 42 },
-  { id: 'turkey', lat: 38.9637, lng: 35.2433, label: 'Turkey', sub: 'Premium Cut & Sew', isBuyer: false, color: '#EF4444', factoryCount: 18 },
-  { id: 'vietnam', lat: 14.0583, lng: 108.2772, label: 'Vietnam', sub: 'Technical · Performance', isBuyer: false, color: '#DC2626', factoryCount: 31 },
-  { id: 'china', lat: 31.2304, lng: 121.4737, label: 'China', sub: 'Scale · Technology', isBuyer: false, color: '#EAB308', factoryCount: 22 },
-  { id: 'pakistan', lat: 30.3753, lng: 69.3451, label: 'Pakistan', sub: 'Denim · Woven', isBuyer: false, color: '#16A34A', factoryCount: 15 },
-  { id: 'portugal', lat: 39.3999, lng: -8.2245, label: 'Portugal', sub: 'Luxury · Sustainable', isBuyer: false, color: '#7C3AED', factoryCount: 8 },
-  { id: 'morocco', lat: 31.7917, lng: -7.0926, label: 'Morocco', sub: 'EU-Nearshore · Fast Fashion', isBuyer: false, color: '#BE123C', factoryCount: 12 },
-  { id: 'srilanka', lat: 7.8731, lng: 80.7718, label: 'Sri Lanka', sub: 'Lingerie · Activewear', isBuyer: false, color: '#0891B2', factoryCount: 14 },
+  { id: 'india', lat: 20.5937, lng: 78.9629, label: 'India', sub: 'Cotton · Knitwear · Embroidery', isBuyer: false, color: '#727cb1', factoryCount: 24 },
+  { id: 'bangladesh', lat: 23.685, lng: 90.3563, label: 'Bangladesh', sub: 'Basics · Volume', isBuyer: false, color: '#41413d', factoryCount: 42 },
+  { id: 'turkey', lat: 38.9637, lng: 35.2433, label: 'Turkey', sub: 'Premium Cut & Sew', isBuyer: false, color: '#222220', factoryCount: 18 },
+  { id: 'vietnam', lat: 14.0583, lng: 108.2772, label: 'Vietnam', sub: 'Technical · Performance', isBuyer: false, color: '#323959', factoryCount: 31 },
+  { id: 'china', lat: 31.2304, lng: 121.4737, label: 'China', sub: 'Scale · Technology', isBuyer: false, color: '#ADACA4', factoryCount: 22 },
+  { id: 'pakistan', lat: 30.3753, lng: 69.3451, label: 'Pakistan', sub: 'Denim · Woven', isBuyer: false, color: '#d5d3ca', factoryCount: 15 },
+  { id: 'portugal', lat: 39.3999, lng: -8.2245, label: 'Portugal', sub: 'Luxury · Sustainable', isBuyer: false, color: '#171B2E', factoryCount: 8 },
+  { id: 'morocco', lat: 31.7917, lng: -7.0926, label: 'Morocco', sub: 'EU-Nearshore · Fast Fashion', isBuyer: false, color: '#1A1E31', factoryCount: 12 },
+  { id: 'srilanka', lat: 7.8731, lng: 80.7718, label: 'Sri Lanka', sub: 'Lingerie · Activewear', isBuyer: false, color: '#eff0f6', factoryCount: 14 },
   
   // Buyer hubs (demand side) - diamond/square markers with blue tones
-  { id: 'usa', lat: 40.7128, lng: -74.006, label: 'New York', sub: 'Americas Hub', isBuyer: true, color: '#3B82F6' },
-  { id: 'uk', lat: 51.5074, lng: -0.1278, label: 'London', sub: 'Europe Hub', isBuyer: true, color: '#6366F1' },
-  { id: 'germany', lat: 52.52, lng: 13.405, label: 'Berlin', sub: 'EU Hub', isBuyer: true, color: '#8B5CF6' },
-  { id: 'uae', lat: 25.2048, lng: 55.2708, label: 'Dubai', sub: 'MENA Hub', isBuyer: true, color: '#A855F7' },
-  { id: 'australia', lat: -33.8688, lng: 151.2093, label: 'Sydney', sub: 'APAC Hub', isBuyer: true, color: '#06B6D4' },
-  { id: 'canada', lat: 43.6532, lng: -79.3832, label: 'Toronto', sub: 'NA Hub', isBuyer: true, color: '#14B8A6' },
+  { id: 'usa', lat: 40.7128, lng: -74.006, label: 'New York', sub: 'Americas Hub', isBuyer: true, color: '#727cb1' },
+  { id: 'uk', lat: 51.5074, lng: -0.1278, label: 'London', sub: 'Europe Hub', isBuyer: true, color: '#323959' },
+  { id: 'germany', lat: 52.52, lng: 13.405, label: 'Berlin', sub: 'EU Hub', isBuyer: true, color: '#171B2E' },
+  { id: 'uae', lat: 25.2048, lng: 55.2708, label: 'Dubai', sub: 'MENA Hub', isBuyer: true, color: '#1A1E31' },
+  { id: 'australia', lat: -33.8688, lng: 151.2093, label: 'Sydney', sub: 'APAC Hub', isBuyer: true, color: '#41413d' },
+  { id: 'canada', lat: 43.6532, lng: -79.3832, label: 'Toronto', sub: 'NA Hub', isBuyer: true, color: '#ADACA4' },
 ];
 
 const ARCS = [
@@ -164,8 +164,8 @@ export function ScalularGlobe({ activeRegion = 'global', className, onPointClick
     <div ref={containerRef} className={`relative w-full h-full ${className ?? ''}`}>
       {/* Ambient glow behind globe */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <div className="w-[60%] h-[60%] rounded-full blur-[100px]" style={{ background: 'rgba(59, 130, 246, 0.08)' }} />
-        <div className="absolute w-[40%] h-[40%] rounded-full blur-[80px]" style={{ background: 'rgba(139, 92, 246, 0.06)' }} />
+        <div className="w-[60%] h-[60%] rounded-full blur-[100px]" style={{ background: 'var(--primary-muted)' }} />
+        <div className="absolute w-[40%] h-[40%] rounded-full blur-[80px]" style={{ background: 'var(--accent-muted)' }} />
       </div>
 
       <GlobeGL
@@ -176,20 +176,20 @@ export function ScalularGlobe({ activeRegion = 'global', className, onPointClick
         globeImageUrl="//unpkg.com/three-globe/example/img/earth-blue-marble.jpg"
         bumpImageUrl="//unpkg.com/three-globe/example/img/earth-topology.png"
         showAtmosphere={true}
-        atmosphereColor="#3B82F6"
+        atmosphereColor="#727cb1"
         atmosphereAltitude={0.15}
         showGraticules={false}
         
         // Enhanced country borders
         polygonsData={countries.features}
-        polygonCapColor={() => 'rgba(30,64,175,0.03)'}
-        polygonSideColor={() => 'rgba(59,130,246,0.1)'}
-        polygonStrokeColor={() => 'rgba(59,130,246,0.25)'}
+        polygonCapColor={() => 'rgba(50,57,89,0.03)'}
+        polygonSideColor={() => 'rgba(114,124,177,0.1)'}
+        polygonStrokeColor={() => 'rgba(114,124,177,0.25)'}
         polygonAltitude={0.002}
         
         // Animated arcs connecting factories to hubs
         arcsData={ARCS}
-        arcColor={() => ['rgba(99,102,241,0.7)', 'rgba(59,130,246,0.7)']}
+        arcColor={() => ['rgba(50,57,89,0.7)', 'rgba(114,124,177,0.7)']}
         arcDashLength={0.3}
         arcDashGap={1.5}
         arcDashAnimateTime={2500}
@@ -200,7 +200,7 @@ export function ScalularGlobe({ activeRegion = 'global', className, onPointClick
         // Factory location rings (pulsing outward)
         ringsData={factoryRingsData}
         ringColor={(d: any) => (t: number) => {
-          const color = d.color || '#3B82F6';
+          const color = d.color || '#171B2E';
           // Convert hex to rgba
           const r = parseInt(color.slice(1, 3), 16);
           const g = parseInt(color.slice(3, 5), 16);
@@ -213,7 +213,7 @@ export function ScalularGlobe({ activeRegion = 'global', className, onPointClick
         
         // Custom point markers
         pointsData={customPointsData}
-        pointColor={(d: any) => d.color || '#3B82F6'}
+        pointColor={(d: any) => d.color || '#171B2E'}
         pointAltitude={(d: any) => d.isBuyer ? 0.02 : 0.025}
         pointRadius={(d: any) => {
           if (activeRegion === d.id) {
@@ -226,14 +226,14 @@ export function ScalularGlobe({ activeRegion = 'global', className, onPointClick
         
         // Enhanced tooltips
         pointLabel={(d: any) => `
-          <div style="font-family:system-ui,sans-serif;background:rgba(255,255,255,0.97);border:1px solid ${d.color}40;padding:14px 16px;border-radius:14px;box-shadow:0 12px 40px rgba(0,0,0,0.15),0 0 30px ${d.color}15;min-width:180px;backdrop-filter:blur(10px)">
+          <div style="font-family:system-ui,sans-serif;background:var(--color-background);border:1px solid var(--color-neutral-200);padding:14px 16px;border-radius:14px;box-shadow:0 12px 40px var(--neu-shadow-dark);min-width:180px;backdrop-filter:blur(10px)">
             <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
               <div style="width:10px;height:10px;border-radius:${d.isBuyer ? '2px' : '50%'};background:${d.color};box-shadow:0 0 12px ${d.color}"></div>
-              <div style="font-weight:800;font-size:14px;color:#0F172A;letter-spacing:-0.02em">${d.label}</div>
+              <div style="font-weight:800;font-size:14px;color:var(--color-primary);letter-spacing:-0.02em">${d.label}</div>
             </div>
             <div style="font-size:11px;color:${d.color};font-weight:600;margin-bottom:4px">${d.sub}</div>
-            ${d.factoryCount ? `<div style="font-size:10px;color:#475569;font-weight:500">${d.factoryCount} certified factories</div>` : ''}
-            <div style="font-size:9px;color:#64748B;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;margin-top:8px;padding-top:8px;border-top:1px solid rgba(0,0,0,0.08)">
+            ${d.factoryCount ? `<div style="font-size:10px;color:var(--color-neutral-700);font-weight:500">${d.factoryCount} certified factories</div>` : ''}
+            <div style="font-size:9px;color:var(--color-surface-muted);font-weight:600;text-transform:uppercase;letter-spacing:0.1em;margin-top:8px;padding-top:8px;border-top:1px solid var(--color-neutral-200)">
               ${d.isBuyer ? '📍 Buyer Hub' : '🏭 Sourcing Region'}
             </div>
           </div>

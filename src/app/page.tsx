@@ -9,10 +9,10 @@ export default function Home() {
     <main id="main-content" className="flex flex-col min-h-screen bg-background text-text-primary selection:bg-primary/20 selection:text-primary">
       {/* 1. Hero — split layout with globe + immediate CTA */}
       <ScrollStory />
-      {/* 2. Trust Gallery — real factory photography */}
-      <TrustGallery />
-      {/* 3. Product catalogue, certifications, client logos */}
+      {/* 2. Product catalogue, certifications, client logos */}
       <ShowcaseSection />
+      {/* 3. Trust Gallery — real factory photography */}
+      <TrustGallery />
       {/* 4. Services — radial orbital timeline */}
       <ScalularServices />
       {/* 5. Final conversion CTA */}

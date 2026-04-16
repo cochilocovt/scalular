@@ -22,7 +22,7 @@ const FACTORY_DATA: Record<string, {
   portugal: { flag: '🇵🇹', name: 'Portugal', factories: 8, specialties: ['Luxury', 'Sustainable', 'EU Made'], certs: ['GOTS', 'EU Ecolabel'], accent: 'var(--color-primary)' },
 };
 
-/* ─── Clean, professional country card ───────────────────────────────────────── */
+/* ─── Tall, narrow country card ───────────────────────────────────────── */
 function FactoryCard({ id }: { id: string }) {
   const d = FACTORY_DATA[id];
   if (!d) return null;
@@ -34,45 +34,29 @@ function FactoryCard({ id }: { id: string }) {
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, y: 5, scale: 0.98 }}
       transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] as Easing }}
-      className="w-full max-w-[340px] bg-background/80 backdrop-blur-xl border border-border rounded-2xl p-6 shadow-[0_20px_50px_rgba(0,0,0,0.08)] relative z-30"
+      className="w-full max-w-[200px] xl:max-w-[240px] bg-background/80 backdrop-blur-xl border border-border rounded-[32px] p-8 shadow-[0_20px_50px_rgba(0,0,0,0.08)] relative z-30 flex flex-col items-center text-center"
     >
-      <div className="flex justify-between items-start mb-6">
-        <div>
-          <div className="flex items-center gap-2.5 mb-2">
-            <span className="text-3xl leading-none">{d.flag}</span>
-            <h3 className="text-xl font-bold text-text-primary leading-none tracking-tight">{d.name}</h3>
-          </div>
-          <div className="flex items-center gap-1.5 text-text-secondary">
-            <MapPin className="w-3.5 h-3.5" />
-            <p className="text-[11px] font-bold uppercase tracking-[0.15em]">Sourcing Hub</p>
-          </div>
-        </div>
-        <div className="text-right">
-          <div className="text-4xl font-black leading-none tracking-tighter" style={{ color: d.accent }}>{d.factories}</div>
-          <div className="text-[10px] text-text-secondary font-bold uppercase mt-2 tracking-widest">Facilities</div>
+      <div className="flex flex-col items-center mb-6">
+        <span className="text-[4rem] leading-[1.1] mb-2 drop-shadow-sm">{d.flag}</span>
+        <h3 className="text-xl font-black text-text-primary leading-none tracking-tight">{d.name}</h3>
+        <div className="flex items-center gap-1.5 text-text-secondary mt-2 opacity-70">
+          <MapPin className="w-3.5 h-3.5" />
+          <p className="text-[9px] font-bold uppercase tracking-[0.2em]">Sourcing Hub</p>
         </div>
       </div>
 
-      <div className="mb-6">
-        <div className="text-[10px] font-bold text-text-secondary uppercase tracking-[0.2em] mb-3">Specializations</div>
-        <div className="flex flex-wrap gap-2">
-          {d.specialties.map((s) => (
-            <span key={s} className="text-[10px] font-bold px-3 py-1.5 bg-neutral-200/50 rounded-full border border-neutral-200 text-text-primary">
-              {s}
-            </span>
-          ))}
-        </div>
+      <div className="mb-6 mt-2">
+        <div className="text-[5.5rem] font-black leading-[0.8] tracking-tighter" style={{ color: d.accent }}>{d.factories}</div>
+        <div className="text-[10px] text-text-secondary font-bold uppercase mt-3 tracking-[0.25em] opacity-80">Facilities</div>
       </div>
 
-      <div className="pt-5 border-t border-border/60">
-        <div className="flex flex-wrap gap-4">
-          {d.certs.map((c) => (
-            <div key={c} className="flex items-center gap-2">
-              <Award className="w-4 h-4 text-text-secondary" />
-              <span className="text-[11px] font-bold text-text-secondary tracking-widest uppercase">{c}</span>
-            </div>
-          ))}
-        </div>
+      <div className="w-full pt-6 border-t border-border/60 flex flex-col gap-3">
+        {d.certs.map((c) => (
+          <div key={c} className="flex items-center justify-center gap-2">
+            <Award className="w-3.5 h-3.5 text-text-secondary opacity-60" />
+            <span className="text-[10px] font-bold text-text-secondary tracking-widest uppercase">{c}</span>
+          </div>
+        ))}
       </div>
     </motion.div>
   );
@@ -94,14 +78,11 @@ const textVariants: Variants = {
 };
 
 const rotatingPhrases = [
-  "Instant Quote",
-  "Factory Direct Pricing",
-  "Flexible Payments",
-  "115+ Verified Factories",
-  "Certified Quality",
-  "Full Transparency",
-  "On-The Ground Time",
-  "Live Order Updates",
+  "Instant Quotes",
+  "Competitive Pricing",
+  "30+ Certified Factories",
+  "On-Ground Support",
+  "Live Order Tracking",
 ];
 
 /* ─── Main component ───────────────────────────────────────────────────── */
@@ -121,19 +102,11 @@ export function ScrollStory() {
   }, [titleNumber, rotatingPhrases.length]);
 
   return (
-    <div id="regions" className="relative w-full bg-background min-h-screen pt-24 md:pt-32 pb-16 flex flex-col items-center overflow-hidden">
+    <div id="regions" className="relative w-full bg-background min-h-screen pt-16 md:pt-20 pb-16 flex flex-col items-center overflow-hidden">
 
       {/* ── Hero text (Centered) ── */}
       <div className="w-full max-w-4xl mx-auto px-6 text-center z-20 flex flex-col items-center relative mb-12 md:mb-16">
-        <motion.p
-          custom={0.1}
-          variants={textVariants}
-          initial="hidden"
-          animate="visible"
-          className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.25em] text-primary mb-5"
-        >
-          Scale Your Global Production
-        </motion.p>
+
 
         <motion.h1
           custom={0.25}
@@ -190,18 +163,20 @@ export function ScrollStory() {
             size="lg"
             href="https://app.scalular.com/quote"
             target="_blank"
+            withLamp={true}
+            className="mt-24 mb-16"
           />
         </motion.div>
       </div>
 
       {/* ── Main Interactive Scene ── */}
-      <div className="w-full max-w-screen-2xl mx-auto relative flex flex-col items-center min-h-[500px] md:min-h-[700px]">
+      <div className="w-full max-w-screen-2xl mx-auto relative flex flex-col items-center min-h-[500px] md:min-h-[700px] px-0 lg:px-4 xl:px-16">
         {/* 1. Globe (Strictly Centered) */}
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.7, duration: 1.2, ease: [0.22, 1, 0.36, 1] as Easing }}
-          className="w-full max-w-[400px] md:max-w-[650px] aspect-square relative z-10 flex items-center justify-center shrink-0"
+          className="w-full max-w-[400px] md:max-w-[650px] lg:max-w-[700px] aspect-square relative z-10 flex items-center justify-center shrink-0"
         >
           <div className="absolute inset-x-0 bottom-0 h-1/4 bg-gradient-to-t from-background to-transparent z-10 pointer-events-none opacity-40" />
           <GlobeCdn
@@ -213,15 +188,20 @@ export function ScrollStory() {
         </motion.div>
 
         {/* Desktop Layout: Absolute Right Side Overlay */}
-        <div className="hidden lg:flex absolute top-0 bottom-0 right-0 w-[45%] items-center justify-end pr-8 xl:pr-16 pointer-events-none z-30">
-          {/* Pin the items to the right side of the container leaving maximum space for the globe */}
-          <div className="flex items-center gap-6 lg:gap-10 xl:gap-16 pointer-events-auto">
-            {/* Factory Card */}
-            <div className="w-full max-w-[300px] xl:max-w-[340px] shrink-0">
+        <div className="hidden lg:flex absolute top-0 bottom-0 right-0 w-[40%] items-center justify-end pr-8 xl:pr-16 pointer-events-none z-30">
+          {/* Narrower Card keeps it completely clear of the centered globe */}
+          <div className="flex items-center gap-8 xl:gap-16 pointer-events-auto">
+            {/* Factory Card Wrapper */}
+            <motion.div 
+              initial={{ opacity: 0, filter: 'blur(10px)', x: -20 }}
+              animate={{ opacity: 1, filter: 'blur(0px)', x: 0 }}
+              transition={{ delay: 0.9, duration: 1.2, ease: [0.22, 1, 0.36, 1] as Easing }}
+              className="w-full max-w-[200px] xl:max-w-[240px] shrink-0"
+            >
               <AnimatePresence mode="wait">
                 {selectedId && <FactoryCard id={selectedId} />}
               </AnimatePresence>
-            </div>
+            </motion.div>
 
             {/* Nav Dots */}
             <motion.div
@@ -265,12 +245,18 @@ export function ScrollStory() {
         </div>
 
         {/* Mobile Layout: Flow Below Globe */}
-        <div className="flex lg:hidden flex-col items-center w-full px-6 -mt-10 md:-mt-16 z-30 pointer-events-auto gap-8 mb-8">
-          <div className="w-full flex justify-center min-h-[280px]" id="region-card">
+        <div className="flex lg:hidden flex-col items-center w-full px-6 mt-4 md:mt-8 z-30 pointer-events-auto gap-8 mb-8">
+          <motion.div 
+            initial={{ opacity: 0, y: 20, filter: 'blur(10px)' }}
+            animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+            transition={{ delay: 0.9, duration: 1.2, ease: [0.22, 1, 0.36, 1] as Easing }}
+            className="w-full flex justify-center min-h-[280px]" 
+            id="region-card"
+          >
             <AnimatePresence mode="wait">
               {selectedId && <FactoryCard id={selectedId} />}
             </AnimatePresence>
-          </div>
+          </motion.div>
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}

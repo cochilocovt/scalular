@@ -6,6 +6,7 @@ import { FileText, Menu, X } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import logoIcon from '@/assets/logo-icon.png';
+import { GetStartedButton } from './get-started-button';
 
 const NAV_LINKS = [
   { label: 'Network',    href: '/#regions' },
@@ -52,7 +53,7 @@ export function Navbar() {
             priority
             loading="eager"
           />
-          <span className="text-white text-2xl font-bold tracking-wide font-display mt-0.5">
+          <span className="text-white text-2xl font-bold tracking-wide font-sans mt-0.5">
             Scalular
           </span>
         </Link>
@@ -78,12 +79,20 @@ export function Navbar() {
           >
             Sign In
           </Link>
+          <div className="hidden sm:block">
+            <GetStartedButton
+              label="Get Quote"
+              href="https://app.scalular.com/quote"
+              target="_blank"
+              size="sm"
+            />
+          </div>
           <Link
             href="https://app.scalular.com/quote"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Get an instant quote"
-            className="relative w-10 h-10 rounded-full flex items-center justify-center border border-[#ffffff1a] bg-[#ffffff0d] hover:bg-[#ffffff1a] cursor-pointer text-[#ffffffb3] hover:text-[#ffffff] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ffffff80] transition-colors"
+            className="sm:hidden relative w-10 h-10 rounded-full flex items-center justify-center border border-[#ffffff1a] bg-[#ffffff0d] hover:bg-[#ffffff1a] cursor-pointer text-[#ffffffb3] hover:text-[#ffffff] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ffffff80] transition-colors"
           >
             <FileText className="w-4 h-4" />
           </Link>

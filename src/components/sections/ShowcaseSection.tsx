@@ -49,12 +49,6 @@ export function ShowcaseSection() {
         {/* Divider */}
         <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent mb-12" />
 
-        {/* Product Showcase */}
-        <ProductShowcase />
-
-        {/* Divider */}
-        <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent my-12" />
-
         {/* Certifications */}
         <CertificationsDisplay />
 
@@ -63,6 +57,12 @@ export function ShowcaseSection() {
 
         {/* Client Logos */}
         <ClientLogos />
+
+        {/* Divider */}
+        <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent my-12" />
+
+        {/* Product Showcase */}
+        <ProductShowcase />
       </div>
 
       {/* Subtle bottom border */}

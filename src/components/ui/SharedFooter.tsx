@@ -12,7 +12,7 @@ export function SharedFooter() {
           <div className="flex flex-col gap-2">
             <Link href="/" className="flex items-center gap-3 group">
               <Image src={logoIcon} alt="Scalular Logo" width={44} height={44} className="h-10 w-10 object-contain transition-all duration-300 group-hover:scale-105" />
-              <span className="text-white text-xl font-bold tracking-wide font-display mt-0.5">
+              <span className="text-white text-xl font-bold tracking-wide font-sans mt-0.5">
                 Scalular
               </span>
             </Link>
@@ -36,7 +36,7 @@ export function SharedFooter() {
             <div className="flex flex-col gap-2">
               <span className="text-[10px] font-semibold tracking-widest uppercase text-[#ffffff80] mb-1">Legal</span>
               <Link href="#" className="text-[#ffffffb3] hover:text-[#ffffff] transition-colors">Privacy Policy</Link>
-              <Link href="#" className="text-[#ffffffb3] hover:text-[#ffffff] transition-colors">Terms of Service</Link>
+              <Link href="/terms-and-conditions" className="text-[#ffffffb3] hover:text-[#ffffff] transition-colors">Terms of Service</Link>
               <Link href="#" className="text-[#ffffffb3] hover:text-[#ffffff] transition-colors">Contact</Link>
             </div>
           </div>

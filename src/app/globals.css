@@ -315,3 +315,16 @@ a, button, [role="button"], input, select, textarea,
   transition-duration: 0.2s;
   transition-timing-function: ease;
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   MARQUEE ANIMATION
+   ═══════════════════════════════════════════════════════════════ */
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 40s linear infinite;
+  display: flex;
+}

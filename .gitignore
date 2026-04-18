@@ -44,6 +44,3 @@ yarn-error.log*
 
 # vscode
 .vscode/
-
-# large media
-public/images/trust/*.mp4

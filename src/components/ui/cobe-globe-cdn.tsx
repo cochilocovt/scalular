@@ -3,6 +3,8 @@
 import { useEffect, useRef, useCallback } from "react"
 import createGlobe from "cobe"
 
+import { FACTORIES, BUYER_HUBS, SUPPLY_ARCS } from '@/data/factories';
+
 interface GlobeMarker {
   id: string
   location: [number, number]
@@ -28,44 +30,51 @@ interface GlobeCdnProps {
   onActiveChange?: (id: string | null) => void
 }
 
-/* ── Scalular factory countries ─────────────────────────────── */
+/* ── Resolved hex colors for COBE WebGL rendering ──────────── */
+/* COBE runs on the GPU and cannot resolve CSS var() references, */
+/* so we maintain a hex lookup keyed to the CSS variable names.  */
+const VAR_TO_HEX: Record<string, string> = {
+  'var(--color-blue-400)': '#727cb1',
+  'var(--color-blue-700)': '#323959',
+  'var(--color-blue-100)': '#eff0f6',
+  'var(--color-neutral-700)': '#41413d',
+  'var(--color-neutral-900)': '#222220',
+  'var(--color-neutral-200)': '#d5d3ca',
+  'var(--color-surface-muted)': '#ADACA4',
+  'var(--color-primary)': '#171B2E',
+  'var(--color-primary-alt)': '#1A1E31',
+};
+
+function resolveHex(cssVar: string): string {
+  return VAR_TO_HEX[cssVar] ?? '#171B2E';
+}
+
+/* ── Scalular factory countries (derived from shared data) ──── */
 const defaultMarkers: GlobeMarker[] = [
-  { id: "india", location: [20.59, 78.96], region: "India", specialty: "Cotton · Knitwear · Embroidery", color: "#727cb1", factoryCount: 24 },
-  { id: "bangladesh", location: [23.69, 90.36], region: "Bangladesh", specialty: "Basics · Volume · Jersey", color: "#41413d", factoryCount: 42 },
-  { id: "turkey", location: [38.96, 35.24], region: "Turkey", specialty: "Premium Fashion · Cut & Sew", color: "#222220", factoryCount: 18 },
-  { id: "vietnam", location: [14.06, 108.28], region: "Vietnam", specialty: "Technical · Activewear", color: "#323959", factoryCount: 31 },
-  { id: "china", location: [31.23, 121.47], region: "China", specialty: "Scale · Technology · Accessories", color: "#ADACA4", factoryCount: 22 },
-  { id: "pakistan", location: [30.38, 69.35], region: "Pakistan", specialty: "Denim · Woven Basics", color: "#d5d3ca", factoryCount: 15 },
-  { id: "portugal", location: [39.40, -8.22], region: "Portugal", specialty: "Luxury · Sustainable · EU Made", color: "#171B2E", factoryCount: 8 },
-  { id: "morocco", location: [31.79, -7.09], region: "Morocco", specialty: "EU-Nearshore · Fast Fashion", color: "#1A1E31", factoryCount: 12 },
-  { id: "srilanka", location: [7.87, 80.77], region: "Sri Lanka", specialty: "Lingerie · Intimate Apparel", color: "#eff0f6", factoryCount: 14 },
-  // Buyer hubs
-  { id: "usa", location: [40.71, -74.01], region: "New York", specialty: "Americas Hub", color: "#727cb1", isBuyer: true },
-  { id: "uk", location: [51.51, -0.13], region: "London", specialty: "Europe Hub", color: "#323959", isBuyer: true },
-  { id: "germany", location: [52.52, 13.41], region: "Berlin", specialty: "EU Hub", color: "#171B2E", isBuyer: true },
-  { id: "uae", location: [25.20, 55.27], region: "Dubai", specialty: "MENA Hub", color: "#1A1E31", isBuyer: true },
-  { id: "australia", location: [-33.87, 151.21], region: "Sydney", specialty: "APAC Hub", color: "#41413d", isBuyer: true },
-  { id: "canada", location: [43.65, -79.38], region: "Toronto", specialty: "NA Hub", color: "#ADACA4", isBuyer: true },
-]
+  ...FACTORIES.map(f => ({
+    id: f.id,
+    location: f.location,
+    region: f.name,
+    specialty: f.specialty,
+    color: resolveHex(f.accentColor),
+    factoryCount: f.factoryCount,
+  })),
+  ...BUYER_HUBS.map(h => ({
+    id: h.id,
+    location: h.location,
+    region: h.name,
+    specialty: h.label,
+    color: resolveHex(h.accentColor),
+    isBuyer: true as const,
+  })),
+];
 
 /* ── Supply chain arcs (factory → buyer hub) ─────────────────── */
-const defaultArcs: GlobeArc[] = [
-  { id: "arc-in-ny", from: [20.59, 78.96], to: [40.71, -74.01] },
-  { id: "arc-in-ld", from: [20.59, 78.96], to: [51.51, -0.13] },
-  { id: "arc-bd-ld", from: [23.69, 90.36], to: [51.51, -0.13] },
-  { id: "arc-bd-ny", from: [23.69, 90.36], to: [40.71, -74.01] },
-  { id: "arc-tr-ld", from: [38.96, 35.24], to: [51.51, -0.13] },
-  { id: "arc-tr-bl", from: [38.96, 35.24], to: [52.52, 13.41] },
-  { id: "arc-vn-ny", from: [14.06, 108.28], to: [40.71, -74.01] },
-  { id: "arc-vn-sy", from: [14.06, 108.28], to: [-33.87, 151.21] },
-  { id: "arc-cn-ny", from: [31.23, 121.47], to: [40.71, -74.01] },
-  { id: "arc-cn-sy", from: [31.23, 121.47], to: [-33.87, 151.21] },
-  { id: "arc-pk-ld", from: [30.38, 69.35], to: [51.51, -0.13] },
-  { id: "arc-pt-bl", from: [39.40, -8.22], to: [52.52, 13.41] },
-  { id: "arc-ma-ld", from: [31.79, -7.09], to: [51.51, -0.13] },
-  { id: "arc-lk-db", from: [7.87, 80.77], to: [25.20, 55.27] },
-  { id: "arc-in-to", from: [20.59, 78.96], to: [43.65, -79.38] },
-]
+const defaultArcs: GlobeArc[] = SUPPLY_ARCS.map(a => ({
+  id: a.id,
+  from: a.from,
+  to: a.to,
+}));
 
 export function GlobeCdn({
   markers = defaultMarkers,
@@ -304,6 +313,9 @@ export function GlobeCdn({
     }
 
     const ro = new ResizeObserver(() => {
+      if (animationId) {
+        cancelAnimationFrame(animationId)
+      }
       if (globe) {
         globe.destroy()
         globe = null

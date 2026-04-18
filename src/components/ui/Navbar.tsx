@@ -11,6 +11,7 @@ import { GetStartedButton } from './get-started-button';
 const NAV_LINKS = [
   { label: 'Network',    href: '/#regions' },
   { label: 'Services',   href: '/#services' },
+  { label: 'Gallery',    href: '/gallery' },
   { label: 'About',      href: '/about' },
   { label: 'Partner',    href: '/partner' },
 ];
@@ -38,8 +39,8 @@ export function Navbar() {
         variants={{ visible: { y: 0 }, hidden: { y: '-100%' } }}
         animate={hidden ? 'hidden' : 'visible'}
         transition={{ duration: 0.35, ease: 'easeInOut' }}
-        className={`fixed top-0 inset-x-0 z-50 flex h-20 items-center justify-between px-6 md:px-12 transition-all duration-300 ${
-          scrolled ? 'bg-primary shadow-lg border-b border-[#ffffff0d]' : 'bg-primary'
+        className={`fixed top-0 inset-x-0 z-50 flex h-14 items-center justify-between px-6 md:px-12 transition-all duration-300 ${
+          scrolled ? 'bg-primary/80 backdrop-blur-md shadow-lg border-b border-primary-foreground/5' : 'bg-primary/50 backdrop-blur-sm'
         }`}
       >
         {/* Logo */}
@@ -47,24 +48,24 @@ export function Navbar() {
           <Image
             src={logoIcon}
             alt="Scalular Logo"
-            width={52}
-            height={52}
-            className="h-12 w-12 object-contain transition-all duration-300 group-hover:scale-105"
+            width={40}
+            height={40}
+            className="h-9 w-9 object-contain transition-all duration-300 group-hover:scale-105"
             priority
             loading="eager"
           />
-          <span className="text-white text-2xl font-bold tracking-wide font-sans mt-0.5">
+          <span className="text-primary-foreground text-xl font-light tracking-[0.25em] uppercase" style={{ fontFamily: 'var(--font-brand)' }}>
             Scalular
           </span>
         </Link>
 
         {/* Desktop nav links */}
-        <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-[#ffffffb3]">
+        <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-primary-foreground/70">
           {NAV_LINKS.map(({ label, href }) => (
             <Link
               key={label}
               href={href}
-              className="hover:text-[#ffffff] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ffffff80] focus-visible:ring-offset-2 focus-visible:ring-offset-primary transition-colors duration-200 rounded-sm"
+              className="hover:text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground/50 focus-visible:ring-offset-2 focus-visible:ring-offset-primary transition-colors duration-200 rounded-sm"
             >
               {label}
             </Link>
@@ -75,7 +76,7 @@ export function Navbar() {
         <div className="flex items-center gap-3">
           <Link
             href="https://app.scalular.com/login"
-            className="hidden md:inline-flex text-sm font-medium text-[#ffffffb3] hover:text-[#ffffff] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ffffff80] focus-visible:ring-offset-2 focus-visible:ring-offset-primary transition-colors duration-200 rounded-sm px-1"
+            className="hidden md:inline-flex text-sm font-medium text-primary-foreground/70 hover:text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground/50 focus-visible:ring-offset-2 focus-visible:ring-offset-primary transition-colors duration-200 rounded-sm px-1"
           >
             Sign In
           </Link>
@@ -92,14 +93,14 @@ export function Navbar() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Get an instant quote"
-            className="sm:hidden relative w-10 h-10 rounded-full flex items-center justify-center border border-[#ffffff1a] bg-[#ffffff0d] hover:bg-[#ffffff1a] cursor-pointer text-[#ffffffb3] hover:text-[#ffffff] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ffffff80] transition-colors"
+            className="sm:hidden relative w-10 h-10 rounded-full flex items-center justify-center border border-primary-foreground/10 bg-primary-foreground/5 hover:bg-primary-foreground/10 cursor-pointer text-primary-foreground/70 hover:text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground/50 transition-colors"
           >
             <FileText className="w-4 h-4" />
           </Link>
 
           {/* Mobile hamburger */}
           <button
-            className="md:hidden w-10 h-10 rounded-full flex items-center justify-center border border-[#ffffff1a] bg-[#ffffff0d] hover:bg-[#ffffff1a] text-[#ffffffb3] hover:text-[#ffffff] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ffffff80] transition-colors"
+            className="md:hidden w-10 h-10 rounded-full flex items-center justify-center border border-primary-foreground/10 bg-primary-foreground/5 hover:bg-primary-foreground/10 text-primary-foreground/70 hover:text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground/50 transition-colors"
             onClick={() => setMobileOpen((v) => !v)}
             aria-label="Toggle menu"
             aria-expanded={mobileOpen}
@@ -119,21 +120,21 @@ export function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -16 }}
             transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed top-20 inset-x-0 z-40 bg-primary px-6 py-6 flex flex-col gap-4 md:hidden shadow-xl border-t border-[#ffffff0d]"
+            className="fixed top-20 inset-x-0 z-40 bg-primary/95 backdrop-blur-xl px-6 py-6 flex flex-col gap-4 md:hidden shadow-xl border-t border-primary-foreground/5"
           >
             {NAV_LINKS.map(({ label, href }) => (
               <Link
                 key={label}
                 href={href}
                 onClick={() => setMobileOpen(false)}
-                className="text-base font-semibold text-[#ffffff] hover:text-[#ffffffcc] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ffffff80] transition-colors py-1 border-b border-[#ffffff1a] last:border-0 rounded-sm"
+                className="text-base font-semibold text-primary-foreground hover:text-primary-foreground/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground/50 transition-colors py-1 border-b border-primary-foreground/10 last:border-0 rounded-sm"
               >
                 {label}
               </Link>
             ))}
             <Link
               href="https://app.scalular.com/login"
-              className="text-base font-medium text-[#ffffffb3] hover:text-[#ffffff] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ffffff80] transition-colors py-1 rounded-sm"
+              className="text-base font-medium text-primary-foreground/70 hover:text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground/50 transition-colors py-1 rounded-sm"
               onClick={() => setMobileOpen(false)}
             >
               Sign In
@@ -141,7 +142,7 @@ export function Navbar() {
             <Link
               href="https://app.scalular.com/quote"
               target="_blank"
-              className="text-base font-bold text-[#ffffff] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ffffff80] py-1 rounded-sm"
+              className="text-base font-bold text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground/50 py-1 rounded-sm"
               onClick={() => setMobileOpen(false)}
             >
               Get a Quote →

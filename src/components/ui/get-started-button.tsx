@@ -162,15 +162,24 @@ export function GetStartedButton({
       </motion.div>
     </div>
   );
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 1024px)');
+    setIsDesktop(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
 
   const lampGlow = withLamp && (
     <div 
-      className="absolute -top-[80px] left-1/2 flex w-[50rem] -translate-x-1/2 justify-center pointer-events-none z-0"
+      className="absolute -top-[70px] left-1/2 flex w-[28rem] lg:w-[50rem] -translate-x-1/2 justify-center pointer-events-none z-0"
     >
       {/* 1. Volumetric Spotlight Beam */}
       <motion.div 
-        initial={{ opacity: 0.5, width: "15rem" }}
-        whileInView={{ opacity: 1, width: "50rem" }}
+        initial={{ opacity: 0.5, width: isDesktop ? "15rem" : "10rem" }}
+        whileInView={{ opacity: 1, width: isDesktop ? "50rem" : "24rem" }}
         transition={{ delay: 0.3, duration: 0.8, ease: "easeInOut" }}
         className="absolute top-[4px] h-[180px]"
         style={{ filter: "blur(6px)" }}
@@ -188,8 +197,8 @@ export function GetStartedButton({
 
       {/* 2. Inner intense core beam */}
       <motion.div 
-        initial={{ opacity: 0.5, width: "8rem" }}
-        whileInView={{ opacity: 1, width: "38rem" }}
+        initial={{ opacity: 0.5, width: isDesktop ? "8rem" : "6rem" }}
+        whileInView={{ opacity: 1, width: isDesktop ? "38rem" : "18rem" }}
         transition={{ delay: 0.3, duration: 0.8, ease: "easeInOut" }}
         className="absolute top-[4px] h-[140px]"
         style={{ filter: "blur(4px)" }}
@@ -207,8 +216,8 @@ export function GetStartedButton({
 
       {/* 3. The 3D Physical Hardware Glass Tubelight */}
       <motion.div 
-        initial={{ width: "15rem" }}
-        whileInView={{ width: "32rem" }}
+        initial={{ width: isDesktop ? "15rem" : "10rem" }}
+        whileInView={{ width: isDesktop ? "32rem" : "16rem" }}
         transition={{ delay: 0.3, duration: 0.8, ease: "easeInOut" }}
         className="absolute top-0 flex items-center justify-center h-[6px] rounded-full isolate"
         style={{

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 120" width="300" height="120">
+  <rect width="300" height="120" fill="white"/>
+  <!-- Concentric rings from their logo -->
+  <circle cx="60" cy="60" r="45" fill="none" stroke="#1a5276" stroke-width="3"/>
+  <circle cx="60" cy="60" r="33" fill="none" stroke="#1a5276" stroke-width="3"/>
+  <circle cx="60" cy="60" r="21" fill="none" stroke="#1a5276" stroke-width="3"/>
+  <circle cx="60" cy="60" r="9" fill="none" stroke="#1a5276" stroke-width="3"/>
+  <text x="165" y="52" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#1a5276" letter-spacing="1">CENTRIC</text>
+  <text x="165" y="75" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="#555" letter-spacing="4">BRANDS</text>
+</svg>

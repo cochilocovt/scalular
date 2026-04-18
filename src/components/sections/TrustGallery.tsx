@@ -33,10 +33,10 @@ export function TrustGallery() {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full py-24 md:py-32 px-6 md:px-12 lg:px-20 bg-background overflow-hidden"
+      className="relative w-full py-12 md:py-20 px-6 md:px-12 lg:px-20 bg-background overflow-hidden"
     >
       {/* ── Section header ─────────────────────────────────── */}
-      <div className="max-w-6xl mx-auto mb-16">
+      <div className="max-w-6xl mx-auto mb-8">
         <motion.p
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -70,7 +70,7 @@ export function TrustGallery() {
       </div>
 
       {/* ── Photo grid — editorial asymmetric layout ────────── */}
-      <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-12 gap-3 md:gap-4 auto-rows-[180px] md:auto-rows-[220px]">
+      <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-12 gap-3 md:gap-4 auto-rows-[150px] md:auto-rows-[220px]">
         {/* Large hero image — spans 2 rows */}
         <motion.div
           style={{ y: y1 }}
@@ -143,7 +143,7 @@ export function TrustGallery() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: i * 0.08 }}
-            className="col-span-1 md:col-span-4 relative rounded-2xl overflow-hidden group"
+            className={`col-span-1 md:col-span-4 relative rounded-2xl overflow-hidden group${i >= 0 && i < 2 ? ' hidden md:block' : ''}`}
           >
             <Image
               src={photo.src}

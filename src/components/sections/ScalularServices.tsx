@@ -82,7 +82,7 @@ const servicesData = [
 
 export function ScalularServices() {
   return (
-    <section id="services" className="relative bg-transparent py-20 md:py-28 overflow-hidden">
+    <section id="services" className="relative bg-transparent py-12 md:py-20 overflow-hidden">
       <div className="absolute inset-0 bg-background -z-20" />
       
       {/* Subtle background — toned down from the original */}
@@ -90,7 +90,7 @@ export function ScalularServices() {
 
       <div className="max-w-6xl mx-auto px-6 md:px-12 relative z-10">
         {/* Header — left-aligned for Linear feel */}
-        <div className="max-w-2xl mb-12 md:mb-16">
+        <div className="max-w-2xl mb-8 md:mb-12">
           <motion.p
             initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}

@@ -19,12 +19,14 @@ Marketing landing page for **Scalular** — a B2B apparel sourcing platform. Con
 | Styling | Tailwind CSS v4 | ^4 |
 | Animation | Framer Motion | ^12.38 |
 | Scroll | Lenis (smooth scroll) | ^1.3.20 |
-| 3D Globe | react-globe.gl + Three.js | ^2.37 / ^0.183 |
-| 3D utilities | @react-three/fiber + drei | ^9.5 / ^10.7 |
+| 3D Globe | cobe (WebGL globe) | ^2.0.1 |
+| 3D garments | @react-three/fiber + drei | ^9.5 / ^10.7 |
+| 3D models | GLB files (17 garment .glb in public/models/) | — |
 | Button shader | @paper-design/shaders | ^0.0.72 |
 | Icons | lucide-react | ^1.6 |
 | Class utils | clsx + tailwind-merge | ^2.1 / ^3.5 |
-| Font | M PLUS Code Latin (Google) | all weights 100–700 |
+| Display font | Plus Jakarta Sans (Google) | weights 400–800 |
+| Body font | Outfit (Google) | weights 300–700 |
 
 **Tailwind v4** — uses `@import "tailwindcss"` in globals.css, `@theme inline` block for token mapping, `@utility` for custom utilities. No `tailwind.config.js` — config is inline in CSS.
 
@@ -35,79 +37,86 @@ Marketing landing page for **Scalular** — a B2B apparel sourcing platform. Con
 ```
 src/
   app/
-    layout.tsx          — Root layout: M PLUS Code Latin font, LIGHT mode default, Navbar + SharedFooter + SmoothScroll
-    page.tsx            — Home page: ScrollStory + ShowcaseSection + ScalularServices + CTASection
-    globals.css         — ALL theming, CSS vars, Tailwind v4 config, utilities, GlowCTAButton animations
+    layout.tsx              — Root layout: Plus Jakarta Sans + Outfit fonts, LIGHT mode default, Navbar + SharedFooter + SmoothScroll
+    page.tsx                — Home page: ScrollStory + ShowcaseSection + TrustGallery + ScalularServices + CTASection
+    globals.css             — ALL design tokens (primitives + semantic), Tailwind v4 @theme inline mapping, glassmorphism/neumorphism utilities, keyframe animations
     favicon.ico
     about/
-      page.tsx          — About Us page: hero, mission+stats, values, location, CTA
+      layout.tsx            — About page metadata
+      page.tsx              — About Us page (client component): hero, mission+stats, values, HQ location, CTA
     partner/
-      page.tsx          — Become a Partner page: hero, benefits, how-it-works, certs, form, FAQ
-  assets/               — Brand logos (PNG)
-    logo.png            — Full logo (transparent)
-    logo-icon.png       — Icon only (used in globe timeline center)
+      layout.tsx            — Partner page metadata
+      page.tsx              — Become a Partner page (client component): hero, benefits, how-it-works, certs, PartnerForm, FAQ
+    terms-and-conditions/
+      page.tsx              — Terms & Conditions (server component): legal text, 18 sections
+  assets/                   — Brand logos (PNG), imported via @/assets/
+    logo.png                — Full logo (transparent)
+    logo-icon.png           — Icon only (used in globe orbital center + navbar + footer)
     logo-white-horizontal.png
-    logo-black-horizontal.png — Used in Navbar (light mode)
+    logo-black-horizontal.png
     logo-white-vertical.png
     logo-black-vertical.png
   components/
     3d/
-      Globe.tsx         — ScalularGlobe: react-globe.gl, zoom disabled, blue-marble texture, light-mode tooltips
-      GarmentModels.tsx — 17 procedural Three.js garment silhouettes + GARMENT_CATALOG export
+      GarmentModels.tsx     — GLBModel loader via useGLTF + GARMENT_CATALOG (17 entries with .glb URLs)
+      Globe.tsx             — LEGACY: react-globe.gl (NOT imported by any active page — superseded by cobe-globe-cdn)
     sections/
-      ScrollStory.tsx   — Hero: sticky 200vh scroll, 3D globe + scroll-driven text reveal + factory cards + GlowCTAButton
-      ShowcaseSection.tsx — Wrapper: "Simplified. Streamlined. Sourced." + ProductShowcase + CertificationsDisplay + ClientLogos
-      ProductShowcase.tsx — 3D garment carousel (3-item view, active-only Canvas, auto-advance 4s, touch swipe)
-      CertificationsDisplay.tsx — 12 certification cards with stagger animation
-      ClientLogos.tsx   — Infinite brand logo marquee (SVGs at public/assets/clients/*.svg — user to provide)
-      PartnerForm.tsx   — Factory application form: 17 garment type toggles, 12 cert checkboxes, validation, success state
-      ScalularServices.tsx — Services section with RadialOrbitalTimeline
-      CTASection.tsx    — Final CTA: GlowCTAButton + Calendly link + trust badges
-      (legacy/unused: ChaosToOrder.tsx, Footer.tsx, Hero.tsx, HowItWorks.tsx, OutcomeBlock.tsx, PainSection.tsx, RegionsSection.tsx, SocialProof.tsx, TrustSection.tsx)
+      ScrollStory.tsx       — Hero: centered COBE globe + rotating headline (5 phrases, 2s interval) + factory cards + region nav dots + stats row
+      ShowcaseSection.tsx   — Wrapper: "Simplified. Streamlined. Sourced." heading + CertificationsDisplay + ClientLogos + ProductShowcase
+      ProductShowcase.tsx   — 3D garment carousel: scrolling text list (left) + Three.js R3F canvas (right), auto-advance 2s
+      CertificationsDisplay.tsx — 16 certification cards in infinite framer-motion marquee (speed 35s)
+      ClientLogos.tsx       — 20 brand SVGs in infinite framer-motion marquee (speed 40s, direction right) + stats row
+      TrustGallery.tsx      — 6 real factory photos, parallax asymmetric grid, 3 metric badges
+      ScalularServices.tsx  — "Everything you need to ship smarter" + RadialOrbitalTimeline with 8 service nodes
+      CTASection.tsx        — Final CTA: "Your factory is waiting." + GetStartedButton + Calendly link + 4 trust badges
+      PartnerForm.tsx       — Factory partner application form (BOILERPLATE — not wired to a backend): 17 product toggles, 12 cert checkboxes, validation, success state animation
     ui/
-      Navbar.tsx        — Fixed nav: auto-hide on scroll, glassmorphism on scroll, multi-page links, mobile hamburger drawer
-      SharedFooter.tsx  — Shared multi-column footer: logo, tagline, nav columns, address, copyright
-      SmoothScroll.tsx  — Lenis smooth scroll wrapper (wraps entire page in root layout)
-      GlowCTAButton.tsx — Primary CTA: rotating conic-gradient border, Framer Motion glow pulse, ripple on click
-      AnimatedCounter.tsx — Scroll-triggered number animation (useInView + framer-motion animate)
-      FAQAccordion.tsx  — Expandable Q&A with AnimatePresence height animation
-      radial-orbital-timeline.tsx — Rotating orbital wheel with clickable nodes, lure animation, expand cards
-      liquid-metal-button.tsx     — WebGL shader button (kept, no longer primary CTA)
-      Button.tsx        — Basic button component
-      Card.tsx          — Basic card component
-      StatPill.tsx      — Stat display pill
-      badge.tsx         — Badge primitive
-      ui-button.tsx     — shadcn-style button
-      ui-card.tsx       — shadcn-style card (used inside radial timeline)
+      Navbar.tsx            — Fixed dark (bg-primary) nav: auto-hide on scroll down, backdrop-blur on scroll, mobile hamburger drawer
+      SharedFooter.tsx      — Dark (bg-primary) multi-column footer: logo, tagline, nav columns (Company/Product/Legal), address, copyright
+      SmoothScroll.tsx      — Lenis smooth scroll wrapper (wraps entire page in root layout), anchor click interception
+      get-started-button.tsx — PRIMARY CTA: liquid-metal WebGL shader button (@paper-design/shaders), 3D perspective, ripple, optional lamp glow
+      cobe-globe-cdn.tsx    — ACTIVE globe: COBE WebGL globe with custom 3D pyramid markers, dynamic pulsing arcs, dot-cluster hub visualization
+      radial-orbital-timeline.tsx — Rotating orbital wheel: 8 clickable nodes orbiting center logo, auto-rotate + click-to-expand detail panel
+      AnimatedCounter.tsx   — Scroll-triggered number animation (useInView + framer-motion animate)
+      FAQAccordion.tsx      — Expandable Q&A: plus/minus icons, AnimatePresence height animation
+      liquid-metal-button.tsx — LEGACY WebGL shader button (NOT imported by any active page)
+      Button.tsx / Card.tsx / StatPill.tsx / badge.tsx — UNUSED primitives (not imported)
+      shadcn-button.tsx / ui-button.tsx / ui-card.tsx — UNUSED shadcn-style wrappers (not imported)
   lib/
-    utils.ts            — cn() helper (clsx + twMerge)
+    utils.ts                — cn() helper (clsx + twMerge)
 public/
-  assets/
-    clients/            — Client brand SVGs go here (amazon.svg, walmart.svg, disney.svg, gap.svg, levis.svg, reebok.svg)
+  images/
+    certification_logos/    — 16 certification PNGs/JPGs (GOTS, OEKO-TEX, Fairtrade, ISO 9001, etc.)
+    brand_logos/            — 20 brand SVGs (Amazon, Disney, GAP, Levi's, Walmart, etc.)
+    trust/                  — 6 factory photography JPGs (sewing-floor, cotton-processing, etc.)
+  models/                   — 17 GLB 3D garment models (tshirt, hoodie, jeans, dress, etc.)
 ```
 
 ---
 
 ## Routing
 
-Multi-page app with 3 routes:
+Multi-page app with 4 routes:
 - `/` — Homepage
 - `/about` — About Us
 - `/partner` — Become a Partner
+- `/terms-and-conditions` — Terms & Conditions
 
-Anchor links on homepage: `#regions`, `#cta`.
-Navbar links: `/#regions`, `/#cta`, `/about`, `/partner`.
+Anchor links on homepage: `#regions`, `#services`, `#cta`.
+Navbar links: `/#regions`, `/#services`, `/about`, `/partner`.
+Footer links: `/about`, `/partner`, `/#regions`, `/#cta`, `/terms-and-conditions`, plus dead `#` links for Privacy Policy and Contact.
 
 ---
 
 ## Page Layout — Homepage (top to bottom)
 
-1. **Navbar** — shared via layout.tsx; fixed, hides on scroll down, `glass-nav` on scroll
-2. **ScrollStory** (`#regions`) — 200vh sticky scroll: interactive globe hero, factory country cards, scroll-driven headline
-3. **ShowcaseSection** — product carousel, certifications grid, client logos marquee
-4. **ScalularServices** — min-h-screen: "The Tools to Ship Smarter" + RadialOrbitalTimeline with 8 service nodes
-5. **CTASection** (`#cta`) — "Your Factory, Instantly." + GlowCTAButton + Calendly link
-6. **SharedFooter** — shared via layout.tsx
+1. **Navbar** — shared via layout.tsx; fixed dark nav (bg-primary), hides on scroll down, backdrop-blur on scroll
+2. **ScrollStory** (`#regions`) — centered COBE globe hero, rotating headline, factory country cards, region nav dots, stats row
+3. **ShowcaseSection** — section heading + CertificationsDisplay marquee + ClientLogos marquee + ProductShowcase 3D carousel
+4. **TrustGallery** — Real factory photography with parallax, asymmetric grid, metric badges
+5. **ScalularServices** (`#services`) — "Everything you need to ship smarter" + RadialOrbitalTimeline with 8 service nodes
+6. **CTASection** (`#cta`) — "Your factory is waiting." + GetStartedButton + Calendly link + trust badges
+7. **SharedFooter** — shared via layout.tsx; dark (bg-primary)
 
 ---
 
@@ -115,111 +124,131 @@ Navbar links: `/#regions`, `/#cta`, `/about`, `/partner`.
 
 **Single static light theme** — `html` has `class="light"` hardcoded in layout.tsx. No runtime theme switching.
 
-The `:root` block in globals.css defines **dark** as the default CSS variables. The `html.light` block overrides them for light mode. Since `class="light"` is always set, the site always renders in light mode.
+The `:root` block in globals.css defines CSS variables directly (no dark/light split). The `@theme inline` block maps CSS vars to Tailwind color utilities.
 
-| Selector | Mode |
-|---|---|
-| `:root` | Dark defaults (unused in production) |
-| `html.light` | **Active** — white background, dark text |
+### Palette
 
-**CSS Variables → Tailwind tokens** via `@theme inline` block. Always use semantic tokens in components:
+| Role | Token / Utility | Current Value |
+|---|---|---|
+| Page background | `bg-background` | Warm off-white `#E7E3D1` |
+| Surface / Cards | `bg-surface` | Near-white `#f2f1e9` |
+| Surface hover | `bg-surface-hover` | `#d5d3ca` |
+| Primary text | `text-text-primary` / `text-foreground` | Dark `#222220` via --color-neutral-900 |
+| Secondary text | `text-text-secondary` | Muted `#41413d` via --color-neutral-700 |
+| Primary (brand) | `text-primary` / `bg-primary` | Deep navy `#171B2E` |
+| Accent | `text-accent` / `bg-accent` | Muted blue `#727cb1` |
+| Border | `border-border` | `#d5d3ca` via --color-neutral-200 |
+| Divider | `border-divider` | `#d5d3ca` |
 
-| Token | Light value |
-|---|---|
-| `bg-background` | White `#FFFFFF` |
-| `bg-surface` | Near-white `#F8FAFC` |
-| `bg-surface-hover` | `#F1F5F9` |
-| `text-text-primary` | Dark `#0F172A` |
-| `text-text-secondary` | Muted `#475569` |
-| `text-primary` | Brand blue `#3B82F6` |
-| `text-accent` | Bronze `#9E6F43` |
-| `border-border` | `#E2E8F0` |
-| `border-divider` | `#F1F5F9` |
+### Primitive Color Scales
+- **Neutral**: 100 `#f2f1e9` → 200 `#d5d3ca` → 400 `#ADACA4` → 700 `#41413d` → 900 `#222220`
+- **Blue**: 100 `#eff0f6` → 400 `#727cb1` → 700 `#323959` → 900 `#171B2E`
 
-**NEVER hardcode colors** — always use semantic tokens above. This keeps the codebase theme-ready.
+**Convention**: NEVER hardcode hex colors in components. Always use CSS variable tokens via Tailwind utilities (`bg-primary`, `text-text-secondary`, `border-border`, etc.).
 
-**Custom utilities** (use as Tailwind classes):
-- `glass-panel`, `glass-card`, `glass-nav` — glassmorphism with backdrop-blur
-- `text-gradient`, `text-gradient-accent` — primary→accent gradient text
-- `shadow-glow` — primary glow box-shadow
-- `bg-mesh-gradient`, `bg-gradient-orbital`
-- `glow-pulse` — pulsing glow animation
+> ⚠️ **Known violation**: Navbar.tsx and SharedFooter.tsx currently use 40+ hardcoded hex values (`#ffffff1a`, `#ffffffb3`, `#ffffff80`, etc.) instead of tokens. These need migration.
+
+### Custom Utilities (defined in globals.css via `@utility`)
+- `glass-panel`, `glass-card`, `glass-nav` — glassmorphism with backdrop-blur + border
+- `neu-card`, `neu-inset`, `neu-btn`, `neu-btn-active` — neumorphism (defined but unused)
+- `bg-mesh-gradient` — multi-radial gradient background
+- `bg-noise` — noise overlay (stub)
+
+> ⚠️ **Missing utility**: `text-gradient` is referenced in 11 heading elements across About, Partner, and Terms pages but is NOT defined in globals.css. The text renders as plain unstyled color — no gradient is visible. Needs to be either defined or removed.
 
 ---
 
 ## Key Components Deep Dive
 
-### Globe (`src/components/3d/Globe.tsx`)
-- Uses `react-globe.gl` (dynamically imported, `ssr: false`)
-- Texture: `earth-blue-marble.jpg` (works on light backgrounds)
-- Zoom disabled: `controls.enableZoom = false`
-- 9 factory countries, 6 buyer hubs, 15 animated arcs, pulsing rings
-- Tooltips: white background, dark text (light-mode compatible)
-- `onPointClick` prop → triggers FactoryCard in ScrollStory
+### COBE Globe (`src/components/ui/cobe-globe-cdn.tsx`)
+- Uses `cobe` library (lightweight WebGL globe, NOT react-globe.gl)
+- 9 factory country markers + 6 buyer hub markers + 15 animated arcs
+- Custom 3D spinning pyramid markers (CSS `borderLeft`/`borderRight`/`borderBottom` triangles with `preserve-3d`)
+- Dynamic features: pulsing arcs for active factory, 85-dot glowing clusters at destination hubs
+- Auto-rotation at configurable speed, pointer drag to manually rotate
+- Proximity detection: auto-highlights closest factory to viewport center
+- `activeId` / `onActiveChange` props drive FactoryCard display in ScrollStory
 
-### GlowCTAButton (`src/components/ui/GlowCTAButton.tsx`)
-- Primary CTA button (replaces LiquidMetalButton everywhere)
-- Rotating conic-gradient border via CSS `@property --glow-angle` + `spin-border` keyframe
-- Pulsing box-shadow via Framer Motion
-- Ripple on click, arrow slides on hover
-- Accepts `href` (renders `<a>`) or `onClick` (renders `<button>`)
-- Sizes: `sm`, `md` (default), `lg`
+### GetStartedButton (`src/components/ui/get-started-button.tsx`)
+- Primary CTA button used across all pages
+- Liquid-metal WebGL shader via `@paper-design/shaders` (`ShaderMount` + `liquidMetalFragmentShader`)
+- 3D perspective CSS transforms with `preserve-3d` layering (Z=10 shader rim, Z=20 dark core, Z=30 text, Z=40 ripples)
+- Optional `withLamp` prop adds volumetric spotlight beam above button
+- Accepts `href` (renders `<Link>`) or `onClick` (renders `<button>`)
+- Sizes: `sm`, `default`, `lg`, `icon`
 
 ### GarmentModels (`src/components/3d/GarmentModels.tsx`)
-- 17 procedural garment components using Three.js geometry primitives
-- `GARMENT_CATALOG` array of `{ id, name, Component, color, description, category }`
-- Each uses `useFrame` for auto-rotation
-- Primitives used: BoxGeometry, CylinderGeometry, LatheGeometry, SphereGeometry, CapsuleGeometry, TorusGeometry
+- 17 garment entries loading external `.glb` models via `useGLTF`
+- `GARMENT_CATALOG` array of `{ id, name, url, description, category }`
+- `GLBModel` component: clones scene, auto-normalizes scale to 1.6 units, auto-rotates
+- Preloads first 2 and last model on module load
 
 ### RadialOrbitalTimeline (`src/components/ui/radial-orbital-timeline.tsx`)
 - `icon` field must be typed as `LucideIcon` (not `React.ElementType`) for TypeScript compatibility
-- 8 service nodes orbiting a central logo-icon
-- Lure system: every 4.2s, randomly shows a node hint
-- Click node: expands card, stops rotation; click background: collapses, resumes
+- 8 service nodes orbiting a central logo-icon at radius 200px
+- Auto-selects first node on mount (800ms delay)
+- Click node: stops rotation, shows detail panel; click background: collapses, resumes rotation
+- Uses `setInterval(fn, 50)` for rotation animation
 
 ### SmoothScroll (`src/components/ui/SmoothScroll.tsx`)
-- Wraps entire app in root `layout.tsx`, initializes Lenis duration 1.2
+- Wraps entire app in root `layout.tsx`, initializes Lenis (duration 1.2, custom easing)
+- Intercepts anchor `#hash` clicks and uses `lenis.scrollTo()` with -80px offset for fixed navbar
 - Framer Motion's `useScroll` works correctly with Lenis
+
+---
+
+## Data Sources
+
+Factory data is currently **duplicated** across 3 files with similar but not identical values:
+1. `ScrollStory.tsx` — `FACTORY_DATA` (9 entries: name, flag, factories, specialties, certs, accent color)
+2. `cobe-globe-cdn.tsx` — `defaultMarkers` (15 entries: id, location, region, specialty, color, factoryCount)
+3. `Globe.tsx` — LEGACY, 15 entries (unused but not deleted)
+
+This should be consolidated into a single shared data file.
 
 ---
 
 ## TypeScript Gotchas
 
-- **Framer Motion `ease` arrays in `Variants`**: Must cast as `[number, number, number, number]` when used inside a named `Variants` object (not needed for inline `transition={{}}` props)
+- **Framer Motion `ease` arrays in `Variants`**: Must cast as `[number, number, number, number]` when used inside a named `Variants` object (not needed for inline `transition={{}}` props). Alternatively cast as `Easing`.
   ```ts
-  // Correct:
+  // Correct approaches:
   transition: { ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }
+  transition: { ease: [0.22, 1, 0.36, 1] as Easing }
   ```
 - **Lucide icons in `TimelineItem`**: Use `icon: LucideIcon` not `icon: React.ElementType`
-- **`next/dynamic({ ssr: false })`**: Required for Globe, GarmentModels/Canvas, and anything using `window`
+- **R3F Canvas**: Must be wrapped in `SafeCanvas` with `useState(false)` / `useEffect(() => setMounted(true))` pattern to avoid SSR issues (see ProductShowcase.tsx)
 
 ---
 
-## Unused / Legacy Components
+## Unused / Legacy Files
 
-These exist but are **not rendered** anywhere. Safe to delete if cleaning up:
+These exist but are **not imported** by any active route. Safe to delete:
 ```
-src/components/sections/ChaosToOrder.tsx   ← replaced by ShowcaseSection
-src/components/sections/Footer.tsx          ← replaced by SharedFooter
-src/components/sections/Hero.tsx
-src/components/sections/HowItWorks.tsx
-src/components/sections/OutcomeBlock.tsx
-src/components/sections/PainSection.tsx
-src/components/sections/RegionsSection.tsx
-src/components/sections/SocialProof.tsx
-src/components/sections/TrustSection.tsx
-src/components/ui/demo.tsx
+src/components/3d/Globe.tsx              ← superseded by cobe-globe-cdn.tsx
+src/components/ui/liquid-metal-button.tsx ← superseded by get-started-button.tsx
+src/components/ui/Button.tsx             ← unused
+src/components/ui/Card.tsx               ← unused
+src/components/ui/StatPill.tsx           ← unused
+src/components/ui/badge.tsx              ← unused
+src/components/ui/shadcn-button.tsx      ← unused
+src/components/ui/ui-button.tsx          ← unused
+src/components/ui/ui-card.tsx            ← unused
 ```
+
+Previously deleted legacy section components (no longer in filesystem): ChaosToOrder, Footer, Hero, HowItWorks, OutcomeBlock, PainSection, RegionsSection, SocialProof, TrustSection, demo.
 
 ---
 
 ## Important Conventions
 
 - All components using hooks/browser APIs need `'use client'` directive
-- Globe and R3F Canvas components are SSR-disabled via `next/dynamic` with `{ ssr: false }`
+- R3F Canvas components use the `SafeCanvas` mount-guard pattern (not `next/dynamic`)
 - Images use `next/image` with `priority`/`loading="eager"` for LCP assets
-- Font loaded via `next/font/google`, applied as `--font-sans` CSS variable
+- Fonts loaded via `next/font/google`: Plus Jakarta Sans (`--font-display`) + Outfit (`--font-sans`)
 - `cn()` from `src/lib/utils.ts` for conditional Tailwind classes
 - Tailwind v4: no `tailwind.config.js`, everything configured in `globals.css`
 - `@utility` replaces `@layer utilities` in Tailwind v4
 - Never hardcode colors — always use CSS variable tokens
+- PartnerForm is boilerplate — not connected to any backend service
+- Footer "Privacy Policy" and "Contact" links are dead (`href="#"`)

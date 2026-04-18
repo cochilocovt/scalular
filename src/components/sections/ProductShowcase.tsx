@@ -66,15 +66,16 @@ export function ProductShowcase() {
   }, [isHovered]);
 
   return (
-    <div className="relative w-full py-12 md:py-16 bg-gradient-to-br from-background to-neutral-200">
+    <div className="relative w-full py-0 md:py-4">
       
-      {/* Immersive subtle noise texture */}
-      <div 
-        className="absolute inset-0 opacity-[0.03] mix-blend-multiply pointer-events-none z-0" 
-        style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }}
-      />
-      
-      {/* Container - Reduced height per user request */}
+      {/* Header - Moved above the display box */}
+      <div className="relative w-full max-w-7xl mx-auto px-6 mb-10 z-10 flex items-center justify-center">
+        <span className="text-xs md:text-sm font-bold uppercase tracking-[0.3em] text-primary/80">
+          Sourcing Catalog
+        </span>
+      </div>
+
+      {/* Container inner styling restored */}
       <div 
         className="relative mx-auto w-full max-w-7xl h-[450px] md:h-[550px] flex flex-col md:flex-row overflow-hidden bg-background/50 rounded-3xl border border-border shadow-xl z-10"
         onMouseEnter={() => setIsHovered(true)}
@@ -84,12 +85,6 @@ export function ProductShowcase() {
         {/* ── Left Side: Scrolling List ── */}
         <div className="relative w-full md:w-[45%] h-1/2 md:h-full flex flex-col justify-center border-r border-border/50">
           
-          <div className="absolute top-4 left-6 md:top-8 md:left-12 flex items-center gap-4 z-30 pointer-events-none">
-            <span className="text-[10px] md:text-xs font-semibold uppercase tracking-[0.3em] text-primary/60">
-              Sourcing Catalog
-            </span>
-          </div>
-
           <div className="w-full h-full relative overflow-hidden flex items-center justify-center">
              {/* The anchor point for the scrolling list. */}
              <motion.div 

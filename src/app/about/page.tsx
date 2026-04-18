@@ -1,35 +1,57 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Leaf, ShieldCheck, Zap, Award, Globe, Users, Package, ArrowRight } from 'lucide-react';
+import { Leaf, ShieldCheck, Zap, Award, Globe, Users, Package, ArrowRight, CheckCircle, Factory, Network, Sparkles } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { AnimatedCounter } from '@/components/ui/AnimatedCounter';
 import { GetStartedButton } from '@/components/ui/get-started-button';
 
 const VALUES = [
   {
+    icon: Zap,
+    color: 'var(--color-blue-700)',
+    title: 'Instant Quotes',
+    description: 'Our instant quotation system delivers pricing in seconds, not weeks — eliminating the back-and-forth that traditionally slowed apparel sourcing.',
+  },
+  {
+    icon: Factory,
+    color: 'var(--color-blue-400)',
+    title: 'Reliable Factoring',
+    description: 'Every factory in our network is audited and verified, ensuring consistent quality, on-time delivery, and reliable production at scale.',
+  },
+  {
+    icon: Award,
+    color: 'var(--color-neutral-700)',
+    title: 'Certified Factories',
+    description: 'We partner with factories holding certifications from GOTS, OEKO-TEX, Sedex, WRAP, and more — meeting the highest global compliance standards.',
+  },
+  {
+    icon: Network,
+    color: 'var(--color-primary)',
+    title: 'Large Supplier Network',
+    description: 'Access 30+ verified suppliers across 9 countries, specializing in garment development across all categories from knitwear to denim.',
+  },
+];
+
+const SUSTAINABILITY = [
+  {
     icon: Leaf,
     color: 'var(--color-blue-700)',
-    title: 'Sustainability',
-    description: 'We partner exclusively with factories committed to eco-friendly manufacturing, energy efficiency, and reduced environmental impact across every production stage.',
+    title: 'Sustainable Sourcing Practices',
+    description: 'Scalular partners with factories that prioritize eco-friendly and sustainable manufacturing. Our apparel sourcing approach reduces environmental impact by supporting facilities that use energy-efficient processes and sustainable materials.',
   },
   {
     icon: ShieldCheck,
     color: 'var(--color-blue-400)',
-    title: 'Ethical Standards',
-    description: 'Fair wages, safe working conditions, and ethical sourcing practices are non-negotiable requirements for every factory in our network.',
+    title: 'Ethical Standards in Apparel',
+    description: 'We ensure all our partner factories follow labor-friendly practices, promoting fair wages, safe working conditions, and ethical garment sourcing. Our commitment helps brands align with global ethical standards.',
   },
   {
-    icon: Zap,
-    color: 'var(--color-neutral-700)',
-    title: 'Digital Innovation',
-    description: 'Our instant quotation system and transparent sourcing platform eliminate the weeks of back-and-forth that traditionally defined apparel sourcing.',
-  },
-  {
-    icon: Award,
+    icon: Sparkles,
     color: 'var(--color-primary)',
-    title: 'Quality Assurance',
-    description: 'Rigorous factory audits, certification verification, and on-the-ground teams ensure every order meets the quality standards your customers expect.',
+    title: 'Digital Transformation & Transparency',
+    description: 'Scalular empowers factories with digital tools to enhance operational efficiency, transparency, and innovation. Our instant quotation system streamlines garment sourcing, making it easier for buyers to connect with verified manufacturers.',
   },
 ];
 
@@ -38,6 +60,7 @@ const STATS = [
   { target: 3000, suffix: '+', label: 'Orders Completed', icon: Package },
   { target: 30, suffix: '+', label: 'Factory Partners', icon: Users },
   { target: 9, suffix: '', label: 'Countries', icon: Globe },
+  { target: 50, suffix: '+', label: 'Satisfied Clients', icon: CheckCircle },
 ];
 
 const fadeUp = {
@@ -64,7 +87,7 @@ export default function AboutPage() {
             transition={{ duration: 0.6 }}
             className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-black tracking-[0.3em] uppercase mb-8"
           >
-            Our Story
+            About Us
           </motion.div>
 
           <motion.h1
@@ -73,8 +96,8 @@ export default function AboutPage() {
             transition={{ duration: 0.7, delay: 0.1 }}
             className="text-5xl md:text-7xl font-black text-text-primary leading-[1.05] tracking-tighter mb-6"
           >
-            Bridging Buyers &<br />
-            <span className="text-gradient">Factories Worldwide</span>
+            Where Global Apparel<br />
+            Meets <span className="text-gradient">Ethical Innovation.</span>
           </motion.h1>
 
           <motion.p
@@ -83,10 +106,32 @@ export default function AboutPage() {
             transition={{ duration: 0.7, delay: 0.2 }}
             className="text-xl md:text-2xl text-text-secondary leading-relaxed max-w-2xl mx-auto font-medium"
           >
-            For over two decades, Scalular has been connecting fashion brands with the world's
-            best apparel manufacturers — making global sourcing transparent, ethical, and effortless.
+            A B2B platform revolutionizing the global apparel industry — bridging
+            buyers and factories worldwide, enabling seamless connections and fostering global trade.
           </motion.p>
         </div>
+      </section>
+
+      {/* ── Team Photo ────────────────────────────────────────── */}
+      <section className="px-6 md:px-12 bg-background border-t border-divider">
+        <motion.div
+          initial={{ opacity: 0, y: 32 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="max-w-5xl mx-auto -mt-12 md:-mt-20 relative z-20"
+        >
+          <div className="rounded-3xl overflow-hidden shadow-2xl border border-divider">
+            <Image
+              src="/images/about_us/Uljah-Team-crop-2048x1158.png"
+              alt="Scalular team group photo showcasing a diverse and dedicated workforce in the apparel sourcing and garment manufacturing industry. The team is committed to innovation, quality, and global trade solutions."
+              width={2048}
+              height={1158}
+              className="w-full h-auto object-cover"
+              priority
+            />
+          </div>
+        </motion.div>
       </section>
 
       {/* ── Mission ──────────────────────────────────────────── */}
@@ -98,18 +143,25 @@ export default function AboutPage() {
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
           >
-            <div className="text-[10px] font-black tracking-[0.4em] uppercase text-primary mb-4">Our Mission</div>
+            <div className="text-[10px] font-black tracking-[0.4em] uppercase text-primary mb-4">Our Mission & Vision</div>
             <h2 className="text-4xl md:text-5xl font-black text-text-primary tracking-tighter leading-tight mb-6">
               Making Global Trade <span className="text-gradient">Seamless</span>
             </h2>
             <p className="text-text-secondary text-lg leading-relaxed mb-4">
-              Scalular was founded in Tiruppur, India — the world's knitwear capital — with a single
-              mission: eliminate the inefficiency and opacity that has plagued apparel sourcing for generations.
+              Scalular is committed to bridging the gap between buyers and factories globally.
+              With our instant quotation system, we ensure transparency, efficiency, and scalability,
+              making garment sourcing seamless and hassle-free.
+            </p>
+            <p className="text-text-secondary text-lg leading-relaxed mb-4">
+              With over 20 years of experience in apparel sourcing, Scalular has worked with
+              global giants like Walmart and Amazon. Our expertise in garment sourcing ensures
+              high-quality manufacturing, efficient production, and cost-effective solutions for
+              brands worldwide.
             </p>
             <p className="text-text-secondary text-lg leading-relaxed">
-              Today, we operate a digital platform connecting 200+ global brands to 30+ verified
-              factory partners across 9 countries, with an instant AI-powered quotation system that
-              delivers pricing in seconds, not weeks.
+              We have onboarded 30+ suppliers and successfully completed 3,000+ orders, providing
+              businesses with a trusted apparel sourcing network. Our platform guarantees quality,
+              reliability, and on-time delivery, making sourcing easier for brands of all sizes.
             </p>
           </motion.div>
 
@@ -134,7 +186,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ── Values ───────────────────────────────────────────── */}
+      {/* ── Why Choose Us ─────────────────────────────────────── */}
       <section className="py-20 px-6 md:px-12 bg-mesh-gradient border-t border-divider">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-14">
@@ -144,7 +196,7 @@ export default function AboutPage() {
               viewport={{ once: true }}
               className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-black tracking-[0.3em] uppercase mb-4"
             >
-              What We Stand For
+              What Sets Us Apart
             </motion.div>
             <motion.h2
               initial={{ opacity: 0, y: 16 }}
@@ -153,7 +205,7 @@ export default function AboutPage() {
               transition={{ delay: 0.1 }}
               className="text-4xl md:text-5xl font-black text-text-primary tracking-tighter"
             >
-              Our Core <span className="text-gradient">Values</span>
+              Why <span className="text-gradient">Choose Us?</span>
             </motion.h2>
           </div>
 
@@ -183,6 +235,113 @@ export default function AboutPage() {
               );
             })}
           </div>
+        </div>
+      </section>
+
+      {/* ── Sustainability ────────────────────────────────────── */}
+      <section className="py-20 px-6 md:px-12 bg-background border-t border-divider">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-14">
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-black tracking-[0.3em] uppercase mb-4"
+            >
+              Sustainability
+            </motion.div>
+            <motion.h2
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="text-4xl md:text-5xl font-black text-text-primary tracking-tighter"
+            >
+              The Next Step in <span className="text-gradient">Sustainable Manufacturing</span>
+            </motion.h2>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            {SUSTAINABILITY.map((s, i) => {
+              const Icon = s.icon;
+              return (
+                <motion.div
+                  key={s.title}
+                  custom={i}
+                  variants={fadeUp}
+                  initial="hidden"
+                  whileInView="show"
+                  viewport={{ once: true }}
+                  whileHover={{ y: -4 }}
+                  className="glass-card rounded-3xl p-7"
+                >
+                  <div
+                    className="w-12 h-12 rounded-2xl flex items-center justify-center mb-5"
+                    style={{ background: `color-mix(in srgb, ${s.color} 8%, transparent)`, border: `1px solid color-mix(in srgb, ${s.color} 18%, transparent)` }}
+                  >
+                    <Icon className="w-6 h-6" style={{ color: s.color }} />
+                  </div>
+                  <h3 className="text-xl font-black text-text-primary mb-2 tracking-tight">{s.title}</h3>
+                  <p className="text-text-secondary leading-relaxed text-sm">{s.description}</p>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Supplier Network ──────────────────────────────────── */}
+      <section className="py-20 px-6 md:px-12 bg-mesh-gradient border-t border-divider">
+        <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+          <motion.div
+            initial={{ opacity: 0, x: -24 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+          >
+            <div className="text-[10px] font-black tracking-[0.4em] uppercase text-primary mb-4">Robust Supplier Network</div>
+            <h2 className="text-4xl md:text-5xl font-black text-text-primary tracking-tighter leading-tight mb-6">
+              Strengthened by <span className="text-gradient">20+ Suppliers</span>
+            </h2>
+            <p className="text-text-secondary text-lg leading-relaxed mb-4">
+              We pride ourselves on our constantly expanding list of trusted partners, each
+              specializing in the development of garments across all categories.
+            </p>
+            <p className="text-text-secondary text-lg leading-relaxed">
+              Our diverse network of suppliers offers services such as factoring, packaging,
+              and printing. Together, we deliver high-quality products at scale, on time, while
+              continuously adapting to the dynamic demands of the apparel industry.
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, x: 24 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, delay: 0.1 }}
+            className="grid grid-cols-2 gap-4"
+          >
+            {[
+              { icon: Globe, label: 'Global Reach', desc: '9 countries across Asia' },
+              { icon: Factory, label: 'All Categories', desc: 'Knitwear to denim' },
+              { icon: Package, label: 'Full Service', desc: 'Factoring, packaging, printing' },
+              { icon: Users, label: 'Trusted Partners', desc: '30+ verified factories' },
+            ].map((item, i) => (
+              <motion.div
+                key={item.label}
+                custom={i}
+                variants={fadeUp}
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true }}
+                className="glass-card rounded-2xl p-5 text-center"
+              >
+                <item.icon className="w-6 h-6 text-primary mx-auto mb-3" />
+                <div className="text-sm font-black text-text-primary tracking-tight">{item.label}</div>
+                <div className="text-xs text-text-secondary mt-1">{item.desc}</div>
+              </motion.div>
+            ))}
+          </motion.div>
         </div>
       </section>
 

@@ -13,7 +13,7 @@ export function ShowcaseSection() {
 
       <div className="max-w-[1400px] mx-auto px-6 md:px-12">
         {/* Section intro */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-8">
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -34,28 +34,13 @@ export function ShowcaseSection() {
             <br />
             Sourced.
           </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className="text-lg text-text-secondary max-w-2xl mx-auto mt-4"
-          >
-            From product catalogue to certified factories to global brand partners —
-            Scalular is the complete apparel sourcing platform.
-          </motion.p>
         </div>
 
         {/* Divider */}
         <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent mb-12" />
 
-        {/* Certifications */}
+        {/* Certifications & Trust Marquees */}
         <CertificationsDisplay />
-
-        {/* Divider */}
-        <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent my-12" />
-
-        {/* Client Logos */}
         <ClientLogos />
 
         {/* Divider */}

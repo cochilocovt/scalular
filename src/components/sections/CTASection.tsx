@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { ShieldCheck, Zap, Star, Lock, ArrowRight, Calendar } from 'lucide-react';
 import { GetStartedButton } from '../ui/get-started-button';
+
 const TRUST_BADGES = [
   { Icon: ShieldCheck, label: 'Pre-audited Factories' },
   { Icon: Zap,         label: 'Instant AI Quote' },
@@ -10,9 +11,15 @@ const TRUST_BADGES = [
   { Icon: Lock,        label: 'Data Secure & Private' },
 ];
 
+const SOCIAL_PROOF = [
+  { value: '200+', label: 'Brands Served' },
+  { value: '3,000+', label: 'Orders Completed' },
+  { value: '20+', label: 'Years Experience' },
+];
+
 export function CTASection() {
   return (
-    <section id="cta" className="relative bg-background overflow-hidden py-24 md:py-36 px-6 md:px-12 border-t border-divider">
+    <section id="cta" className="relative bg-background overflow-hidden py-16 md:py-24 px-6 md:px-12 border-t border-divider">
 
       <div className="relative z-10 max-w-4xl mx-auto text-center">
         <motion.div
@@ -21,6 +28,16 @@ export function CTASection() {
           viewport={{ once: true }}
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         >
+          {/* Social proof stats — relocated from ClientLogos */}
+          <div className="flex flex-wrap items-center justify-center gap-6 md:gap-10 mb-10">
+            {SOCIAL_PROOF.map(({ value, label }) => (
+              <div key={label} className="text-center">
+                <div className="text-2xl md:text-3xl font-bold text-primary tracking-tighter">{value}</div>
+                <div className="text-[10px] md:text-xs font-bold text-text-secondary uppercase tracking-widest mt-1 md:mt-0.5">{label}</div>
+              </div>
+            ))}
+          </div>
+
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary mb-6">
             Start for Free
           </p>

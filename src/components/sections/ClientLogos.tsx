@@ -1,68 +1,86 @@
 'use client';
 
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 
-/* ─── Brand config ─────────────────────────────────────────
-   Provide SVG files at:
-   src/assets/clients/amazon.svg
-   src/assets/clients/walmart.svg
-   src/assets/clients/disney.svg
-   src/assets/clients/gap.svg
-   src/assets/clients/levis.svg
-   src/assets/clients/reebok.svg
-
-   Until then, styled text fallbacks render automatically.
-──────────────────────────────────────────────────────────── */
 interface Brand {
   id: string;
   name: string;
-  svgPath?: string;
-  textStyle?: string;
+  src: string;
 }
 
 const BRANDS: Brand[] = [
-  { id: 'amazon', name: 'amazon', svgPath: '/assets/clients/amazon.svg', textStyle: 'font-bold italic tracking-tighter' },
-  { id: 'walmart', name: 'Walmart', svgPath: '/assets/clients/walmart.svg', textStyle: 'font-bold tracking-tight' },
-  { id: 'disney', name: 'DISNEY', svgPath: '/assets/clients/disney.svg', textStyle: 'font-bold tracking-widest' },
-  { id: 'gap', name: 'GAP', svgPath: '/assets/clients/gap.svg', textStyle: 'font-bold tracking-[0.4em]' },
-  { id: 'levis', name: "Levi's", svgPath: '/assets/clients/levis.svg', textStyle: 'font-bold italic' },
-  { id: 'reebok', name: 'REEBOK', svgPath: '/assets/clients/reebok.svg', textStyle: 'font-bold tracking-widest' },
+  { id: 'amazon', name: 'Amazon', src: '/images/brand_logos/amazon.svg' },
+  { id: 'beverly-hills-polo-club', name: 'Beverly Hills Polo Club', src: '/images/brand_logos/beverly-hills-polo-club.svg' },
+  { id: 'caterpillar', name: 'Caterpillar', src: '/images/brand_logos/caterpillar.svg' },
+  { id: 'centric-brands', name: 'Centric Brands', src: '/images/brand_logos/centric-brands.svg' },
+  { id: 'copper-denim', name: 'Copper Denim', src: '/images/brand_logos/copper-denim.svg' },
+  { id: 'dickies', name: 'Dickies', src: '/images/brand_logos/dickies.svg' },
+  { id: 'disney', name: 'Disney', src: '/images/brand_logos/disney.svg' },
+  { id: 'dockers', name: 'Dockers', src: '/images/brand_logos/dockers.svg' },
+  { id: 'g-iii-apparel', name: 'G-III Apparel', src: '/images/brand_logos/g-iii-apparel.svg' },
+  { id: 'gap', name: 'GAP', src: '/images/brand_logos/gap.svg' },
+  { id: 'george', name: 'George', src: '/images/brand_logos/george.svg' },
+  { id: 'levis', name: "Levi's", src: '/images/brand_logos/levis.svg' },
+  { id: 'nautica', name: 'Nautica', src: '/images/brand_logos/nautica.svg' },
+  { id: 'perry-ellis', name: 'Perry Ellis', src: '/images/brand_logos/perry-ellis.svg' },
+  { id: 'pvh', name: 'PVH', src: '/images/brand_logos/pvh.svg' },
+  { id: 'quiksilver', name: 'Quiksilver', src: '/images/brand_logos/quiksilver.svg' },
+  { id: 'reebok', name: 'Reebok', src: '/images/brand_logos/reebok.svg' },
+  { id: 'rugby-university', name: 'Rugby University', src: '/images/brand_logos/rugby-university.svg' },
+  { id: 'true-religion', name: 'True Religion', src: '/images/brand_logos/true-religion.svg' },
+  { id: 'walmart', name: 'Walmart', src: '/images/brand_logos/walmart.svg' },
 ];
 
 function BrandItem({ brand }: { brand: Brand }) {
   return (
-    <div className="flex items-center justify-center px-8 shrink-0 group">
-      <div className="opacity-30 grayscale group-hover:opacity-70 group-hover:grayscale-0 transition-all duration-500 select-none">
-        <span
-          className={`text-2xl md:text-3xl text-text-primary ${brand.textStyle}`}
-          style={{ fontFamily: 'system-ui, sans-serif' }}
-        >
-          {brand.name}
-        </span>
+    <motion.div 
+      whileHover={{ scale: 1.08 }}
+      className="flex items-center justify-center px-8 md:px-12 shrink-0 group cursor-pointer"
+    >
+      <div className="relative h-10 md:h-14 w-32 md:w-40 transition-all duration-500 select-none drop-shadow-sm group-hover:drop-shadow-xl">
+        <Image
+          src={brand.src}
+          alt={brand.name}
+          fill
+          className="object-contain object-center group-hover:scale-105 transition-transform duration-300"
+          sizes="(min-width: 768px) 160px, 128px"
+        />
       </div>
-    </div>
+    </motion.div>
   );
 }
 
-/* Infinite marquee — duplicates items for seamless loop */
-function Marquee({ children, speed = 40 }: { children: React.ReactNode; speed?: number }) {
+/* Infinite marquee — duplicates items for seamless loop, pauses on hover */
+function Marquee({ children, speed = 60, direction = 'left' }: { children: React.ReactNode; speed?: number; direction?: 'left' | 'right' }) {
+  const [paused, setPaused] = useState(false);
+  const xAnim = direction === 'left' ? ['0%', '-50%'] : ['-50%', '0%'];
+
   return (
-    <div className="overflow-hidden w-full relative">
+    <div
+      className="overflow-hidden w-full relative group"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      onFocus={() => setPaused(true)}
+      onBlur={() => setPaused(false)}
+    >
       {/* Left/right fade masks */}
-      <div className="absolute left-0 top-0 bottom-0 w-24 z-10 pointer-events-none"
+      <div className="absolute left-0 top-0 bottom-0 w-32 z-10 pointer-events-none"
         style={{ background: 'linear-gradient(to right, var(--background), transparent)' }} />
-      <div className="absolute right-0 top-0 bottom-0 w-24 z-10 pointer-events-none"
+      <div className="absolute right-0 top-0 bottom-0 w-32 z-10 pointer-events-none"
         style={{ background: 'linear-gradient(to left, var(--background), transparent)' }} />
 
       <motion.div
-        className="flex items-center"
-        animate={{ x: ['0%', '-50%'] }}
+        className="flex items-center py-4"
+        animate={{ x: paused ? undefined : xAnim }}
         transition={{ duration: speed, ease: 'linear', repeat: Infinity }}
+        style={paused ? { animationPlayState: 'paused' } : undefined}
       >
-        {/* Render twice for seamless loop */}
-        {children}
-        {children}
+        {/* Primary track */}
+        <div className="flex shrink-0 items-center">{children}</div>
+        {/* Duplicate for seamless loop — hidden from assistive tech */}
+        <div className="flex shrink-0 items-center" aria-hidden="true">{children}</div>
       </motion.div>
     </div>
   );
@@ -70,36 +88,9 @@ function Marquee({ children, speed = 40 }: { children: React.ReactNode; speed?: 
 
 export function ClientLogos() {
   return (
-    <div className="w-full py-12 md:py-20">
-      {/* Header */}
-      <div className="text-center mb-8 md:mb-10">
-        <motion.p
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.25em] text-primary mb-3"
-        >
-          Trusted By
-        </motion.p>
-        <motion.h3
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.08 }}
-          className="text-2xl md:text-4xl font-bold text-text-primary tracking-tighter mb-2"
-        >
-          Brands That Source <span className="text-primary">Smarter</span>
-        </motion.h3>
-        <motion.p
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.16 }}
-          className="text-text-secondary text-base max-w-md mx-auto"
-        >
-          200+ global brands trust Scalular for their apparel sourcing needs.
-        </motion.p>
-      </div>
+    <div className="w-full pb-4 md:pb-8 relative">
+      {/* Eyebrow label */}
+      <p className="text-[10px] font-semibold tracking-[0.3em] uppercase text-text-secondary/60 mb-3 mt-4 px-1">Trusted by</p>
 
       {/* Marquee */}
       <motion.div
@@ -107,32 +98,15 @@ export function ClientLogos() {
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
         transition={{ delay: 0.2 }}
+        role="region"
+        aria-label="Brand partners"
+        aria-roledescription="carousel"
       >
-        <Marquee speed={35}>
+        <Marquee speed={40} direction="right">
           {BRANDS.map((brand) => (
             <BrandItem key={brand.id} brand={brand} />
           ))}
         </Marquee>
-      </motion.div>
-
-      {/* Stats row */}
-      <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ delay: 0.3 }}
-        className="flex flex-wrap items-center justify-center gap-6 md:gap-10 mt-8 md:mt-12 px-4"
-      >
-        {[
-          { value: '200+', label: 'Brands Served' },
-          { value: '3,000+', label: 'Orders Completed' },
-          { value: '20+', label: 'Years Experience' },
-        ].map(({ value, label }) => (
-          <div key={label} className="text-center">
-            <div className="text-2xl md:text-3xl font-bold text-primary tracking-tighter">{value}</div>
-            <div className="text-[10px] md:text-xs font-bold text-text-secondary uppercase tracking-widest mt-1 md:mt-0.5">{label}</div>
-          </div>
-        ))}
       </motion.div>
     </div>
   );

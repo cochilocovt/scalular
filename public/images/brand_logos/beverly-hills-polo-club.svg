@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 120" width="300" height="120">
+  <rect width="300" height="120" fill="white"/>
+  <!-- Polo player silhouette simplified -->
+  <text x="150" y="30" text-anchor="middle" font-family="Georgia, serif" font-size="9" fill="#2c2c2c" letter-spacing="3">BEVERLY HILLS</text>
+  <text x="150" y="55" text-anchor="middle" font-family="Georgia, serif" font-size="22" font-weight="bold" fill="#1a1a1a" letter-spacing="2">POLO CLUB</text>
+  <line x1="30" y1="68" x2="270" y2="68" stroke="#8B6914" stroke-width="1.5"/>
+  <text x="150" y="85" text-anchor="middle" font-family="Georgia, serif" font-size="8" fill="#8B6914" letter-spacing="4">ESTABLISHED 1982</text>
+</svg>

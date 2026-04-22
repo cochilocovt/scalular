@@ -328,3 +328,12 @@ a, button, [role="button"], input, select, textarea,
   animation: marquee 40s linear infinite;
   display: flex;
 }
+@keyframes marquee-left {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes marquee-right {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0%); }
+}

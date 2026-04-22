@@ -31,6 +31,50 @@ export function GLBModel({ url, isActive = false }: { url: string; isActive?: bo
       clone.scale.setScalar(scale);
     }
     
+    const isSweaterDress = url.includes('girls_long_sweater');
+    const isSweater = url.includes('sweater.glb');
+
+    if (isSweaterDress || isSweater) {
+      // The sweater and sweater dress need a complete material override to fix hollow backface culling
+      // and dark vertex colors that ruin the texture.
+      const uniformFabric = new THREE.MeshStandardMaterial({
+        color: new THREE.Color('#789BBD'), // Lighter, softer blue
+        roughness: 0.85,    // High roughness for matte fabric
+        metalness: 0.05,    // Low metalness
+        side: THREE.DoubleSide, // Fixes hollow / see-through meshes
+      });
+
+      clone.traverse((child) => {
+        const mesh = child as THREE.Mesh;
+        if (mesh.isMesh) {
+          mesh.material = uniformFabric;
+        }
+      });
+    } else {
+      // For all other garments, retain their original texture maps (normal, bump, etc)
+      // but override the base color to a lighter blue, and fix the "shiny plastic" look.
+      const brandColor = new THREE.Color('#4A6085');
+      clone.traverse((child) => {
+        const mesh = child as THREE.Mesh;
+        if (mesh.isMesh) {
+          if (Array.isArray(mesh.material)) {
+            mesh.material = mesh.material.map((mat) => {
+              const clonedMat = mat.clone();
+              if ('color' in clonedMat) (clonedMat as THREE.MeshStandardMaterial).color = brandColor;
+              if ('roughness' in clonedMat) (clonedMat as THREE.MeshStandardMaterial).roughness = 0.85;
+              if ('metalness' in clonedMat) (clonedMat as THREE.MeshStandardMaterial).metalness = 0.1;
+              return clonedMat;
+            });
+          } else {
+            mesh.material = (mesh.material as THREE.Material).clone();
+            if ('color' in mesh.material) (mesh.material as THREE.MeshStandardMaterial).color = brandColor;
+            if ('roughness' in mesh.material) (mesh.material as THREE.MeshStandardMaterial).roughness = 0.85;
+            if ('metalness' in mesh.material) (mesh.material as THREE.MeshStandardMaterial).metalness = 0.1;
+          }
+        }
+      });
+    }
+    
     return clone;
   }, [scene]);
 

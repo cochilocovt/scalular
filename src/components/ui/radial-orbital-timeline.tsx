@@ -87,7 +87,7 @@ export default function RadialOrbitalTimeline({
 
   const calculateNodePosition = (index: number, total: number) => {
     const angle = ((index / total) * 360 + rotationAngle) % 360;
-    const radius = 200;
+    const radius = 170;
     const radian = (angle * Math.PI) / 180;
 
     const x = radius * Math.cos(radian) + centerOffset.x;
@@ -125,8 +125,8 @@ export default function RadialOrbitalTimeline({
               <Image src={logo} alt="Scalular" width={56} height={56} className="rounded-full" loading="eager" />
             </div>
 
-            <div className="absolute w-[400px] h-[400px] rounded-full border border-border opacity-40"></div>
-            <div className="absolute w-[400px] h-[400px] rounded-full bg-primary/3 blur-3xl opacity-15"></div>
+            <div className="absolute w-[340px] h-[340px] rounded-full border border-border opacity-40"></div>
+            <div className="absolute w-[340px] h-[340px] rounded-full bg-primary/3 blur-3xl opacity-15"></div>
 
             {timelineData.map((item, index) => {
               const position = calculateNodePosition(index, timelineData.length);
@@ -156,16 +156,16 @@ export default function RadialOrbitalTimeline({
                   {/* Node circle */}
                   <div
                     className={`
-                    w-11 h-11 rounded-full flex items-center justify-center
+                    w-14 h-14 rounded-full flex items-center justify-center
                     ${isActive
                       ? 'bg-primary text-white border-primary shadow-lg shadow-primary/20'
                       : 'bg-surface text-text-primary border-border hover:border-primary/40'
                     }
                     border-2 transition-all duration-300
-                    ${isActive ? 'scale-125' : 'hover:scale-110'}
+                    ${isActive ? 'scale-115' : 'hover:scale-110'}
                   `}
                   >
-                    <Icon size={18} />
+                    <Icon size={22} />
                   </div>
 
                   {/* Always-visible label */}

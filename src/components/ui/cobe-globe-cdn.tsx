@@ -333,34 +333,17 @@ export function GlobeCdn({
 
   /* ── Marker shapes ─────────────────────────────────────────── */
 
-  // Factory & Hub marker: 3D spinning pyramid
-  const pyramidFaceStyle = (nth: number, baseColor?: string): React.CSSProperties => {
-    const transforms = [
-      "rotateY(0deg) translateZ(4px) rotateX(19.5deg)",
-      "rotateY(120deg) translateZ(4px) rotateX(19.5deg)",
-      "rotateY(240deg) translateZ(4px) rotateX(19.5deg)",
-      "rotateX(-90deg) rotateZ(60deg) translateY(4px)",
-    ]
-    const defaultColors = ["#171B2E", "#323959", "#41413d", "#222220"]
-    const color = baseColor || defaultColors[nth]
-
-    // Shading multiplier if baseColor is provided
-    const brightness = baseColor ? [0.6, 0.9, 1.1, 0.4] : [1, 1, 1, 1]
-
-    return {
-      position: "absolute",
-      left: -0.5,
-      top: 0,
-      width: 0,
-      height: 0,
-      borderLeft: "6.5px solid transparent",
-      borderRight: "6.5px solid transparent",
-      borderBottom: `13px solid ${color}`,
-      transformOrigin: "center bottom",
-      transform: transforms[nth],
-      filter: baseColor ? `brightness(${brightness[nth]})` : undefined,
-    }
-  }
+  // Factory & Hub marker: Factory building silhouette
+  const factoryMarkerStyle = (isActive: boolean, baseColor?: string): React.CSSProperties => ({
+    width: 14,
+    height: 16,
+    backgroundColor: isActive ? '#7dd3fc' : (baseColor || '#f4d77b'),
+    clipPath: 'polygon(0% 100%, 0% 35%, 15% 35%, 15% 0%, 35% 0%, 35% 35%, 100% 35%, 100% 100%)',
+    filter: isActive
+      ? 'drop-shadow(0 0 10px rgba(125, 211, 252, 0.9)) drop-shadow(0 0 22px rgba(56, 189, 248, 0.55))'
+      : 'drop-shadow(0 0 4px rgba(244, 215, 123, 0.25))',
+    transition: 'filter 0.3s ease, background-color 0.3s ease',
+  });
 
   const factories = markers.filter((m) => !m.isBuyer)
   const hubs = markers.filter((m) => m.isBuyer)
@@ -368,9 +351,9 @@ export function GlobeCdn({
   return (
     <div ref={containerRef} className={`relative select-none ${className}`}>
       <style>{`
-        @keyframes pyramid-spin {
-          0% { transform: rotateX(20deg) rotateY(0deg); }
-          100% { transform: rotateX(20deg) rotateY(360deg); }
+        @keyframes factory-pulse {
+          0%, 100% { transform: scale(1); opacity: 0.85; }
+          50% { transform: scale(1.15); opacity: 1; }
         }
         @keyframes hub-pulse {
           0%, 100% { transform: scale(1); opacity: 0.7; }
@@ -416,23 +399,15 @@ export function GlobeCdn({
               transition: "opacity 0.3s, filter 0.3s",
             }}
           >
-            {/* Pyramid */}
+            {/* Factory Marker */}
             <div
               style={{
-                width: 12,
-                height: 12,
                 position: "absolute",
                 bottom: -6,
-                transformStyle: "preserve-3d" as const,
-                animation: "pyramid-spin 4s linear infinite",
-                filter: isActive
-                  ? "drop-shadow(0 0 10px rgba(125, 211, 252, 0.9)) drop-shadow(0 0 22px rgba(56, 189, 248, 0.55))"
-                  : "drop-shadow(0 0 4px rgba(244, 215, 123, 0.25))",
+                animation: "factory-pulse 2.5s ease-in-out infinite",
               }}
             >
-              {[0, 1, 2, 3].map((n) => (
-                <div key={n} style={pyramidFaceStyle(n, isActive ? "#7dd3fc" : "#f4d77b")} />
-              ))}
+              <div style={factoryMarkerStyle(isActive, "#f4d77b")} />
             </div>
 
             {/* Auto-appearing specialty card (only active) */}

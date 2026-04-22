@@ -1,8 +1,7 @@
 'use client';
 
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion } from 'framer-motion';
 import Image from 'next/image';
-import { useRef } from 'react';
 
 /* ─── Photo data — curated selection from factory visits ─────────────── */
 const PHOTOS = [
@@ -21,18 +20,8 @@ const METRICS = [
 ];
 
 export function TrustGallery() {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ['start end', 'end start'],
-  });
-
-  const y1 = useTransform(scrollYProgress, [0, 1], [40, -40]);
-  const y2 = useTransform(scrollYProgress, [0, 1], [60, -30]);
-
   return (
     <section
-      ref={sectionRef}
       className="relative w-full py-12 md:py-20 px-6 md:px-12 lg:px-20 bg-background overflow-hidden"
     >
       {/* ── Section header ─────────────────────────────────── */}
@@ -72,8 +61,7 @@ export function TrustGallery() {
       {/* ── Photo grid — editorial asymmetric layout ────────── */}
       <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-12 gap-3 md:gap-4 auto-rows-[150px] md:auto-rows-[220px]">
         {/* Large hero image — spans 2 rows */}
-        <motion.div
-          style={{ y: y1 }}
+        <div
           className="col-span-2 md:col-span-7 row-span-2 relative rounded-2xl overflow-hidden group"
         >
           <Image
@@ -92,11 +80,10 @@ export function TrustGallery() {
             <div className="text-2xl font-bold text-text-primary tracking-tight leading-none">{METRICS[0].value}</div>
             <div className="text-[10px] font-semibold text-text-secondary uppercase tracking-wider mt-0.5">{METRICS[0].label}</div>
           </div>
-        </motion.div>
+        </div>
 
         {/* Top right */}
-        <motion.div
-          style={{ y: y2 }}
+        <div
           className="col-span-1 md:col-span-5 relative rounded-2xl overflow-hidden group"
         >
           <Image
@@ -110,11 +97,10 @@ export function TrustGallery() {
           <div className="absolute bottom-3 left-4 z-10">
             <span className="text-xs font-semibold text-white/70 uppercase tracking-wider">{PHOTOS[1].label}</span>
           </div>
-        </motion.div>
+        </div>
 
         {/* Bottom right */}
-        <motion.div
-          style={{ y: y2 }}
+        <div
           className="col-span-1 md:col-span-5 relative rounded-2xl overflow-hidden group"
         >
           <Image
@@ -133,7 +119,7 @@ export function TrustGallery() {
             <div className="text-xl font-bold text-text-primary tracking-tight leading-none">{METRICS[1].value}</div>
             <div className="text-[10px] font-semibold text-text-secondary uppercase tracking-wider mt-0.5">{METRICS[1].label}</div>
           </div>
-        </motion.div>
+        </div>
 
         {/* Second row — three equal columns */}
         {PHOTOS.slice(3).map((photo, i) => (

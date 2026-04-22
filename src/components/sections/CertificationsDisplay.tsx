@@ -46,7 +46,6 @@ function CertCard({ cert }: { cert: typeof CERTIFICATIONS[0] }) {
 /* Infinite marquee — duplicates items for seamless loop, pauses on hover */
 function Marquee({ children, speed = 60, direction = 'left' }: { children: React.ReactNode; speed?: number; direction?: 'left' | 'right' }) {
   const [paused, setPaused] = useState(false);
-  const xAnim = direction === 'left' ? ['0%', '-50%'] : ['-50%', '0%'];
 
   return (
     <div
@@ -62,17 +61,18 @@ function Marquee({ children, speed = 60, direction = 'left' }: { children: React
       <div className="absolute right-0 top-0 bottom-0 w-32 z-10 pointer-events-none"
         style={{ background: 'linear-gradient(to left, var(--background), transparent)' }} />
 
-      <motion.div
+      <div
         className="flex items-center py-4"
-        animate={{ x: paused ? undefined : xAnim }}
-        transition={{ duration: speed, ease: 'linear', repeat: Infinity }}
-        style={paused ? { animationPlayState: 'paused' } : undefined}
+        style={{
+          animation: `marquee-${direction} ${speed}s linear infinite`,
+          animationPlayState: paused ? 'paused' : 'running',
+        }}
       >
         {/* Primary track */}
         <div className="flex shrink-0">{children}</div>
         {/* Duplicate for seamless loop — hidden from assistive tech */}
         <div className="flex shrink-0" aria-hidden="true">{children}</div>
-      </motion.div>
+      </div>
     </div>
   );
 }
@@ -93,7 +93,7 @@ export function CertificationsDisplay() {
         aria-label="Certification partners"
         aria-roledescription="carousel"
       >
-        <Marquee speed={35} direction="left">
+        <Marquee speed={22} direction="left">
           {CERTIFICATIONS.map((cert) => (
             <CertCard key={cert.name} cert={cert} />
           ))}

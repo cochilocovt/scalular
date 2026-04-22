@@ -222,10 +222,11 @@ export default function AboutPage() {
                   viewport={{ once: true }}
                   whileHover={{ y: -4 }}
                   className="glass-card rounded-3xl p-7"
+                  style={{ borderLeft: `4px solid ${v.color}` }}
                 >
                   <div
                     className="w-12 h-12 rounded-2xl flex items-center justify-center mb-5"
-                    style={{ background: `color-mix(in srgb, ${v.color} 8%, transparent)`, border: `1px solid color-mix(in srgb, ${v.color} 18%, transparent)` }}
+                    style={{ background: `color-mix(in srgb, ${v.color} 14%, transparent)`, border: `1px solid color-mix(in srgb, ${v.color} 28%, transparent)` }}
                   >
                     <Icon className="w-6 h-6" style={{ color: v.color }} />
                   </div>
@@ -274,10 +275,11 @@ export default function AboutPage() {
                   viewport={{ once: true }}
                   whileHover={{ y: -4 }}
                   className="glass-card rounded-3xl p-7"
+                  style={{ borderLeft: `4px solid ${s.color}` }}
                 >
                   <div
                     className="w-12 h-12 rounded-2xl flex items-center justify-center mb-5"
-                    style={{ background: `color-mix(in srgb, ${s.color} 8%, transparent)`, border: `1px solid color-mix(in srgb, ${s.color} 18%, transparent)` }}
+                    style={{ background: `color-mix(in srgb, ${s.color} 14%, transparent)`, border: `1px solid color-mix(in srgb, ${s.color} 28%, transparent)` }}
                   >
                     <Icon className="w-6 h-6" style={{ color: s.color }} />
                   </div>

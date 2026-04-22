@@ -125,8 +125,7 @@ export function ProductShowcase() {
                           style={{
                             // Reduced overall font sizes to allow more items to be visible
                             fontSize: isActive ? 'clamp(2rem, 4vw, 3.25rem)' : 'clamp(1rem, 2vw, 1.5rem)',
-                            color: isActive ? 'var(--color-primary)' : 'transparent',
-                            WebkitTextStroke: isActive ? 'none' : '1px var(--color-primary)',
+                            color: isActive ? 'var(--color-primary)' : 'var(--color-blue-400)',
                             transition: 'color 0.4s ease, font-size 0.4s ease'
                           }}
                         >

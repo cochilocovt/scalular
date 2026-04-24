@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
-import { useInView, animate } from 'framer-motion';
+import { useEffect, useRef } from 'react';
+import { useInView, useMotionValue, useSpring } from 'framer-motion';
 
 interface AnimatedCounterProps {
   target: number;
@@ -15,26 +15,32 @@ export function AnimatedCounter({
   target,
   prefix = '',
   suffix = '',
-  duration = 1.8,
   className = '',
 }: AnimatedCounterProps) {
   const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true, margin: '-60px' });
-  const [hasRun, setHasRun] = useState(false);
+  const inView = useInView(ref, { once: true, margin: "0px" });
+  const motionValue = useMotionValue(0);
+  
+  // Use spring physics for a high-end, satisfying counter
+  const springValue = useSpring(motionValue, {
+    damping: 60,
+    stiffness: 80,
+  });
 
   useEffect(() => {
-    if (!inView || hasRun || !ref.current) return;
-    setHasRun(true);
-    const el = ref.current;
-    const controls = animate(0, target, {
-      duration,
-      ease: [0.16, 1, 0.3, 1],
-      onUpdate: (v) => {
-        el.textContent = `${prefix}${Math.round(v).toLocaleString()}${suffix}`;
-      },
+    if (inView) {
+      motionValue.set(target);
+    }
+  }, [inView, target, motionValue]);
+
+  useEffect(() => {
+    const unsubscribe = springValue.on("change", (latest) => {
+      if (ref.current) {
+        ref.current.textContent = `${prefix}${Math.round(latest).toLocaleString()}${suffix}`;
+      }
     });
-    return () => controls.stop();
-  }, [inView, hasRun, target, prefix, suffix, duration]);
+    return () => unsubscribe();
+  }, [springValue, prefix, suffix]);
 
   return (
     <span ref={ref} className={className}>

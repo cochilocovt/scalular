@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
-import { ArrowRight, type LucideIcon } from "lucide-react";
+import { type LucideIcon } from "lucide-react";
 import Image from "next/image";
 import logo from "@/assets/logo-icon.png";
 
@@ -127,14 +127,14 @@ export default function RadialOrbitalTimeline({
 
   return (
     <div
-      className="w-full min-h-[600px] md:min-h-[700px] flex items-center justify-center bg-transparent overflow-hidden relative"
+      className="w-full min-h-[500px] md:min-h-[550px] flex items-center justify-center bg-transparent overflow-hidden relative"
       ref={containerRef}
       onClick={handleContainerClick}
     >
-      <div className="relative w-full max-w-6xl mx-auto flex flex-col lg:flex-row items-center justify-center gap-10 lg:gap-16 px-6">
+      <div className="relative w-full max-w-6xl mx-auto flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-12 px-6">
 
         {/* ── Orbital wheel — left side on desktop ──────────────── */}
-        <div className="w-full lg:w-1/2 flex items-center justify-center h-[300px] sm:h-[380px] lg:h-[440px] overflow-visible mb-2 sm:mb-6 lg:mb-0">
+        <div className="w-full lg:w-1/2 flex items-center justify-center h-[300px] sm:h-[380px] lg:h-[440px] overflow-visible mb-2 sm:mb-4 lg:mb-0">
           <div className="relative w-[440px] h-[440px] flex-shrink-0 flex items-center justify-center scale-[0.65] sm:scale-[0.85] lg:scale-100 origin-center">
             <div
               className="absolute w-full h-full flex items-center justify-center"
@@ -208,10 +208,8 @@ export default function RadialOrbitalTimeline({
         </div>
 
         {/* ── Detail panel — right side ─────────────────────────── */}
-        <div className="w-full lg:w-1/2 flex-1 min-w-0 max-w-md lg:max-w-none mt-12 lg:mt-24">
+        <div className="w-full lg:w-1/2 flex-1 min-w-0 max-w-md lg:max-w-none mt-6 lg:mt-0">
           {activeItem ? (() => {
-            const nextIndex = (timelineData.findIndex(item => item.id === activeItem.id) + 1) % timelineData.length;
-            const nextItem = timelineData[nextIndex];
             return (
               <div
                 key={activeItem.id}
@@ -224,37 +222,14 @@ export default function RadialOrbitalTimeline({
                   {activeItem.category}
                 </div>
                 <h3
-                  className="text-2xl md:text-3xl font-bold text-text-primary tracking-tight mb-4"
+                  className="text-2xl md:text-3xl font-bold text-text-primary tracking-tight mb-3"
                   style={{ fontFamily: 'var(--font-display)' }}
                 >
                   {activeItem.title}
                 </h3>
-                <p className="text-base text-text-secondary leading-relaxed mb-8">
+                <p className="text-base text-text-secondary leading-relaxed mb-6">
                   {activeItem.content}
                 </p>
-
-                {/* Lucrative Next Service Arrow Element */}
-                <div className="mt-8 pt-8 border-t border-border/40">
-                  <button
-                    className="group relative flex items-center justify-between w-full max-w-[280px] p-4 bg-surface hover:bg-surface-hover border border-primary/20 rounded-2xl transition-all duration-300 hover:shadow-[0_0_20px_rgba(var(--color-primary-rgb),0.1)] hover:border-primary/50 text-left"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      selectNode(nextItem.id);
-                    }}
-                  >
-                    <div className="flex flex-col items-start pr-4">
-                      <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-text-secondary/60 group-hover:text-primary transition-colors mb-1">
-                        Next Service
-                      </span>
-                      <span className="text-sm font-semibold text-text-primary tracking-tight truncate w-full">
-                        {nextItem.title}
-                      </span>
-                    </div>
-                    <div className="w-10 h-10 shrink-0 rounded-full bg-primary/5 flex items-center justify-center group-hover:bg-primary transition-all duration-300 shadow-sm group-hover:scale-110">
-                      <ArrowRight size={16} className="text-primary group-hover:text-white transition-colors" />
-                    </div>
-                  </button>
-                </div>
               </div>
             );
           })() : (

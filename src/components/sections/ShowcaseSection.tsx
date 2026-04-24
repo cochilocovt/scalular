@@ -2,8 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { ProductShowcase } from './ProductShowcase';
-import { CertificationsDisplay } from './CertificationsDisplay';
-import { ClientLogos } from './ClientLogos';
+import { TrustShowcase } from './TrustShowcase';
 
 export function ShowcaseSection() {
   return (
@@ -39,9 +38,8 @@ export function ShowcaseSection() {
         {/* Divider */}
         <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent mb-12" />
 
-        {/* Certifications & Trust Marquees */}
-        <CertificationsDisplay />
-        <ClientLogos />
+        {/* Unified Trust Showcase */}
+        <TrustShowcase />
 
         {/* Divider */}
         <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent my-12" />

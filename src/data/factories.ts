@@ -5,6 +5,7 @@
 
 export interface Factory {
   id: string;
+  isoCode: string;            // Added for flagcdn.com
   flag: string;
   name: string;
   location: [number, number]; // [latitude, longitude]
@@ -32,43 +33,43 @@ export interface SupplyArc {
 /* ── Factory countries (ordered West → East) ──────────────── */
 export const FACTORIES: Factory[] = [
   {
-    id: 'portugal', flag: '🇵🇹', name: 'Portugal',
-    location: [39.40, -8.22],
-    specialty: 'Luxury · Sustainable · EU Made',
-    specialties: ['Luxury', 'Sustainable', 'EU Made'],
-    certifications: ['GOTS', 'EU Ecolabel'],
+    id: 'madagascar', isoCode: 'mg', flag: '🇲🇬', name: 'Madagascar',
+    location: [-18.76, 46.86],
+    specialty: 'Knitwear · Duty-Free',
+    specialties: ['Knitwear', 'Duty-Free', 'Apparel'],
+    certifications: ['WRAP', 'Sedex'],
     accentColor: 'var(--color-primary)',
+    factoryCount: 10,
+  },
+  {
+    id: 'kenya', isoCode: 'ke', flag: '🇰🇪', name: 'Kenya',
+    location: [-0.02, 37.90],
+    specialty: 'Duty-Free · Volume',
+    specialties: ['Duty-Free', 'Volume', 'Woven'],
+    certifications: ['WRAP', 'BSCI'],
+    accentColor: 'var(--color-primary-alt)',
     factoryCount: 8,
   },
   {
-    id: 'morocco', flag: '🇲🇦', name: 'Morocco',
-    location: [31.79, -7.09],
-    specialty: 'EU-Nearshore · Fast Fashion',
-    specialties: ['EU-Nearshore', 'Fast Fashion', 'Quick Turn'],
-    certifications: ['SA8000', 'OEKO-TEX'],
-    accentColor: 'var(--color-primary-alt)',
+    id: 'ethiopia', isoCode: 'et', flag: '🇪🇹', name: 'Ethiopia',
+    location: [9.14, 40.48],
+    specialty: 'Sustainable · Duty-Free',
+    specialties: ['Sustainable', 'Duty-Free', 'Green Energy'],
+    certifications: ['WRAP', 'GOTS'],
+    accentColor: 'var(--color-neutral-900)',
     factoryCount: 12,
   },
   {
-    id: 'turkey', flag: '🇹🇷', name: 'Turkey',
-    location: [38.96, 35.24],
-    specialty: 'Premium Fashion · Cut & Sew',
-    specialties: ['Premium Fashion', 'Speed', 'Cut & Sew'],
-    certifications: ['EU Standards', 'SA8000'],
-    accentColor: 'var(--color-neutral-900)',
-    factoryCount: 18,
-  },
-  {
-    id: 'pakistan', flag: '🇵🇰', name: 'Pakistan',
-    location: [30.38, 69.35],
-    specialty: 'Denim · Woven Basics',
-    specialties: ['Denim', 'Woven Basics', 'Cotton'],
-    certifications: ['OEKO-TEX', 'GOTS'],
+    id: 'uae', isoCode: 'ae', flag: '🇦🇪', name: 'UAE',
+    location: [23.42, 53.84],
+    specialty: 'Trading Hub · Quality Control',
+    specialties: ['Trading Hub', 'Quality Control', 'Sourcing'],
+    certifications: ['ISO 9001'],
     accentColor: 'var(--color-neutral-200)',
-    factoryCount: 15,
+    factoryCount: 5,
   },
   {
-    id: 'india', flag: '🇮🇳', name: 'India',
+    id: 'india', isoCode: 'in', flag: '🇮🇳', name: 'India',
     location: [20.59, 78.96],
     specialty: 'Cotton · Knitwear · Embroidery',
     specialties: ['Cotton', 'Knitwear', 'Embroidery', 'Sustainable'],
@@ -77,7 +78,7 @@ export const FACTORIES: Factory[] = [
     factoryCount: 24,
   },
   {
-    id: 'srilanka', flag: '🇱🇰', name: 'Sri Lanka',
+    id: 'srilanka', isoCode: 'lk', flag: '🇱🇰', name: 'Sri Lanka',
     location: [7.87, 80.77],
     specialty: 'Lingerie · Intimate Apparel',
     specialties: ['Lingerie', 'Activewear', 'Intimate Apparel'],
@@ -86,7 +87,7 @@ export const FACTORIES: Factory[] = [
     factoryCount: 14,
   },
   {
-    id: 'bangladesh', flag: '🇧🇩', name: 'Bangladesh',
+    id: 'bangladesh', isoCode: 'bd', flag: '🇧🇩', name: 'Bangladesh',
     location: [23.69, 90.36],
     specialty: 'Basics · Volume · Jersey',
     specialties: ['Basics', 'Volume Production', 'Jersey', 'Woven'],
@@ -95,7 +96,16 @@ export const FACTORIES: Factory[] = [
     factoryCount: 42,
   },
   {
-    id: 'vietnam', flag: '🇻🇳', name: 'Vietnam',
+    id: 'cambodia', isoCode: 'kh', flag: '🇰🇭', name: 'Cambodia',
+    location: [12.56, 104.99],
+    specialty: 'Footwear · Outerwear',
+    specialties: ['Footwear', 'Outerwear', 'Volume'],
+    certifications: ['ILO Better Factories', 'WRAP'],
+    accentColor: 'var(--color-blue-700)',
+    factoryCount: 18,
+  },
+  {
+    id: 'vietnam', isoCode: 'vn', flag: '🇻🇳', name: 'Vietnam',
     location: [14.06, 108.28],
     specialty: 'Technical · Activewear',
     specialties: ['Technical', 'Performance', 'Activewear'],
@@ -104,7 +114,7 @@ export const FACTORIES: Factory[] = [
     factoryCount: 31,
   },
   {
-    id: 'china', flag: '🇨🇳', name: 'China',
+    id: 'china', isoCode: 'cn', flag: '🇨🇳', name: 'China',
     location: [31.23, 121.47],
     specialty: 'Scale · Technology · Accessories',
     specialties: ['Scale', 'Technology', 'Accessories'],
@@ -133,23 +143,21 @@ export const SUPPLY_ARCS: SupplyArc[] = [
   // Bangladesh routes
   { id: 'arc-bd-ld', from: [23.69, 90.36], to: [51.51, -0.13] },
   { id: 'arc-bd-ny', from: [23.69, 90.36], to: [40.71, -74.01] },
-  // Turkey routes
-  { id: 'arc-tr-ld', from: [38.96, 35.24], to: [51.51, -0.13] },
-  { id: 'arc-tr-bl', from: [38.96, 35.24], to: [52.52, 13.41] },
   // Vietnam routes
   { id: 'arc-vn-ny', from: [14.06, 108.28], to: [40.71, -74.01] },
   { id: 'arc-vn-sy', from: [14.06, 108.28], to: [-33.87, 151.21] },
   // China routes
   { id: 'arc-cn-ny', from: [31.23, 121.47], to: [40.71, -74.01] },
   { id: 'arc-cn-sy', from: [31.23, 121.47], to: [-33.87, 151.21] },
-  // Pakistan routes
-  { id: 'arc-pk-ld', from: [30.38, 69.35], to: [51.51, -0.13] },
-  // Portugal routes
-  { id: 'arc-pt-bl', from: [39.40, -8.22], to: [52.52, 13.41] },
-  // Morocco routes
-  { id: 'arc-ma-ld', from: [31.79, -7.09], to: [51.51, -0.13] },
   // Sri Lanka routes
   { id: 'arc-lk-db', from: [7.87, 80.77], to: [25.20, 55.27] },
+  // Africa Routes
+  { id: 'arc-mg-ld', from: [-18.76, 46.86], to: [51.51, -0.13] },
+  { id: 'arc-ke-ny', from: [-0.02, 37.90], to: [40.71, -74.01] },
+  { id: 'arc-et-db', from: [9.14, 40.48], to: [25.20, 55.27] },
+  // Cambodia Routes
+  { id: 'arc-kh-ny', from: [12.56, 104.99], to: [40.71, -74.01] },
+  { id: 'arc-kh-ld', from: [12.56, 104.99], to: [51.51, -0.13] },
 ];
 
 /* ── Derived helpers ──────────────────────────────────────── */

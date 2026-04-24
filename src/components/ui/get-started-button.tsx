@@ -77,8 +77,8 @@ export function GetStartedButton({
             {
               u_repetition: 4,
               u_softness: 0.5,
-              u_shiftRed: 0.1, // Adjusted for slate/silver aesthetics
-              u_shiftBlue: 0.3,
+              u_shiftRed: 0.0, // Switched to blue chrome
+              u_shiftBlue: 0.8,
               u_distortion: 0,
               u_contour: 0,
               u_angle: 45,
@@ -296,10 +296,10 @@ export function GetStartedButton({
                 position: "absolute",
                 inset: "2px", // Native internal border margin matching the snippet
                 borderRadius: "100px",
-                background: "linear-gradient(180deg, rgba(32,32,32,0.95) 0%, rgba(0,0,0,1) 100%)",
+                background: "linear-gradient(180deg, rgba(15, 23, 42, 0.95) 0%, rgba(2, 6, 23, 1) 100%)",
                 boxShadow: isPressed
-                  ? "inset 0px 2px 4px rgba(0, 0, 0, 0.4), inset 0px 1px 2px rgba(0, 0, 0, 0.3)"
-                  : "none",
+                  ? "inset 0px 2px 4px rgba(0, 0, 0, 0.6), inset 0px 1px 2px rgba(14, 165, 233, 0.2)"
+                  : "inset 0px 1px 1px rgba(56, 189, 248, 0.15)",
                 transition: "all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.15s cubic-bezier(0.4, 0, 0.2, 1)",
               }}
             />
@@ -323,10 +323,10 @@ export function GetStartedButton({
                 inset: 0,
                 borderRadius: "100px",
                 boxShadow: isPressed
-                  ? "0px 0px 0px 1px rgba(0, 0, 0, 0.5), 0px 1px 2px 0px rgba(0, 0, 0, 0.3)"
+                  ? "0px 0px 0px 1px rgba(2, 132, 199, 0.5), 0px 1px 2px 0px rgba(0, 0, 0, 0.3)"
                   : isHovered
-                    ? "0px 0px 0px 1px rgba(0, 0, 0, 0.4), 0px 12px 6px 0px rgba(0, 0, 0, 0.05), 0px 8px 5px 0px rgba(0, 0, 0, 0.1), 0px 4px 4px 0px rgba(0, 0, 0, 0.15), 0px 1px 2px 0px rgba(0, 0, 0, 0.2)"
-                    : "0px 0px 0px 1px rgba(0, 0, 0, 0.3), 0px 36px 14px 0px rgba(0, 0, 0, 0.02), 0px 20px 12px 0px rgba(0, 0, 0, 0.08), 0px 9px 9px 0px rgba(0, 0, 0, 0.12), 0px 2px 5px 0px rgba(0, 0, 0, 0.15)",
+                    ? "0px 0px 0px 1px rgba(14, 165, 233, 0.4), 0px 12px 6px 0px rgba(2, 132, 199, 0.1), 0px 8px 5px 0px rgba(0, 0, 0, 0.1), 0px 4px 4px 0px rgba(0, 0, 0, 0.15), 0px 1px 2px 0px rgba(0, 0, 0, 0.2)"
+                    : "0px 0px 0px 1px rgba(2, 132, 199, 0.3), 0px 36px 14px 0px rgba(0, 0, 0, 0.02), 0px 20px 12px 0px rgba(0, 0, 0, 0.08), 0px 9px 9px 0px rgba(0, 0, 0, 0.12), 0px 2px 5px 0px rgba(0, 0, 0, 0.15)",
                 transition: "all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.15s cubic-bezier(0.4, 0, 0.2, 1)",
                 background: "transparent",
               }}

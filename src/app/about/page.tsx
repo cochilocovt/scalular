@@ -57,10 +57,10 @@ const SUSTAINABILITY = [
 
 const STATS = [
   { target: 20, suffix: '+', label: 'Years Experience', icon: Globe },
-  { target: 3000, suffix: '+', label: 'Orders Completed', icon: Package },
+  { target: 1, suffix: 'M+', label: 'Pcs/Month Capacity', icon: Package },
   { target: 30, suffix: '+', label: 'Factory Partners', icon: Users },
-  { target: 9, suffix: '', label: 'Countries', icon: Globe },
-  { target: 50, suffix: '+', label: 'Satisfied Clients', icon: CheckCircle },
+  { target: 10, suffix: '', label: 'Countries', icon: Globe },
+  { target: 30, suffix: '+', label: 'Global Merchandisers', icon: CheckCircle },
 ];
 
 const fadeUp = {
@@ -148,20 +148,17 @@ export default function AboutPage() {
               Making Global Trade <span className="text-gradient">Seamless</span>
             </h2>
             <p className="text-text-secondary text-lg leading-relaxed mb-4">
-              Scalular is committed to bridging the gap between buyers and factories globally.
-              With our instant quotation system, we ensure transparency, efficiency, and scalability,
-              making garment sourcing seamless and hassle-free.
+              Scalular is not just a sourcing agency — we're your reserved space inside the South Asian apparel supply chain.
+              We bridge the gap between real-time production needs and long-term brand vision with factory-level access, speed, and trust.
+              We act as a full-service private label apparel partner, functioning like your own office on-site.
             </p>
             <p className="text-text-secondary text-lg leading-relaxed mb-4">
-              With over 20 years of experience in apparel sourcing, Scalular has worked with
-              global giants like Walmart and Amazon. Our expertise in garment sourcing ensures
-              high-quality manufacturing, efficient production, and cost-effective solutions for
-              brands worldwide.
+              With 1 million pieces/month global manufacturing capacity, we offer flexible supply chain models: 
+              from Basics (90 Days) and Read & React (65 Days), to Core Replenishment (30 Days) and Fashion (120 Days).
             </p>
             <p className="text-text-secondary text-lg leading-relaxed">
-              We have onboarded 30+ suppliers and successfully completed 3,000+ orders, providing
-              businesses with a trusted apparel sourcing network. Our platform guarantees quality,
-              reliability, and on-time delivery, making sourcing easier for brands of all sizes.
+              Powered by Production 360, our live ERP system ensures complete transparency from raw material to finished goods. 
+              Our in-house R&D and sampling units provide thread-level understanding to guarantee zero-error execution.
             </p>
           </motion.div>
 

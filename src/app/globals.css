@@ -14,8 +14,8 @@
   /* Primary Colors */
   --color-background:    #E7E3D1;   /* warm off-white — page/card backgrounds */
   --color-surface-muted: #ADACA4;   /* warm gray — secondary text, borders, dividers */
-  --color-primary:       #171B2E;   /* deep navy — headings, primary buttons, navbar */
-  --color-primary-alt:   #1A1E31;   /* dark blue variant — hover states, sidebars */
+  --color-primary:       #4A6085;   /* lighter blue from logo — headings, primary buttons, navbar */
+  --color-primary-alt:   #354A6B;   /* dark blue variant — hover states, sidebars */
 
   /* Neutral Scale */
   --color-neutral-100:   #f2f1e9;

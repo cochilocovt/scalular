@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+import Link from 'next/link';
 
 /* ─── Photo data — curated selection from factory visits ─────────────── */
 const PHOTOS = [
@@ -56,6 +57,23 @@ export function TrustGallery() {
           Every factory in our network is personally vetted, audited, and monitored.
           These are real photos from our partner facilities.
         </motion.p>
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.15 }}
+          className="mt-6"
+        >
+          <Link 
+            href="/gallery"
+            className="inline-flex items-center gap-2 text-sm font-bold text-primary hover:text-primary-alt transition-colors group"
+          >
+            <span className="border-b border-primary/30 group-hover:border-primary transition-colors pb-0.5">
+              Explore the Full Gallery
+            </span>
+            <span className="group-hover:translate-x-1 transition-transform">→</span>
+          </Link>
+        </motion.div>
       </div>
 
       {/* ── Photo grid — editorial asymmetric layout ────────── */}

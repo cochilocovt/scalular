@@ -57,19 +57,31 @@ export function GLBModel({ url, isActive = false }: { url: string; isActive?: bo
       clone.traverse((child) => {
         const mesh = child as THREE.Mesh;
         if (mesh.isMesh) {
+          const processMat = (mat: THREE.Material) => {
+            const clonedMat = mat.clone() as THREE.MeshStandardMaterial;
+            if ('color' in clonedMat) clonedMat.color = brandColor;
+            if ('roughness' in clonedMat) {
+              clonedMat.roughness = 0.9;
+              clonedMat.roughnessMap = null; // Kill shiny spots from textures
+            }
+            if ('metalness' in clonedMat) {
+              clonedMat.metalness = 0.0;
+              clonedMat.metalnessMap = null; // Kill metallic textures
+            }
+            
+            // The shorts have a baked maroon diffuse texture which tints our blue.
+            // Removing the base map lets the solid blue color apply cleanly.
+            if (url.includes('man_shorts.glb') || url.includes('denim_jacket.glb') || url.includes('blue_jeans_pants.glb')) {
+              clonedMat.map = null; // Also clear diffuse maps for denim to ensure pure blue shading if needed
+            }
+            
+            return clonedMat;
+          };
+
           if (Array.isArray(mesh.material)) {
-            mesh.material = mesh.material.map((mat) => {
-              const clonedMat = mat.clone();
-              if ('color' in clonedMat) (clonedMat as THREE.MeshStandardMaterial).color = brandColor;
-              if ('roughness' in clonedMat) (clonedMat as THREE.MeshStandardMaterial).roughness = 0.85;
-              if ('metalness' in clonedMat) (clonedMat as THREE.MeshStandardMaterial).metalness = 0.1;
-              return clonedMat;
-            });
+            mesh.material = mesh.material.map(processMat);
           } else {
-            mesh.material = (mesh.material as THREE.Material).clone();
-            if ('color' in mesh.material) (mesh.material as THREE.MeshStandardMaterial).color = brandColor;
-            if ('roughness' in mesh.material) (mesh.material as THREE.MeshStandardMaterial).roughness = 0.85;
-            if ('metalness' in mesh.material) (mesh.material as THREE.MeshStandardMaterial).metalness = 0.1;
+            mesh.material = processMat(mesh.material);
           }
         }
       });

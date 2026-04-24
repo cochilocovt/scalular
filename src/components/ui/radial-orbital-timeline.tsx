@@ -59,6 +59,27 @@ export default function RadialOrbitalTimeline({
     }
   };
 
+  // Auto-cycle through services every 3 seconds
+  useEffect(() => {
+    // Only auto-cycle if a node is currently selected
+    if (activeNodeId === null) return;
+
+    const cycleTimer = setInterval(() => {
+      const currentIndex = timelineData.findIndex(item => item.id === activeNodeId);
+      if (currentIndex === -1) return;
+      
+      const nextIndex = (currentIndex + 1) % timelineData.length;
+      const nextId = timelineData[nextIndex].id;
+      
+      setActiveNodeId(nextId);
+      // Logic from centerViewOnNode
+      const targetAngle = (nextIndex / timelineData.length) * 360;
+      setRotationAngle(270 - targetAngle);
+    }, 3000);
+
+    return () => clearInterval(cycleTimer);
+  }, [activeNodeId, timelineData]);
+
   useEffect(() => {
     let rotationTimer: any;
 
@@ -168,15 +189,14 @@ export default function RadialOrbitalTimeline({
                     <Icon size={22} />
                   </div>
 
-                  {/* Always-visible label */}
+                  {/* Always-visible label with increased spacing */}
                   <div
                     className={`
-                    absolute top-13 left-1/2 -translate-x-1/2 whitespace-nowrap
+                    absolute top-[72px] left-1/2 -translate-x-1/2 whitespace-nowrap
                     text-[10px] font-bold tracking-wide uppercase
                     transition-all duration-300
                     ${isActive ? 'text-primary' : 'text-text-secondary/70'}
                   `}
-                    style={{ marginTop: '4px' }}
                   >
                     {item.title}
                   </div>
@@ -188,58 +208,56 @@ export default function RadialOrbitalTimeline({
         </div>
 
         {/* ── Detail panel — right side ─────────────────────────── */}
-        <div className="w-full lg:w-1/2 flex-1 min-w-0 max-w-md lg:max-w-none">
-          {activeItem ? (
-            <div
-              key={activeItem.id}
-              className="animate-in fade-in slide-in-from-right-4 duration-300"
-              style={{
-                animation: 'fadeSlideIn 0.35s ease forwards',
-              }}
-            >
-              <div className="text-xs font-semibold uppercase tracking-[0.2em] text-primary mb-2">
-                {activeItem.category}
-              </div>
-              <h3
-                className="text-2xl md:text-3xl font-bold text-text-primary tracking-tight mb-4"
-                style={{ fontFamily: 'var(--font-display)' }}
+        <div className="w-full lg:w-1/2 flex-1 min-w-0 max-w-md lg:max-w-none mt-12 lg:mt-24">
+          {activeItem ? (() => {
+            const nextIndex = (timelineData.findIndex(item => item.id === activeItem.id) + 1) % timelineData.length;
+            const nextItem = timelineData[nextIndex];
+            return (
+              <div
+                key={activeItem.id}
+                className="animate-in fade-in slide-in-from-right-4 duration-300"
+                style={{
+                  animation: 'fadeSlideIn 0.35s ease forwards',
+                }}
               >
-                {activeItem.title}
-              </h3>
-              <p className="text-base text-text-secondary leading-relaxed mb-6">
-                {activeItem.content}
-              </p>
-
-              {/* Related services */}
-              {activeItem.relatedIds.length > 0 && (
-                <div>
-                  <div className="text-[10px] font-semibold uppercase tracking-[0.15em] text-text-secondary/60 mb-3">
-                    Related Services
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {activeItem.relatedIds.map((relatedId) => {
-                      const relatedItem = timelineData.find(
-                        (i) => i.id === relatedId
-                      );
-                      return (
-                        <button
-                          key={relatedId}
-                          className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg border border-border bg-surface hover:bg-surface-hover text-text-secondary hover:text-text-primary transition-colors"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            selectNode(relatedId);
-                          }}
-                        >
-                          {relatedItem?.title}
-                          <ArrowRight size={10} className="text-primary" />
-                        </button>
-                      );
-                    })}
-                  </div>
+                <div className="text-xs font-semibold uppercase tracking-[0.2em] text-primary mb-2">
+                  {activeItem.category}
                 </div>
-              )}
-            </div>
-          ) : (
+                <h3
+                  className="text-2xl md:text-3xl font-bold text-text-primary tracking-tight mb-4"
+                  style={{ fontFamily: 'var(--font-display)' }}
+                >
+                  {activeItem.title}
+                </h3>
+                <p className="text-base text-text-secondary leading-relaxed mb-8">
+                  {activeItem.content}
+                </p>
+
+                {/* Lucrative Next Service Arrow Element */}
+                <div className="mt-8 pt-8 border-t border-border/40">
+                  <button
+                    className="group relative flex items-center justify-between w-full max-w-[280px] p-4 bg-surface hover:bg-surface-hover border border-primary/20 rounded-2xl transition-all duration-300 hover:shadow-[0_0_20px_rgba(var(--color-primary-rgb),0.1)] hover:border-primary/50 text-left"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      selectNode(nextItem.id);
+                    }}
+                  >
+                    <div className="flex flex-col items-start pr-4">
+                      <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-text-secondary/60 group-hover:text-primary transition-colors mb-1">
+                        Next Service
+                      </span>
+                      <span className="text-sm font-semibold text-text-primary tracking-tight truncate w-full">
+                        {nextItem.title}
+                      </span>
+                    </div>
+                    <div className="w-10 h-10 shrink-0 rounded-full bg-primary/5 flex items-center justify-center group-hover:bg-primary transition-all duration-300 shadow-sm group-hover:scale-110">
+                      <ArrowRight size={16} className="text-primary group-hover:text-white transition-colors" />
+                    </div>
+                  </button>
+                </div>
+              </div>
+            );
+          })() : (
             <div className="text-text-secondary/50">
               <p className="text-sm font-medium">Select a service to learn more</p>
             </div>

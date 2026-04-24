@@ -80,7 +80,7 @@ export function Navbar() {
           >
             Sign In
           </Link>
-          <div className="hidden sm:block">
+          <div className="hidden sm:block translate-y-[2px]">
             <GetStartedButton
               label="Get Quote"
               href="https://app.scalular.com/quote"

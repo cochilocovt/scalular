@@ -77,10 +77,12 @@ export function ProductShowcase() {
 
       {/* Container inner styling restored */}
       <div 
-        className="relative mx-auto w-full max-w-7xl h-[450px] md:h-[550px] flex flex-col md:flex-row overflow-hidden bg-background/50 rounded-3xl border border-border shadow-xl z-10"
+        className="relative mx-auto w-full max-w-7xl h-[450px] md:h-[550px] flex flex-col md:flex-row overflow-hidden bg-background/50 rounded-3xl border border-border/50 shadow-xl z-10"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
+        {/* Minimal, crisp top accent bar using brand colors */}
+        <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-primary via-blue-600 to-transparent z-30 opacity-80" />
         
         {/* ── Left Side: Scrolling List ── */}
         <div className="relative w-full md:w-[45%] h-1/2 md:h-full flex flex-col justify-center border-r border-border/50">

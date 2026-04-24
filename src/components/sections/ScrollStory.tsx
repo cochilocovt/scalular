@@ -4,12 +4,14 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence, Variants, Easing } from 'framer-motion';
 import { GlobeCdn } from '../ui/cobe-globe-cdn';
 import { GetStartedButton } from '../ui/get-started-button';
-import { MapPin, Award } from 'lucide-react';
+import Image from 'next/image';
+import { MapPin, Award, FileText } from 'lucide-react';
 import { FACTORY_MAP, FACTORY_IDS } from '@/data/factories';
 
 /* ─── Factory data (derived from shared source of truth) ─── */
 const FACTORY_DATA = Object.fromEntries(
   Object.entries(FACTORY_MAP).map(([id, f]) => [id, {
+    isoCode: f.isoCode,
     flag: f.flag,
     name: f.name,
     factories: f.factoryCount,
@@ -34,7 +36,15 @@ function FactoryCard({ id }: { id: string }) {
       className="w-full max-w-[180px] xl:max-w-[200px] bg-background/80 backdrop-blur-xl border border-border rounded-2xl p-5 shadow-[0_20px_50px_rgba(0,0,0,0.08)] relative z-30 flex flex-col items-center text-center"
     >
       <div className="flex flex-col items-center mb-3">
-        <span className="text-[2.5rem] leading-[1.1] mb-1 drop-shadow-sm">{d.flag}</span>
+        <div className="relative w-[36px] h-[27px] mb-2 rounded-[2px] overflow-hidden drop-shadow-sm border border-black/10">
+          <Image 
+            src={`https://flagcdn.com/w40/${d.isoCode}.png`} 
+            alt={`${d.name} flag`}
+            fill
+            className="object-cover"
+            sizes="40px"
+          />
+        </div>
         <h3 className="text-lg font-black text-text-primary leading-none tracking-tight">{d.name}</h3>
         <div className="flex items-center gap-1.5 text-text-secondary mt-1.5 opacity-70">
           <MapPin className="w-3 h-3" />
@@ -142,7 +152,7 @@ export function ScrollStory() {
           className="text-base md:text-lg text-text-secondary leading-relaxed max-w-xl mx-auto mb-10"
         >
           Manage your production lifecycle with AI-driven insights and pre-vetted
-          manufacturing partners across 9 global sourcing hubs.
+          manufacturing partners across 10 global sourcing hubs.
         </motion.p>
 
         <motion.div
@@ -150,15 +160,26 @@ export function ScrollStory() {
           variants={textVariants}
           initial="hidden"
           animate="visible"
+          className="flex flex-col items-center mt-12 mb-4"
         >
           <GetStartedButton
             label="Get Your Instant Quote"
             size="lg"
             href="https://app.scalular.com/quote"
             target="_blank"
-            withLamp={true}
-            className="mt-12 mb-4"
+            withLamp={false}
           />
+          <motion.div 
+            initial={{ opacity: 0, y: 5 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.2, duration: 0.8 }}
+            className="mt-4 flex items-center gap-2 text-text-secondary/80 bg-surface/50 border border-border/50 px-4 py-2 rounded-full shadow-sm backdrop-blur-sm"
+          >
+            <FileText className="w-3.5 h-3.5 text-primary" />
+            <span className="text-[11px] font-medium tracking-wide">
+              Just upload your techpack PDF to get an instant quote.
+            </span>
+          </motion.div>
         </motion.div>
       </div>
 

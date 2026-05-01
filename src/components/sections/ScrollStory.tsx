@@ -33,7 +33,7 @@ function FactoryCard({ id }: { id: string }) {
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, y: 5, scale: 0.98 }}
       transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] as Easing }}
-      className="w-full max-w-[180px] xl:max-w-[200px] bg-background/80 backdrop-blur-xl border border-border rounded-2xl p-5 shadow-[0_20px_50px_rgba(0,0,0,0.08)] relative z-30 flex flex-col items-center text-center"
+      className="w-full max-w-[280px] sm:max-w-[200px] xl:max-w-[200px] bg-background/80 backdrop-blur-xl border border-border rounded-2xl p-5 shadow-[0_20px_50px_rgba(0,0,0,0.08)] relative z-30 flex flex-col items-center text-center"
     >
       <div className="flex flex-col items-center mb-3">
         <div className="relative w-[36px] h-[27px] mb-2 rounded-[2px] overflow-hidden drop-shadow-sm border border-black/10">
@@ -48,20 +48,20 @@ function FactoryCard({ id }: { id: string }) {
         <h3 className="text-lg font-black text-text-primary leading-none tracking-tight">{d.name}</h3>
         <div className="flex items-center gap-1.5 text-text-secondary mt-1.5 opacity-70">
           <MapPin className="w-3 h-3" />
-          <p className="text-[9px] font-bold uppercase tracking-[0.2em]">Sourcing Hub</p>
+          <p className="text-[11px] sm:text-[9px] font-bold uppercase tracking-[0.2em]">Sourcing Hub</p>
         </div>
       </div>
 
       <div className="mb-3 mt-1">
         <div className="text-[3.5rem] font-black leading-[0.8] tracking-tighter" style={{ color: d.accent }}>{d.factories}</div>
-        <div className="text-[10px] text-text-secondary font-bold uppercase mt-1.5 tracking-[0.25em] opacity-80">Facilities</div>
+        <div className="text-[11px] sm:text-[10px] text-text-secondary font-bold uppercase mt-1.5 tracking-[0.25em] opacity-80">Facilities</div>
       </div>
 
       <div className="w-full pt-3 border-t border-border/60 flex flex-col gap-2">
         {d.certs.map((c) => (
           <div key={c} className="flex items-center justify-center gap-2">
             <Award className="w-3 h-3 text-text-secondary opacity-60" />
-            <span className="text-[10px] font-bold text-text-secondary tracking-widest uppercase">{c}</span>
+            <span className="text-[11px] sm:text-[10px] font-bold text-text-secondary tracking-widest uppercase">{c}</span>
           </div>
         ))}
       </div>
@@ -105,10 +105,10 @@ export function ScrollStory() {
   }, [titleNumber, rotatingPhrases.length]);
 
   return (
-    <div id="regions" className="relative w-full bg-background min-h-screen pt-16 md:pt-20 pb-16 flex flex-col items-center overflow-hidden">
+    <div id="regions" className="relative w-full bg-background min-h-screen pt-4 md:pt-20 pb-6 md:pb-16 flex flex-col items-center overflow-hidden">
 
       {/* ── Hero text (Centered) ── */}
-      <div className="w-full max-w-4xl mx-auto px-6 text-center z-20 flex flex-col items-center relative mb-12 md:mb-16">
+      <div className="w-full max-w-4xl mx-auto px-6 text-center z-20 flex flex-col items-center relative mb-4 md:mb-16">
 
 
         <motion.h1
@@ -116,7 +116,7 @@ export function ScrollStory() {
           variants={textVariants}
           initial="hidden"
           animate="visible"
-          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-text-primary leading-[1.05] tracking-tighter mb-6 max-w-3xl"
+          className="text-2xl sm:text-4xl md:text-6xl lg:text-7xl font-bold text-text-primary leading-[1.05] tracking-tighter mb-3 md:mb-6 max-w-3xl"
           style={{ fontFamily: 'var(--font-display)' }}
         >
           Direct Access to <br />
@@ -149,7 +149,7 @@ export function ScrollStory() {
           variants={textVariants}
           initial="hidden"
           animate="visible"
-          className="text-base md:text-lg text-text-secondary leading-relaxed max-w-xl mx-auto mb-10"
+          className="text-sm md:text-lg text-text-secondary leading-relaxed max-w-xl mx-auto mb-4 md:mb-10"
         >
           Manage your production lifecycle with AI-driven insights and pre-vetted
           manufacturing partners across 10 global sourcing hubs.
@@ -160,7 +160,7 @@ export function ScrollStory() {
           variants={textVariants}
           initial="hidden"
           animate="visible"
-          className="flex flex-col items-center mt-12 mb-4"
+          className="flex flex-col items-center mt-6 mb-2 md:mt-12 md:mb-4"
         >
           <GetStartedButton
             label="Get Your Instant Quote"
@@ -173,7 +173,7 @@ export function ScrollStory() {
             initial={{ opacity: 0, y: 5 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.2, duration: 0.8 }}
-            className="mt-4 flex items-center gap-2 text-text-secondary/80 bg-surface/50 border border-border/50 px-4 py-2 rounded-full shadow-sm backdrop-blur-sm"
+            className="mt-2 md:mt-4 flex items-center gap-2 text-text-secondary/80 bg-surface/50 border border-border/50 px-4 py-2 rounded-full shadow-sm backdrop-blur-sm"
           >
             <FileText className="w-3.5 h-3.5 text-primary" />
             <span className="text-[11px] font-medium tracking-wide">
@@ -184,15 +184,15 @@ export function ScrollStory() {
       </div>
 
       {/* ── Main Interactive Scene ── */}
-      <div className="w-full max-w-screen-2xl mx-auto relative flex flex-col items-center min-h-[350px] md:min-h-[550px] px-0 lg:px-4 xl:px-16">
+      <div className="w-full max-w-screen-2xl mx-auto relative flex flex-col items-center min-h-[280px] md:min-h-[550px] px-0 lg:px-4 xl:px-16">
         {/* 1. Globe (Strictly Centered) */}
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.7, duration: 1.2, ease: [0.22, 1, 0.36, 1] as Easing }}
-          className="w-full max-w-[280px] md:max-w-[500px] lg:max-w-[700px] aspect-square relative z-10 flex items-center justify-center shrink-0"
+          className="w-full max-w-[360px] sm:max-w-[400px] md:max-w-[500px] lg:max-w-[700px] aspect-square relative z-10 flex items-center justify-center shrink-0"
         >
-          <div className="absolute inset-x-0 bottom-0 h-1/4 bg-gradient-to-t from-background to-transparent z-10 pointer-events-none opacity-40" />
+          <div className="absolute inset-x-0 bottom-0 h-1/6 md:h-1/4 bg-gradient-to-t from-background to-transparent z-10 pointer-events-none opacity-40" />
           <GlobeCdn
             speed={0.0022}
             activeId={selectedId}
@@ -264,7 +264,7 @@ export function ScrollStory() {
             initial={{ opacity: 0, y: 20, filter: 'blur(10px)' }}
             animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
             transition={{ delay: 0.9, duration: 1.2, ease: [0.22, 1, 0.36, 1] as Easing }}
-            className="w-full flex justify-center min-h-[200px]" 
+            className="w-full flex justify-center min-h-[160px]" 
             id="region-card"
           >
             <AnimatePresence mode="wait">

@@ -77,17 +77,17 @@ export function ProductShowcase() {
 
       {/* Container inner styling restored */}
       <div 
-        className="relative mx-auto w-full max-w-7xl h-[450px] md:h-[550px] flex flex-col md:flex-row overflow-hidden bg-background/50 rounded-3xl border border-border/50 shadow-xl z-10"
+        className="relative mx-auto w-full max-w-7xl h-[480px] md:h-[550px] flex flex-col-reverse md:flex-row overflow-hidden bg-background/50 rounded-3xl border border-border/50 shadow-xl z-10"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
         {/* Minimal, crisp top accent bar using brand colors */}
         <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-primary via-blue-600 to-transparent z-30 opacity-80" />
         
-        {/* ── Left Side: Scrolling List ── */}
-        <div className="relative w-full md:w-[45%] h-1/2 md:h-full flex flex-col justify-center border-r border-border/50">
+        {/* ── Left Side (Desktop) / Bottom Strip (Mobile): Scrolling List ── */}
+        <div className="relative w-full md:w-[45%] h-[30%] md:h-full flex flex-col justify-center md:border-r border-border/50">
           
-          <div className="w-full h-full relative overflow-hidden flex items-center justify-center">
+          <div className="w-full h-full relative overflow-hidden hidden md:flex items-center justify-center">
              {/* The anchor point for the scrolling list. */}
              <motion.div 
                className="absolute w-full px-6 md:px-12 pointer-events-auto cursor-pointer"
@@ -140,14 +140,42 @@ export function ProductShowcase() {
                 })}
              </motion.div>
 
-             {/* Alpha gradients over the list top & bottom */}
-             <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-background to-transparent pointer-events-none" />
-             <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-background to-transparent pointer-events-none" />
+             {/* Alpha gradients over the list top & bottom — desktop only */}
+             <div className="hidden md:block absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-background to-transparent pointer-events-none" />
+             <div className="hidden md:block absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-background to-transparent pointer-events-none" />
+          </div>
+
+          {/* Mobile horizontal strip — replaces vertical list below md */}
+          <div
+            className="flex md:hidden items-center gap-2 overflow-x-auto snap-x snap-mandatory w-full h-full px-4"
+            style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}
+          >
+            {GARMENT_CATALOG.map((entry, idx) => {
+              const isActive = idx === activeIndex;
+              return (
+                <button
+                  key={entry.id}
+                  onClick={() => setActiveIndex(idx)}
+                  className={`
+                    snap-center shrink-0 px-5 py-2 rounded-full text-sm font-bold uppercase tracking-wider
+                    transition-all duration-300 whitespace-nowrap
+                    focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50
+                    ${
+                      isActive
+                        ? 'bg-primary text-white shadow-lg shadow-primary/20'
+                        : 'text-text-secondary/60 hover:text-text-primary'
+                    }
+                  `}
+                >
+                  {entry.name}
+                </button>
+              );
+            })}
           </div>
         </div>
 
-        {/* ── Right Side: 3D Stage ── */}
-        <div className="relative w-full md:w-[55%] h-1/2 md:h-full flex items-center justify-center">
+        {/* ── Right Side (Desktop) / Top (Mobile): 3D Stage ── */}
+        <div className="relative w-full md:w-[55%] h-[70%] md:h-full flex items-center justify-center">
           <div className="absolute inset-0 bg-white/5 pointer-events-none" />
           <SafeCanvas>
             {/* Added key prop bound to url. This forces React to unmount and remount GLBModel + Center, 

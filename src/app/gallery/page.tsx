@@ -2,13 +2,57 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { X, Play } from 'lucide-react';
 import { GALLERY_DATA, GALLERY_CATEGORIES, GalleryItem } from '@/data/galleryData';
 
 export default function GalleryPage() {
   const [activeCategory, setActiveCategory] = useState('All');
   const [selectedMedia, setSelectedMedia] = useState<GalleryItem | null>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  // Focus trap for modal
+  useEffect(() => {
+    if (!selectedMedia) return;
+    
+    const previousActiveElement = document.activeElement as HTMLElement;
+    if (modalRef.current) {
+      modalRef.current.focus();
+    }
+    
+    const handleTab = (e: KeyboardEvent) => {
+      if (e.key === 'Tab') {
+        if (!modalRef.current) return;
+        const focusableElements = modalRef.current.querySelectorAll<HTMLElement>(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        if (focusableElements.length === 0) return;
+        
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
+        
+        if (e.shiftKey) {
+          if (document.activeElement === firstElement) {
+            lastElement.focus();
+            e.preventDefault();
+          }
+        } else {
+          if (document.activeElement === lastElement) {
+            firstElement.focus();
+            e.preventDefault();
+          }
+        }
+      }
+    };
+    
+    document.addEventListener('keydown', handleTab);
+    return () => {
+      document.removeEventListener('keydown', handleTab);
+      if (previousActiveElement) {
+        previousActiveElement.focus();
+      }
+    };
+  }, [selectedMedia]);
 
   // Filter data based on category
   const filteredData = GALLERY_DATA.filter(
@@ -23,7 +67,7 @@ export default function GalleryPage() {
   };
 
   return (
-    <main className="flex flex-col min-h-screen bg-background text-text-primary pt-20 pb-20">
+    <main id="main-content" className="flex flex-col min-h-screen bg-background text-text-primary pt-20 pb-20">
       
       {/* ── Hero ─────────────────────────────────────────────── */}
       <section className="relative overflow-hidden py-16 md:py-24 px-6 md:px-12 bg-mesh-gradient">
@@ -94,12 +138,12 @@ export default function GalleryPage() {
             {filteredData.map((item, i) => {
               // Determine grid spans based on predefined tags
               let gridClassName = "col-span-1 row-span-1";
-              if (item.span === 'large') gridClassName = "col-span-2 row-span-2";
-              else if (item.span === 'wide') gridClassName = "col-span-2 row-span-1";
+              if (item.span === 'large') gridClassName = "md:col-span-2 md:row-span-2";
+              else if (item.span === 'wide') gridClassName = "md:col-span-2 row-span-1";
               else if (item.span === 'tall') gridClassName = "col-span-1 row-span-2";
 
               // Make spans more rigid on smaller screens to prevent breaks
-              const finalClassName = `relative rounded-2xl md:rounded-3xl overflow-hidden group cursor-pointer ${gridClassName} md:col-span-auto`;
+              const finalClassName = `relative rounded-2xl md:rounded-3xl overflow-hidden group cursor-pointer ${gridClassName}`;
 
               return (
                 <motion.div
@@ -163,10 +207,11 @@ export default function GalleryPage() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
+            ref={modalRef}
             className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 backdrop-blur-xl p-4 md:p-12"
             onClick={() => setSelectedMedia(null)}
             onKeyDown={handleKeyDown}
-            tabIndex={0}
+            tabIndex={-1}
           >
             {/* Close Button */}
             <button
@@ -186,11 +231,15 @@ export default function GalleryPage() {
               onClick={(e) => e.stopPropagation()}
             >
                {selectedMedia.type === 'image' ? (
-                 <img
-                    src={selectedMedia.src}
-                    alt={selectedMedia.alt}
-                    className="max-h-[85vh] w-auto object-contain rounded-lg shadow-2xl"
-                 />
+                 <div className="relative w-full h-[85vh]">
+                   <Image
+                      src={selectedMedia.src}
+                      alt={selectedMedia.alt}
+                      fill
+                      className="object-contain rounded-lg shadow-2xl"
+                      sizes="90vw"
+                   />
+                 </div>
                ) : (
                  <video
                     src={selectedMedia.src}

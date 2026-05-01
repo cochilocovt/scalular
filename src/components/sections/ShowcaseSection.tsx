@@ -26,11 +26,11 @@ export function ShowcaseSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="text-5xl md:text-6xl lg:text-7xl font-bold text-text-primary tracking-tighter leading-tight"
+            className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-text-primary tracking-tighter leading-tight"
           >
             Simplified.{' '}
             <span className="text-primary">Streamlined.</span>
-            <br />
+            <span className="hidden sm:inline"><br /></span>
             Sourced.
           </motion.h2>
         </div>

@@ -7,8 +7,8 @@ export const metadata = {
 
 export default function TermsAndConditionsPage() {
   return (
-    <main className="flex flex-col min-h-screen bg-background text-text-primary pt-20">
-      <section className="relative overflow-hidden py-24 md:py-36 px-6 md:px-12 bg-mesh-gradient border-b border-divider">
+    <main id="main-content" className="flex flex-col min-h-screen bg-background text-text-primary pt-20">
+      <section className="relative overflow-hidden py-12 md:py-36 px-6 md:px-12 bg-mesh-gradient border-b border-divider">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_50%_80%,var(--primary-muted),transparent)]" />
         <div className="max-w-4xl mx-auto text-center relative z-10">
           <h1 className="text-4xl md:text-6xl font-black text-text-primary leading-[1.05] tracking-tighter mb-6">
@@ -21,7 +21,7 @@ export default function TermsAndConditionsPage() {
       </section>
 
       <section className="py-20 px-6 md:px-12 bg-background">
-        <div className="max-w-4xl mx-auto prose prose-invert prose-blue lg:prose-lg text-text-secondary leading-relaxed">
+        <div className="max-w-4xl mx-auto prose prose-blue lg:prose-lg text-text-secondary leading-relaxed">
           <h2 className="text-text-primary font-bold text-2xl mb-4">
             UNDERSTANDING YOUR RIGHTS, DUTIES AND RESPONSIBILITIES AS A USER OF THIS WEBSITE
           </h2>

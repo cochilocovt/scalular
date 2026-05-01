@@ -43,7 +43,7 @@ export function CTASection() {
           </p>
 
           <h2
-            className="text-4xl md:text-6xl lg:text-7xl font-bold text-text-primary leading-[1.05] tracking-tighter mb-6"
+            className="text-3xl md:text-6xl lg:text-7xl font-bold text-text-primary leading-[1.05] tracking-tighter mb-6"
             style={{ fontFamily: 'var(--font-display)' }}
           >
             Your factory is waiting.
@@ -73,7 +73,7 @@ export function CTASection() {
           </div>
 
           {/* Trust badges — FULL OPACITY, not faded */}
-          <div className="mt-16 pt-10 border-t border-divider flex flex-wrap justify-center gap-x-10 gap-y-4">
+          <div className="mt-16 pt-10 border-t border-divider flex flex-wrap justify-center gap-x-6 md:gap-x-10 gap-y-4">
             {TRUST_BADGES.map(({ Icon, label }) => (
               <div key={label} className="flex items-center gap-2">
                 <Icon className="w-4 h-4 text-primary" aria-hidden="true" />

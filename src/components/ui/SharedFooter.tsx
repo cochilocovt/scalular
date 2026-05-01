@@ -36,9 +36,9 @@ export function SharedFooter() {
             </div>
             <div className="flex flex-col gap-2">
               <span className="text-[10px] font-semibold tracking-widest uppercase text-primary-foreground/50 mb-1">Legal</span>
-              <Link href="#" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Privacy Policy</Link>
+              <Link href="/terms-and-conditions" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Privacy Policy</Link>
               <Link href="/terms-and-conditions" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Terms of Service</Link>
-              <Link href="#" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Contact</Link>
+              <Link href="mailto:contactus@scalular.com" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Contact</Link>
             </div>
           </div>
         </div>

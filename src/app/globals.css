@@ -337,3 +337,13 @@ a, button, [role="button"], input, select, textarea,
   0% { transform: translateX(-50%); }
   100% { transform: translateX(0%); }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   TEXT GRADIENT UTILITY
+   ═══════════════════════════════════════════════════════════════ */
+@utility text-gradient {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-blue-400, #38BDF8));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}

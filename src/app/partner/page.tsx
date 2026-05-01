@@ -88,7 +88,7 @@ export default function PartnerPage() {
   });
 
   return (
-    <main className="flex flex-col min-h-screen relative selection:bg-[#0EA5E9]/30 selection:text-[#0EA5E9]">
+    <main id="main-content" className="flex flex-col min-h-screen relative selection:bg-[#0EA5E9]/30 selection:text-[#0EA5E9]">
 
       {/* ── Fixed Background Layers ── */}
       <motion.div
@@ -105,7 +105,7 @@ export default function PartnerPage() {
       {/* ═══ HERO (Light Mode) ═══ */}
       <motion.section
         style={{ opacity: heroOpacity, scale: heroScale }}
-        className="relative pt-32 pb-20 md:pt-48 md:pb-32 px-6 md:px-12 flex flex-col items-center justify-center min-h-[85vh] z-10 overflow-hidden"
+        className="relative pt-24 pb-12 md:pt-48 md:pb-32 px-6 md:px-12 flex flex-col items-center justify-center min-h-[85vh] z-10 overflow-hidden"
       >
         {/* Parallax factory image behind hero */}
         <motion.div style={{ y: imageY }} className="absolute inset-0 z-0 pointer-events-none">
@@ -133,7 +133,7 @@ export default function PartnerPage() {
             initial={{ opacity: 0, y: 30, filter: 'blur(10px)' }}
             animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
             transition={{ duration: 1, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="text-6xl md:text-8xl lg:text-[7rem] font-black text-[#0F172A] leading-[0.95] tracking-tighter mb-8"
+            className="text-3xl sm:text-5xl md:text-8xl lg:text-[7rem] font-black text-[#0F172A] leading-[0.95] tracking-tighter mb-8"
           >
             Grow Your Factory<br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#4A6085] to-[#0EA5E9]">With Global Brands.</span>
@@ -163,7 +163,7 @@ export default function PartnerPage() {
       </motion.section>
 
       {/* ═══ PROBLEM STATEMENT (The Pivot — Light → Dark) ═══ */}
-      <section className="relative z-20 py-24 md:py-36 px-6 md:px-12">
+      <section className="relative z-20 py-12 md:py-36 px-6 md:px-12">
         <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
           <motion.div
             initial={{ opacity: 0, x: -30 }}
@@ -174,7 +174,7 @@ export default function PartnerPage() {
             <div className="text-[11px] font-black tracking-[0.4em] uppercase text-[#0EA5E9] mb-6 flex items-center gap-3">
               <span className="w-8 h-[2px] bg-[#0EA5E9]" /> The Problem
             </div>
-            <h2 className="text-5xl md:text-6xl font-black text-white tracking-tighter leading-[1.05] mb-8">
+            <h2 className="text-3xl sm:text-4xl md:text-6xl font-black text-white tracking-tighter leading-[1.05] mb-8">
               Your Factory Deserves <span className="text-[#0EA5E9]">Better.</span>
             </h2>
             <div className="space-y-5 text-white/70 text-lg leading-relaxed font-light">
@@ -206,7 +206,7 @@ export default function PartnerPage() {
       <div className="relative z-20 text-white pb-32">
 
         {/* ── Benefits ── */}
-        <section className="py-24 px-6 md:px-12">
+        <section className="py-12 md:py-24 px-6 md:px-12">
           <div className="max-w-6xl mx-auto">
             <div className="mb-16 md:mb-20">
               <motion.div
@@ -222,7 +222,7 @@ export default function PartnerPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.1 }}
-                className="text-5xl md:text-7xl font-black text-white tracking-tighter"
+                className="text-3xl sm:text-5xl md:text-7xl font-black text-white tracking-tighter"
               >
                 Built for <span className="text-[#0EA5E9]">Factory Growth.</span>
               </motion.h2>
@@ -277,7 +277,7 @@ export default function PartnerPage() {
         </section>
 
         {/* ── How It Works (Sticky Timeline) ── */}
-        <section id="how-it-works" ref={timelineRef} className="py-24 px-6 md:px-12">
+        <section id="how-it-works" ref={timelineRef} className="py-12 md:py-24 px-6 md:px-12">
           <div className="max-w-6xl mx-auto">
             <div className="mb-16 md:mb-20">
               <motion.div
@@ -293,7 +293,7 @@ export default function PartnerPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.1 }}
-                className="text-5xl md:text-7xl font-black text-white tracking-tighter"
+                className="text-3xl sm:text-5xl md:text-7xl font-black text-white tracking-tighter"
               >
                 From Application to <span className="text-[#0EA5E9]">First Order.</span>
               </motion.h2>
@@ -411,7 +411,7 @@ export default function PartnerPage() {
         </section>
 
         {/* ── Application Form ── */}
-        <section id="apply" className="py-24 px-6 md:px-12">
+        <section id="apply" className="py-12 md:py-24 px-6 md:px-12">
           <div className="max-w-2xl mx-auto">
             <div className="text-center mb-12">
               <motion.div
@@ -427,7 +427,7 @@ export default function PartnerPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.1 }}
-                className="text-5xl md:text-6xl font-black text-white tracking-tighter mb-4"
+                className="text-3xl sm:text-4xl md:text-6xl font-black text-white tracking-tighter mb-4"
               >
                 Start Your <span className="text-[#0EA5E9]">Application.</span>
               </motion.h2>
@@ -454,7 +454,7 @@ export default function PartnerPage() {
         </section>
 
         {/* ── FAQ ── */}
-        <section className="py-24 px-6 md:px-12 border-t border-white/[0.05]">
+        <section className="py-12 md:py-24 px-6 md:px-12 border-t border-white/[0.05]">
           <div className="max-w-2xl mx-auto">
             <div className="text-center mb-12">
               <motion.div
@@ -470,7 +470,7 @@ export default function PartnerPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.1 }}
-                className="text-4xl md:text-5xl font-black text-white tracking-tighter"
+                className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tighter"
               >
                 Common <span className="text-[#0EA5E9]">Questions</span>
               </motion.h2>

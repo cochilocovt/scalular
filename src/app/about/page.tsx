@@ -89,7 +89,7 @@ export default function AboutPage() {
   const imageRadius = useTransform(scrollYProgress, [0.05, 0.2], ['24px', '0px']);
 
   return (
-    <main className="flex flex-col min-h-screen relative selection:bg-[#0EA5E9]/30 selection:text-[#0EA5E9]">
+    <main id="main-content" className="flex flex-col min-h-screen relative selection:bg-[#0EA5E9]/30 selection:text-[#0EA5E9]">
       
       {/* ── Fixed Dark Background Layer (Fades in on scroll) ── */}
       <motion.div 
@@ -108,7 +108,7 @@ export default function AboutPage() {
       {/* ── Hero (Light Mode) ─────────────────────────────────────────────── */}
       <motion.section 
         style={{ opacity: heroOpacity, scale: heroScale }}
-        className="relative pt-32 pb-24 md:pt-48 md:pb-36 px-6 md:px-12 flex flex-col items-center justify-center min-h-[80vh] z-10"
+        className="relative pt-24 pb-12 md:pt-48 md:pb-36 px-6 md:px-12 flex flex-col items-center justify-center min-h-[80vh] z-10"
       >
         
         <div className="max-w-5xl mx-auto text-center relative z-10">
@@ -126,7 +126,7 @@ export default function AboutPage() {
             initial={{ opacity: 0, y: 30, filter: 'blur(10px)' }}
             animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
             transition={{ duration: 1, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="text-6xl md:text-8xl lg:text-[7rem] font-black text-[#0F172A] leading-[0.95] tracking-tighter mb-8"
+            className="text-3xl sm:text-5xl md:text-8xl lg:text-[7rem] font-black text-[#0F172A] leading-[0.95] tracking-tighter mb-8"
           >
             Where Global Apparel<br />
             Meets <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#4A6085] to-[#0EA5E9]">Ethical Innovation.</span>
@@ -165,7 +165,7 @@ export default function AboutPage() {
       <div className="relative z-20 text-white pb-32 pt-20">
         
         {/* ── Mission & Stats ──────────────────────────────────────────── */}
-        <section className="py-24 px-6 md:px-12">
+        <section className="py-12 md:py-24 px-6 md:px-12">
           <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
             <motion.div
               initial={{ opacity: 0, x: -30 }}
@@ -176,7 +176,7 @@ export default function AboutPage() {
               <div className="text-[11px] font-black tracking-[0.4em] uppercase text-[#0EA5E9] mb-6 flex items-center gap-3">
                 <span className="w-8 h-[2px] bg-[#0EA5E9]"></span> Our Mission & Vision
               </div>
-              <h2 className="text-5xl md:text-6xl font-black text-white tracking-tighter leading-[1.05] mb-8">
+              <h2 className="text-3xl sm:text-4xl md:text-6xl font-black text-white tracking-tighter leading-[1.05] mb-8">
                 Making Global Trade <span className="text-[#0EA5E9]">Seamless.</span>
               </h2>
               <div className="space-y-6 text-white/70 text-lg md:text-xl leading-relaxed font-light">
@@ -218,7 +218,7 @@ export default function AboutPage() {
         </section>
 
         {/* ── Why Choose Us ─────────────────────────────────────── */}
-        <section className="py-24 px-6 md:px-12 relative">
+        <section className="py-12 md:py-24 px-6 md:px-12 relative">
           <div className="max-w-6xl mx-auto">
             <div className="mb-16 md:mb-24">
               <motion.div
@@ -234,7 +234,7 @@ export default function AboutPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.1 }}
-                className="text-5xl md:text-7xl font-black text-white tracking-tighter"
+                className="text-3xl sm:text-5xl md:text-7xl font-black text-white tracking-tighter"
               >
                 Why <span className="text-[#0EA5E9]">Choose Us?</span>
               </motion.h2>
@@ -267,7 +267,7 @@ export default function AboutPage() {
         </section>
 
         {/* ── Sustainability ────────────────────────────────────── */}
-        <section className="py-24 px-6 md:px-12 relative">
+        <section className="py-12 md:py-24 px-6 md:px-12 relative">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-16 md:mb-24">
               <motion.div
@@ -318,7 +318,7 @@ export default function AboutPage() {
         </section>
 
         {/* ── Supplier Network ──────────────────────────────────── */}
-        <section className="py-24 px-6 md:px-12 bg-white/[0.02] border-t border-b border-white/[0.05]">
+        <section className="py-12 md:py-24 px-6 md:px-12 bg-white/[0.02] border-t border-b border-white/[0.05]">
           <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
             <motion.div
               initial={{ opacity: 0, x: -30 }}
@@ -372,7 +372,7 @@ export default function AboutPage() {
         </section>
 
         {/* ── Location ─────────────────────────────────────────── */}
-        <section className="py-24 px-6 md:px-12 text-center">
+        <section className="py-12 md:py-24 px-6 md:px-12 text-center">
           <div className="max-w-4xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -416,14 +416,14 @@ export default function AboutPage() {
         </section>
 
         {/* ── CTA ──────────────────────────────────────────────── */}
-        <section className="py-32 px-6 md:px-12 relative overflow-hidden">
+        <section className="py-16 md:py-32 px-6 md:px-12 relative overflow-hidden">
           <div className="max-w-3xl mx-auto text-center relative z-10">
             <motion.h2
               initial={{ opacity: 0, y: 20, scale: 0.95 }}
               whileInView={{ opacity: 1, y: 0, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, ease: "easeOut" }}
-              className="text-6xl md:text-8xl font-black text-white tracking-tighter mb-6 leading-[0.95]"
+              className="text-3xl sm:text-5xl md:text-8xl font-black text-white tracking-tighter mb-6 leading-[0.95]"
             >
               Ready to <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0EA5E9] to-[#38BDF8]">Partner?</span>
             </motion.h2>

@@ -81,21 +81,26 @@ export default function RadialOrbitalTimeline({
   }, [activeNodeId, timelineData]);
 
   useEffect(() => {
-    let rotationTimer: any;
+    if (!autoRotate) return;
 
-    if (autoRotate) {
-      rotationTimer = setInterval(() => {
-        setRotationAngle((prev) => {
-          const newAngle = (prev + 0.3) % 360;
-          return Number(newAngle.toFixed(3));
-        });
-      }, 50);
-    }
+    let animationFrameId: number;
+    let lastTime = performance.now();
+
+    const animate = (now: number) => {
+      const delta = now - lastTime;
+      lastTime = now;
+      // ~0.3 degrees per 50ms = 6 degrees/second
+      setRotationAngle((prev) => {
+        const newAngle = (prev + (delta * 0.006)) % 360;
+        return Number(newAngle.toFixed(3));
+      });
+      animationFrameId = requestAnimationFrame(animate);
+    };
+
+    animationFrameId = requestAnimationFrame(animate);
 
     return () => {
-      if (rotationTimer) {
-        clearInterval(rotationTimer);
-      }
+      cancelAnimationFrame(animationFrameId);
     };
   }, [autoRotate]);
 
@@ -127,15 +132,52 @@ export default function RadialOrbitalTimeline({
 
   return (
     <div
-      className="w-full min-h-[500px] md:min-h-[550px] flex items-center justify-center bg-transparent overflow-hidden relative"
+      className="w-full min-h-[320px] lg:min-h-[550px] flex items-center justify-center bg-transparent overflow-hidden relative"
       ref={containerRef}
       onClick={handleContainerClick}
     >
       <div className="relative w-full max-w-6xl mx-auto flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-12 px-6">
 
-        {/* ── Orbital wheel — left side on desktop ──────────────── */}
-        <div className="w-full lg:w-1/2 flex items-center justify-center h-[300px] sm:h-[380px] lg:h-[440px] overflow-visible mb-2 sm:mb-4 lg:mb-0">
-          <div className="relative w-[440px] h-[440px] flex-shrink-0 flex items-center justify-center scale-[0.65] sm:scale-[0.85] lg:scale-100 origin-center">
+        {/* ── Mobile: Horizontal scrollable card strip ──────────── */}
+        <div className="w-full flex lg:hidden flex-col gap-4">
+          <div
+            className="flex gap-2.5 overflow-x-auto snap-x snap-mandatory pb-3 px-1 -mx-1"
+            style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}
+          >
+            {timelineData.map((item) => {
+              const isActive = activeNodeId === item.id;
+              const Icon = item.icon;
+              return (
+                <button
+                  key={item.id}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    selectNode(item.id);
+                  }}
+                  className={`
+                    flex items-center gap-2.5 snap-center shrink-0 min-w-[160px]
+                    px-4 py-3 rounded-2xl border transition-all duration-300
+                    focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50
+                    ${
+                      isActive
+                        ? 'bg-primary text-white border-primary shadow-lg shadow-primary/20'
+                        : 'bg-surface border-border text-text-primary hover:border-primary/40'
+                    }
+                  `}
+                >
+                  <Icon size={18} className="shrink-0" />
+                  <span className="text-xs font-bold tracking-wide uppercase whitespace-nowrap">
+                    {item.title}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* ── Desktop: Orbital wheel — left side ──────────────── */}
+        <div className="hidden lg:flex w-full lg:w-1/2 items-center justify-center h-[440px] overflow-visible">
+          <div className="relative w-[440px] h-[440px] flex-shrink-0 flex items-center justify-center origin-center">
             <div
               className="absolute w-full h-full flex items-center justify-center"
               ref={orbitRef}
@@ -241,7 +283,7 @@ export default function RadialOrbitalTimeline({
       </div>
 
       {/* Inline keyframes for panel animation */}
-      <style jsx>{`
+      <style>{`
         @keyframes fadeSlideIn {
           from { opacity: 0; transform: translateX(12px); }
           to   { opacity: 1; transform: translateX(0); }

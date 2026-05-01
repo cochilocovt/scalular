@@ -378,6 +378,7 @@ export function GlobeCdn({
       />
 
       {/* ── Factory markers: 3D pyramid + specialty card ──────────── */}
+      <div className="hidden md:contents">
       {factories.map((m) => {
         const isActive = activeId === m.id
         return (
@@ -531,6 +532,7 @@ export function GlobeCdn({
           </div>
         )
       })}
+      </div>
     </div>
   )
 }

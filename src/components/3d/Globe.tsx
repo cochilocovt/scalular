@@ -23,7 +23,7 @@ const ALL_PLACES = [
   { id: 'portugal', lat: 39.3999, lng: -8.2245, label: 'Portugal', sub: 'Luxury · Sustainable', isBuyer: false, color: '#171B2E', factoryCount: 8 },
   { id: 'morocco', lat: 31.7917, lng: -7.0926, label: 'Morocco', sub: 'EU-Nearshore · Fast Fashion', isBuyer: false, color: '#1A1E31', factoryCount: 12 },
   { id: 'srilanka', lat: 7.8731, lng: 80.7718, label: 'Sri Lanka', sub: 'Lingerie · Activewear', isBuyer: false, color: '#eff0f6', factoryCount: 14 },
-  
+
   // Buyer hubs (demand side) - diamond/square markers with blue tones
   { id: 'usa', lat: 40.7128, lng: -74.006, label: 'New York', sub: 'Americas Hub', isBuyer: true, color: '#727cb1' },
   { id: 'uk', lat: 51.5074, lng: -0.1278, label: 'London', sub: 'Europe Hub', isBuyer: true, color: '#323959' },
@@ -79,7 +79,7 @@ export function ScalularGlobe({ activeRegion = 'global', className, onPointClick
     fetch('https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson')
       .then((r) => r.json())
       .then(setCountries)
-      .catch(() => {});
+      .catch(() => { });
   }, []);
 
   // Horizontal auto-rotation — runs once on mount, never restarts
@@ -144,7 +144,7 @@ export function ScalularGlobe({ activeRegion = 'global', className, onPointClick
   }, []); // runs once on mount
 
   // Custom rings for factory locations (pulsing rings)
-  const factoryRingsData = useMemo(() => 
+  const factoryRingsData = useMemo(() =>
     ALL_PLACES.filter(d => !d.isBuyer).map(d => ({
       ...d,
       maxRadius: 2.5 + (d.factoryCount || 0) * 0.02, // Larger rings for more factories
@@ -152,7 +152,7 @@ export function ScalularGlobe({ activeRegion = 'global', className, onPointClick
   );
 
   // Custom points with distinct styling
-  const customPointsData = useMemo(() => 
+  const customPointsData = useMemo(() =>
     ALL_PLACES.map(d => ({
       ...d,
       // Make factory points larger and more prominent
@@ -179,14 +179,14 @@ export function ScalularGlobe({ activeRegion = 'global', className, onPointClick
         atmosphereColor="#727cb1"
         atmosphereAltitude={0.15}
         showGraticules={false}
-        
+
         // Enhanced country borders
         polygonsData={countries.features}
         polygonCapColor={() => 'rgba(50,57,89,0.03)'}
         polygonSideColor={() => 'rgba(114,124,177,0.1)'}
         polygonStrokeColor={() => 'rgba(114,124,177,0.25)'}
         polygonAltitude={0.002}
-        
+
         // Animated arcs connecting factories to hubs
         arcsData={ARCS}
         arcColor={() => ['rgba(50,57,89,0.7)', 'rgba(114,124,177,0.7)']}
@@ -196,7 +196,7 @@ export function ScalularGlobe({ activeRegion = 'global', className, onPointClick
         arcsTransitionDuration={800}
         arcStroke={0.6}
         arcAltitudeAutoScale={0.35}
-        
+
         // Factory location rings (pulsing outward)
         ringsData={factoryRingsData}
         ringColor={(d: any) => (t: number) => {
@@ -210,7 +210,7 @@ export function ScalularGlobe({ activeRegion = 'global', className, onPointClick
         ringMaxRadius={3}
         ringPropagationSpeed={2}
         ringRepeatPeriod={1200}
-        
+
         // Custom point markers
         pointsData={customPointsData}
         pointColor={(d: any) => d.color || '#171B2E'}
@@ -223,7 +223,7 @@ export function ScalularGlobe({ activeRegion = 'global', className, onPointClick
         }}
         pointsMerge={false}
         onPointClick={onPointClick}
-        
+
         // Enhanced tooltips
         pointLabel={(d: any) => `
           <div style="font-family:system-ui,sans-serif;background:var(--color-background);border:1px solid var(--color-neutral-200);padding:14px 16px;border-radius:14px;box-shadow:0 12px 40px var(--neu-shadow-dark);min-width:180px;backdrop-filter:blur(10px)">

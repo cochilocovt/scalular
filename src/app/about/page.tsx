@@ -80,7 +80,7 @@ export default function AboutPage() {
   // Cinematic scroll transforms
   const heroOpacity = useTransform(scrollYProgress, [0, 0.1], [1, 0]);
   const heroScale = useTransform(scrollYProgress, [0, 0.1], [1, 0.9]);
-  
+
   // The dark mode background fades in to completely consume the light theme
   const darkBgOpacity = useTransform(scrollYProgress, [0.05, 0.15], [0, 1]);
 
@@ -90,27 +90,27 @@ export default function AboutPage() {
 
   return (
     <main id="main-content" className="flex flex-col min-h-screen relative selection:bg-[#0EA5E9]/30 selection:text-[#0EA5E9]">
-      
+
       {/* ── Fixed Dark Background Layer (Fades in on scroll) ── */}
-      <motion.div 
+      <motion.div
         className="fixed inset-0 bg-[#0A0F1C] z-[-1] pointer-events-none"
         style={{ opacity: darkBgOpacity }}
       >
         {/* Subtle Frosted Noise Texture (Option B) */}
-        <div 
+        <div
           className="absolute inset-0 opacity-[0.015] mix-blend-overlay pointer-events-none"
-          style={{ backgroundImage: "url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MDAiIGhlaWdodD0iNDAwIj4KICA8ZmlsdGVyIGlkPSJuIj4KICAgIDxmZVR1cmJ1bGVuY2UgdHlwZT0iZnJhY3RhbE5vaXNlIiBiYXNlRnJlcXVlbmN5PSIwLjgiIG51bU9jdGF2ZXM9IjMiIHN0aXRjaFRpbGVzPSJzdGl0Y2giLz4KICA8L2ZpbHRlcj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZmZmIiBmaWx0ZXI9InVybCgjbikiLz4KPC9zdmc+')", backgroundRepeat: "repeat" }} 
+          style={{ backgroundImage: "url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MDAiIGhlaWdodD0iNDAwIj4KICA8ZmlsdGVyIGlkPSJuIj4KICAgIDxmZVR1cmJ1bGVuY2UgdHlwZT0iZnJhY3RhbE5vaXNlIiBiYXNlRnJlcXVlbmN5PSIwLjgiIG51bU9jdGF2ZXM9IjMiIHN0aXRjaFRpbGVzPSJzdGl0Y2giLz4KICA8L2ZpbHRlcj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZmZmIiBmaWx0ZXI9InVybCgjbikiLz4KPC9zdmc+')", backgroundRepeat: "repeat" }}
         />
       </motion.div>
       {/* ── Fixed Light Background Layer ── */}
       <div className="fixed inset-0 bg-[#F4F7FC] z-[-2] pointer-events-none" />
 
       {/* ── Hero (Light Mode) ─────────────────────────────────────────────── */}
-      <motion.section 
+      <motion.section
         style={{ opacity: heroOpacity, scale: heroScale }}
         className="relative pt-24 pb-12 md:pt-48 md:pb-36 px-6 md:px-12 flex flex-col items-center justify-center min-h-[80vh] z-10"
       >
-        
+
         <div className="max-w-5xl mx-auto text-center relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -129,7 +129,7 @@ export default function AboutPage() {
             className="text-3xl sm:text-5xl md:text-8xl lg:text-[7rem] font-black text-[#0F172A] leading-[0.95] tracking-tighter mb-8"
           >
             Where Global Apparel<br />
-            Meets <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#4A6085] to-[#0EA5E9]">Ethical Innovation.</span>
+            Meets <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#4A6085] to-[#0EA5E9]">Agile Execution.</span>
           </motion.h1>
 
           <motion.div
@@ -163,7 +163,7 @@ export default function AboutPage() {
 
       {/* ── Dark Mode Sections ──────────────────────────────────────────── */}
       <div className="relative z-20 text-white pb-32 pt-20">
-        
+
         {/* ── Mission & Stats ──────────────────────────────────────────── */}
         <section className="py-12 md:py-24 px-6 md:px-12">
           <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
@@ -177,18 +177,17 @@ export default function AboutPage() {
                 <span className="w-8 h-[2px] bg-[#0EA5E9]"></span> Our Mission & Vision
               </div>
               <h2 className="text-3xl sm:text-4xl md:text-6xl font-black text-white tracking-tighter leading-[1.05] mb-8">
-                Making Global Trade <span className="text-[#0EA5E9]">Seamless.</span>
+                Making Global Manufacturing <span className="text-[#0EA5E9]">Seamless.</span>
               </h2>
               <div className="space-y-6 text-white/70 text-lg md:text-xl leading-relaxed font-light">
                 <div>
-                  Scalular is not just a sourcing agency — we're your reserved space inside the South Asian apparel supply chain.
-                  We bridge the gap between real-time production needs and long-term brand vision with factory-level access, speed, and trust.
+                  Scalular is built to bridge the gap between buyers and factories through faster sourcing, transparent pricing, and agile execution.
                 </div>
                 <div>
-                  We act as a full-service private label apparel partner, functioning like your own office on-site. Powered by our live ERP system, we ensure complete transparency from raw material to finished goods.
+                  With decades of experience in apparel manufacturing and global sourcing, we are in the process of reinventing the entire production lifecycle from instant quotations and factory matching to live order tracking and final delivery making the whole manufacturing lifecyle certain.
                 </div>
                 <div>
-                  Our in-house R&D and sampling units provide thread-level understanding to guarantee zero-error execution, while our dedicated QC teams eliminate future correspondence over quality mismatches.
+                  Our network of pre-vetted manufacturing partners, on-ground teams, and compliance-driven processes ensures quality, speed, and confidence at every stage.
                 </div>
               </div>
             </motion.div>
@@ -382,7 +381,7 @@ export default function AboutPage() {
             >
               <span className="w-8 h-[2px] bg-[#0EA5E9]"></span> Global Offices <span className="w-8 h-[2px] bg-[#0EA5E9]"></span>
             </motion.div>
-            
+
             <div className="grid md:grid-cols-2 gap-12 text-left">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -397,7 +396,7 @@ export default function AboutPage() {
                 <div className="text-white/60 font-light mb-1">1/422 Green Avenue, Kozhippannai,</div>
                 <div className="text-white/60 font-light">Mangalam Road, Tiruppur – 641687</div>
               </motion.div>
-              
+
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}

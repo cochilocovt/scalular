@@ -269,7 +269,7 @@ export default function RadialOrbitalTimeline({
                 >
                   {activeItem.title}
                 </h3>
-                <p className="text-base text-text-secondary leading-relaxed mb-6">
+                <p className="text-base text-text-secondary leading-relaxed mb-6 whitespace-pre-line">
                   {activeItem.content}
                 </p>
               </div>

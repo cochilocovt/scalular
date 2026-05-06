@@ -151,8 +151,8 @@ export function ScrollStory() {
           animate="visible"
           className="text-sm md:text-lg text-text-secondary leading-relaxed max-w-xl mx-auto mb-4 md:mb-10"
         >
-          Manage your production lifecycle with AI-driven insights and pre-vetted
-          manufacturing partners across 10 global sourcing hubs.
+          Streamline your production lifecycle with instant quoting, end-to-end
+          order tracking, and pre-vetted manufacturing partners across 6 global sourcing hubs.
         </motion.p>
 
         <motion.div
@@ -194,7 +194,7 @@ export function ScrollStory() {
         >
           <div className="absolute inset-x-0 bottom-0 h-1/6 md:h-1/4 bg-gradient-to-t from-background to-transparent z-10 pointer-events-none opacity-40" />
           <GlobeCdn
-            speed={0.0022}
+            speed={0.008}
             activeId={selectedId}
             onActiveChange={setSelectedId}
             className="w-full h-full"

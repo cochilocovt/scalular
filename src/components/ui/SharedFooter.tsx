@@ -17,7 +17,7 @@ export function SharedFooter() {
               </span>
             </Link>
             <p className="text-xs text-primary-foreground/70 font-medium max-w-[220px]">
-              Simplified. Streamlined. Sourced.
+              Skip negotiation. Start production.
             </p>
           </div>
 

@@ -169,7 +169,7 @@ export function GlobeCdn({
         markerElevation: 0.02,
         markers: markers.map((m) => ({
           location: m.location,
-          size: m.isBuyer ? 0.008 : 0.015,
+          size: m.isBuyer ? 0.008 : 0, // size 0 hides the native dot but keeps the anchor coordinate
           id: m.id,
         })),
         arcs: arcs.map((a) => ({ from: a.from, to: a.to, id: a.id })),
@@ -185,7 +185,7 @@ export function GlobeCdn({
         // Dynamically reduce speed if a country is actively highlighted so it stays visible for ~1.8s
         let currentSpeed = speed
         if (activeMarkerRef.current && (now - activeStartTimeRef.current) < 1800) {
-          currentSpeed = speed * 0.1 // Extreme slow down (crawl)
+          currentSpeed = 0.00022 // Extreme slow down (crawl), matched to original behavior
         }
 
         // Handle auto-rotation
@@ -225,7 +225,7 @@ export function GlobeCdn({
         // Dynamic markers for continent highlighting
         let dynamicMarkers = markers.map((m) => ({
           location: m.location,
-          size: m.isBuyer ? 0.008 : 0.015,
+          size: m.isBuyer ? 0.008 : 0, // keep size 0 for factories so anchor variables are calculated
           id: m.id,
         }))
 
@@ -333,17 +333,45 @@ export function GlobeCdn({
 
   /* ── Marker shapes ─────────────────────────────────────────── */
 
-  // Factory & Hub marker: Factory building silhouette
-  const factoryMarkerStyle = (isActive: boolean, baseColor?: string): React.CSSProperties => ({
-    width: 14,
-    height: 16,
-    backgroundColor: isActive ? '#7dd3fc' : (baseColor || '#f4d77b'),
-    clipPath: 'polygon(0% 100%, 0% 35%, 15% 35%, 15% 0%, 35% 0%, 35% 35%, 100% 35%, 100% 100%)',
-    filter: isActive
-      ? 'drop-shadow(0 0 10px rgba(125, 211, 252, 0.9)) drop-shadow(0 0 22px rgba(56, 189, 248, 0.55))'
-      : 'drop-shadow(0 0 4px rgba(244, 215, 123, 0.25))',
-    transition: 'filter 0.3s ease, background-color 0.3s ease',
-  });
+  // Kinetic Weave Marker: 3 intersecting, rotating rings creating a 3D knot illusion
+  const renderKineticWeave = (isActive: boolean, baseColor?: string) => {
+    const size = isActive ? 22 : 14;
+    const strokeWidth = isActive ? 1.5 : 1;
+    const color = isActive ? '#7dd3fc' : (baseColor || '#4A6085'); // using primary or cyan
+    const glow = isActive 
+      ? `0 0 10px ${color}, inset 0 0 6px ${color}` 
+      : `0 0 4px ${color}`;
+
+    return (
+      <div 
+        style={{ 
+          width: size, 
+          height: size, 
+          position: 'relative', 
+          perspective: '150px',
+          transformStyle: 'preserve-3d',
+          transition: 'all 0.4s cubic-bezier(0.22, 1, 0.36, 1)'
+        }}
+      >
+        {[0, 1, 2].map(i => (
+          <div
+            key={i}
+            style={{
+              position: 'absolute',
+              inset: 0,
+              border: `${strokeWidth}px solid ${color}`,
+              borderRadius: '50%',
+              boxShadow: glow,
+              transformStyle: 'preserve-3d',
+              animation: `weave-ring-${i} ${3 + i * 0.5}s linear infinite`,
+              opacity: isActive ? 0.9 : 0.5,
+              transition: 'all 0.4s ease'
+            }}
+          />
+        ))}
+      </div>
+    );
+  };
 
   const factories = markers.filter((m) => !m.isBuyer)
   const hubs = markers.filter((m) => m.isBuyer)
@@ -358,6 +386,18 @@ export function GlobeCdn({
         @keyframes hub-pulse {
           0%, 100% { transform: scale(1); opacity: 0.7; }
           50% { transform: scale(1.6); opacity: 0; }
+        }
+        @keyframes weave-ring-0 {
+          0% { transform: rotateX(0deg) rotateY(0deg); }
+          100% { transform: rotateX(360deg) rotateY(180deg); }
+        }
+        @keyframes weave-ring-1 {
+          0% { transform: rotateY(0deg) rotateZ(0deg); }
+          100% { transform: rotateY(360deg) rotateZ(180deg); }
+        }
+        @keyframes weave-ring-2 {
+          0% { transform: rotateZ(0deg) rotateX(0deg); }
+          100% { transform: rotateZ(360deg) rotateX(180deg); }
         }
       `}</style>
 
@@ -408,7 +448,9 @@ export function GlobeCdn({
                 animation: "factory-pulse 2.5s ease-in-out infinite",
               }}
             >
-              <div style={factoryMarkerStyle(isActive, "#f4d77b")} />
+              <div style={{ filter: isActive ? 'drop-shadow(0 0 8px rgba(56,189,248,0.6))' : 'none', transition: 'filter 0.3s' }}>
+                {renderKineticWeave(isActive, m.color)}
+              </div>
             </div>
 
             {/* Auto-appearing specialty card (only active) */}

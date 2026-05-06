@@ -33,7 +33,7 @@ export function TrustGallery() {
           viewport={{ once: true }}
           className="text-xs font-semibold uppercase tracking-[0.2em] text-primary mb-3"
         >
-          From the Ground Up
+          Audited Factory ecosystem
         </motion.p>
         <motion.h2
           initial={{ opacity: 0, y: 16 }}
@@ -45,7 +45,7 @@ export function TrustGallery() {
         >
           Real factories. Real people.
           <br className="hidden md:block" />
-          <span className="text-text-secondary"> Not stock photos.</span>
+          <span className="text-text-secondary"> Not AI Photos.</span>
         </motion.h2>
         <motion.p
           initial={{ opacity: 0, y: 12 }}
@@ -54,7 +54,7 @@ export function TrustGallery() {
           transition={{ delay: 0.1 }}
           className="text-base md:text-lg text-text-secondary max-w-xl"
         >
-          Every factory in our network is personally vetted, audited, and monitored.
+          Every factory in our network is carefully chosen, audited and monitored.
           These are real photos from our partner facilities.
         </motion.p>
         <motion.div

@@ -5,10 +5,10 @@ import { ShieldCheck, Zap, Star, Lock, ArrowRight, Calendar } from 'lucide-react
 import { GetStartedButton } from '../ui/get-started-button';
 
 const TRUST_BADGES = [
-  { Icon: ShieldCheck, label: 'Pre-audited Factories' },
-  { Icon: Zap,         label: 'Instant AI Quote' },
-  { Icon: Star,        label: '200+ Brands Served' },
-  { Icon: Lock,        label: 'Data Secure & Private' },
+  { Icon: ShieldCheck, label: 'Certified Factories' },
+  { Icon: Zap, label: 'AI Powered Quotation' },
+  { Icon: Star, label: 'On-Ground Support' },
+  { Icon: Lock, label: 'Data Secure & Confidential' },
 ];
 
 const SOCIAL_PROOF = [
@@ -39,18 +39,18 @@ export function CTASection() {
           </div>
 
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary mb-6">
-            Start for Free
+            Onboard for Free
           </p>
 
           <h2
             className="text-3xl md:text-6xl lg:text-7xl font-bold text-text-primary leading-[1.05] tracking-tighter mb-6"
             style={{ fontFamily: 'var(--font-display)' }}
           >
-            Your factory is waiting.
+            Your factory capacity is reserved.
           </h2>
 
           <p className="text-lg md:text-xl text-text-secondary leading-relaxed mb-10 max-w-xl mx-auto">
-            Hundreds of brands already source smarter with Scalular. Get matched to verified factories and receive your first quote — free.
+            Place orders through Scalular with verified factories, receive instant quotes, and manage production with complete confidence.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 relative z-30">
@@ -67,7 +67,7 @@ export function CTASection() {
               className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-border bg-surface hover:bg-surface-hover text-text-primary text-sm font-semibold transition-colors group"
             >
               <Calendar className="w-4 h-4 text-primary" />
-              Book a Strategy Call
+              Book a Strategy Call & Demo
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </a>
           </div>

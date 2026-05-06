@@ -1,14 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { 
-  Zap, 
-  DollarSign, 
-  ShieldCheck, 
-  Globe, 
-  FileCheck, 
-  Search, 
-  Users, 
+import {
+  Zap,
+  DollarSign,
+  ShieldCheck,
+  Globe,
+  FileCheck,
+  Search,
+  Users,
   Activity,
   MessageSquare,
   Truck,
@@ -22,7 +22,7 @@ const servicesData = [
   {
     id: 1,
     title: "Instant Quote",
-    content: "Get a price in seconds. No waiting, no back-and-forth emails with factories you've never met.",
+    content: "AI-powered pricing in seconds, calculated using real manufacturing inputs, not assumptions.",
     category: "Core",
     icon: Zap,
     relatedIds: [2, 8],
@@ -30,7 +30,7 @@ const servicesData = [
   {
     id: 2,
     title: "Factory-Direct Pricing",
-    content: "Pay what the factory charges — no broker fees, no markups. Our volume gets you the best rates.",
+    content: "Factory-level pricing with a minimal, transparent markup for sourcing, execution, and on-ground support. No surprises, just better pricing, better control, and reliable delivery.",
     category: "Financial",
     icon: DollarSign,
     relatedIds: [1, 3],
@@ -38,15 +38,15 @@ const servicesData = [
   {
     id: 3,
     title: "Flexible Payments",
-    content: "Don't pay everything upfront. Spread your production costs with terms that keep your cash free.",
+    content: "Multiple payment options backed by factoring, helping buyers manage credit flow while ensuring factories get paid efficiently and on time.  Built for smoother transactions, stronger trust, and uninterrupted production flows.",
     category: "Financial",
     icon: ShieldCheck,
     relatedIds: [2, 5],
   },
   {
     id: 4,
-    title: "115+ Verified Factories",
-    content: "Browse 115+ factories across 9 countries — each pre-vetted and matched to your product type.",
+    title: "25+ Verified Factories",
+    content: "Browse 25+ factories across 4 countries each pre-audited and matched to your product type.",
     category: "Network",
     icon: Globe,
     relatedIds: [5, 7],
@@ -54,7 +54,7 @@ const servicesData = [
   {
     id: 5,
     title: "Certified Quality",
-    content: "Every factory is audited and certified — GOTS, OEKO-TEX, and more. Quality you can show your customers.",
+    content: "We work exclusively with factories that are at least SEDEX 4-Pillar certified, along with additional compliance standards such as SLCP, WRAP, BSCI, GOTS, OEKO-TEX, and more. This ensures ethical production, verified quality standards, and the confidence to deliver products your customers can trust.",
     category: "Compliance",
     icon: FileCheck,
     relatedIds: [4, 6],
@@ -62,7 +62,7 @@ const servicesData = [
   {
     id: 6,
     title: "Full Transparency",
-    content: "See where your order is at every stage — from cutting room to shipping container. No surprises.",
+    content: "Complete lifecycle of a product from raw materials to packaging ensuring sustainability at every key stage.",
     category: "Visibility",
     icon: Search,
     relatedIds: [5, 8],
@@ -78,7 +78,7 @@ const servicesData = [
   {
     id: 8,
     title: "Live Order Updates",
-    content: "Real-time status on sampling, production, and shipping. Always know exactly where your order stands.",
+    content: "Track every stage of production in real time from sampling and approvals to manufacturing, dispatch, and delivery. Complete visibility across your order lifecycle, so you always know exactly where production stands and what comes next.",
     category: "Tracking",
     icon: Activity,
     relatedIds: [1, 6, 7],
@@ -97,7 +97,7 @@ const factoryServicesData = [
   {
     id: 12,
     title: "Guaranteed Payments",
-    content: "No more chasing invoices. Payments are secured in escrow and released on time.",
+    content: "Multiple payment options backed by factoring, helping factories manage credit flow while ensuring they get paid efficiently and on time. Built for smoother transactions, stronger trust, and uninterrupted production flows.",
     category: "Financial",
     icon: ShieldCheck,
     relatedIds: [11, 13],
@@ -121,7 +121,7 @@ const factoryServicesData = [
   {
     id: 15,
     title: "Streamlined Logistics",
-    content: "We handle the shipping and customs. You focus on manufacturing high-quality garments.",
+    content: "Manage your pricing, production, payments, shipping & communication all in one platform",
     category: "Shipping",
     icon: Truck,
     relatedIds: [14, 16],
@@ -158,7 +158,7 @@ export function ScalularServices() {
   return (
     <section id="services" className="relative bg-transparent py-10 md:py-16 overflow-hidden">
       <div className="absolute inset-0 bg-background -z-20" />
-      
+
       {/* Subtle background — toned down from the original */}
       <div className="absolute top-1/3 left-1/4 w-[400px] h-[400px] bg-primary/3 rounded-full blur-[120px] -z-10" />
 
@@ -167,21 +167,19 @@ export function ScalularServices() {
         <div className="flex items-center gap-2 p-1.5 bg-surface border border-border/50 rounded-full w-fit mb-6 md:mb-8 relative z-20 backdrop-blur-sm">
           <button
             onClick={() => setActiveTab("brands")}
-            className={`px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 ${
-              activeTab === "brands" 
-                ? "bg-primary text-white shadow-lg shadow-primary/20 scale-100" 
-                : "text-text-secondary hover:text-text-primary hover:bg-surface-hover scale-95"
-            }`}
+            className={`px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 ${activeTab === "brands"
+              ? "bg-primary text-white shadow-lg shadow-primary/20 scale-100"
+              : "text-text-secondary hover:text-text-primary hover:bg-surface-hover scale-95"
+              }`}
           >
             For Brands
           </button>
           <button
             onClick={() => setActiveTab("factories")}
-            className={`px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 ${
-              activeTab === "factories" 
-                ? "bg-primary text-white shadow-lg shadow-primary/20 scale-100" 
-                : "text-text-secondary hover:text-text-primary hover:bg-surface-hover scale-95"
-            }`}
+            className={`px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 ${activeTab === "factories"
+              ? "bg-primary text-white shadow-lg shadow-primary/20 scale-100"
+              : "text-text-secondary hover:text-text-primary hover:bg-surface-hover scale-95"
+              }`}
           >
             For Factories
           </button>
@@ -207,7 +205,7 @@ export function ScalularServices() {
             style={{ fontFamily: 'var(--font-display)' }}
           >
             {activeTab === "brands" ? (
-              <>Everything you need to <span className="text-primary">ship smarter</span></>
+              <>Everything you need to source, manage, and <span className="text-primary">deliver seamlessly</span></>
             ) : (
               <>Everything you need to <span className="text-primary">grow your factory</span></>
             )}
@@ -220,17 +218,17 @@ export function ScalularServices() {
             transition={{ delay: 0.1 }}
             className="text-base md:text-lg text-text-secondary leading-relaxed max-w-xl"
           >
-            {activeTab === "brands" 
-              ? "Source, quote, and deliver apparel — without the chaos. Click a service to learn more."
+            {activeTab === "brands"
+              ? "From instant quotes to real-time order tracking and on-ground production support, manage your entire manufacturing lifecycle without the chaos."
               : "Connect with premium brands, secure payments, and streamline your production workflow."}
           </motion.p>
         </div>
 
         {/* Orbital timeline */}
         <div className="w-full">
-          <RadialOrbitalTimeline 
-            key={activeTab} 
-            timelineData={activeTab === "brands" ? servicesData : factoryServicesData} 
+          <RadialOrbitalTimeline
+            key={activeTab}
+            timelineData={activeTab === "brands" ? servicesData : factoryServicesData}
           />
         </div>
       </div>

@@ -71,7 +71,7 @@ export function ProductShowcase() {
       {/* Header - Moved above the display box */}
       <div className="relative w-full max-w-7xl mx-auto px-6 mb-10 z-10 flex items-center justify-center">
         <span className="text-xs md:text-sm font-bold uppercase tracking-[0.3em] text-primary/80">
-          Sourcing Catalog
+          What we manufacture
         </span>
       </div>
 
@@ -84,65 +84,38 @@ export function ProductShowcase() {
         {/* Minimal, crisp top accent bar using brand colors */}
         <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-primary via-blue-600 to-transparent z-30 opacity-80" />
         
-        {/* ── Left Side (Desktop) / Bottom Strip (Mobile): Scrolling List ── */}
+        {/* ── Left Side (Desktop) / Bottom Strip (Mobile): Static List ── */}
         <div className="relative w-full md:w-[45%] h-[30%] md:h-full flex flex-col justify-center md:border-r border-border/50">
           
-          <div className="w-full h-full relative overflow-hidden hidden md:flex items-center justify-center">
-             {/* The anchor point for the scrolling list. */}
-             <motion.div 
-               className="absolute w-full px-6 md:px-12 pointer-events-auto cursor-pointer"
-               style={{ top: `calc(50% - ${ITEM_HEIGHT / 2}px)` }} // perfectly anchors the active item to center
-               animate={{ y: -(activeIndex * ITEM_HEIGHT) }}
-               transition={{ type: "spring", stiffness: 250, damping: 30 }}
-             >
-                {/* We render ALL items to ensure the DOM layout maintains total height, fixing the shifting collapse bug! */}
-                {GARMENT_CATALOG.map((entry, idx) => {
-                  const isActive = idx === activeIndex;
-                  const dist = Math.abs(idx - activeIndex);
+          <div className="w-full h-full relative overflow-hidden hidden md:flex flex-col items-start justify-center px-6 md:px-12 py-2">
+            {/* The list of garments, statically positioned but dynamically sized */}
+            {GARMENT_CATALOG.map((entry, idx) => {
+              const isActive = idx === activeIndex;
 
-                  return (
-                    <div 
-                      key={entry.id} 
-                      className={`relative w-full flex items-center ease-out`}
-                      style={{ 
-                        height: `${ITEM_HEIGHT}px`,
-                        // Optimized: pure opacity changes, NO blur filters to maintain 60FPS
-                        opacity: isActive ? 1 : Math.max(0.05, 0.45 - dist * 0.08),
-                        transition: 'opacity 0.4s ease'
-                      }}
-                      onClick={() => setActiveIndex(idx)}
-                    >
-                      <div 
-                        className="flex flex-col w-full"
-                        style={{ 
-                          // Offload scaling to GPU composite pure transforms. Inactive items scale down further.
-                          transform: isActive ? 'scale(1.05)' : 'scale(0.85)', 
-                          transformOrigin: 'left center', 
-                          transition: 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)' 
-                        }}
-                      >
-                        {/* whitespace-nowrap added to prevent text wrapping from destroying the fixed ITEM_HEIGHT flow */}
-                        <h3 
-                          className="font-display font-black leading-none uppercase tracking-tighter whitespace-nowrap overflow-hidden text-ellipsis"
-                          style={{
-                            // Reduced overall font sizes to allow more items to be visible
-                            fontSize: isActive ? 'clamp(2rem, 4vw, 3.25rem)' : 'clamp(1rem, 2vw, 1.5rem)',
-                            color: isActive ? 'var(--color-primary)' : 'var(--color-blue-400)',
-                            transition: 'color 0.4s ease, font-size 0.4s ease'
-                          }}
-                        >
-                          {entry.name}
-                        </h3>
-                        {/* Subheading removed as per user request */}
-                      </div>
-                    </div>
-                  );
-                })}
-             </motion.div>
-
-             {/* Alpha gradients over the list top & bottom — desktop only */}
-             <div className="hidden md:block absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-background to-transparent pointer-events-none" />
-             <div className="hidden md:block absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-background to-transparent pointer-events-none" />
+              return (
+                <div 
+                  key={entry.id} 
+                  className={`relative w-full flex items-center cursor-pointer`}
+                  style={{ 
+                    height: isActive ? '44px' : '24px',
+                    opacity: isActive ? 1 : 0.45,
+                    transition: 'all 0.3s cubic-bezier(0.25, 1, 0.5, 1)'
+                  }}
+                  onClick={() => setActiveIndex(idx)}
+                >
+                  <h3 
+                    className="font-display font-black leading-none uppercase tracking-tighter whitespace-nowrap overflow-hidden text-ellipsis w-full"
+                    style={{
+                      fontSize: isActive ? '32px' : '13px',
+                      color: isActive ? 'var(--color-primary)' : 'var(--color-blue-400)',
+                      transition: 'all 0.3s cubic-bezier(0.25, 1, 0.5, 1)'
+                    }}
+                  >
+                    {entry.name}
+                  </h3>
+                </div>
+              );
+            })}
           </div>
 
           {/* Mobile horizontal strip — replaces vertical list below md */}

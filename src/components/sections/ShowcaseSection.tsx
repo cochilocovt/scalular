@@ -12,26 +12,50 @@ export function ShowcaseSection() {
 
       <div className="max-w-[1400px] mx-auto px-6 md:px-12">
         {/* Section intro */}
-        <div className="text-center mb-8">
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-[11px] font-semibold tracking-[0.4em] uppercase text-primary mb-4"
-          >
-            The Scalular Platform
-          </motion.p>
+        <div className="text-center mb-16 flex flex-col items-center">
           <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-text-primary tracking-tighter leading-tight"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={{
+              hidden: { opacity: 0 },
+              visible: {
+                opacity: 1,
+                transition: { staggerChildren: 0.2 }
+              }
+            }}
+            className="flex flex-col items-center"
+            style={{ perspective: "1000px" }}
           >
-            Simplified.{' '}
-            <span className="text-primary">Streamlined.</span>
-            <span className="hidden sm:inline"><br /></span>
-            Sourced.
+            <div className="overflow-hidden pb-2 w-full flex justify-center">
+              <motion.span 
+                variants={{
+                  hidden: { y: "100%", scale: 0.9, opacity: 0, rotateX: -30, filter: 'blur(5px)' },
+                  visible: { 
+                    y: "0%", scale: 1, opacity: 1, rotateX: 0, filter: 'blur(0px)', 
+                    transition: { type: "spring", stiffness: 90, damping: 15, mass: 1 } 
+                  }
+                }}
+                className="block text-xl sm:text-2xl md:text-3xl font-serif italic text-text-primary/70 drop-shadow-sm mb-2"
+              >
+                Skip negotiation.
+              </motion.span>
+            </div>
+            <div className="overflow-hidden pb-4 w-full flex justify-center">
+              <motion.span 
+                variants={{
+                  hidden: { y: "120%", scale: 0.8, opacity: 0, rotateX: -40, filter: 'blur(12px)' },
+                  visible: { 
+                    y: "0%", scale: 1, opacity: 1, rotateX: 0, filter: 'blur(0px)', 
+                    transition: { type: "spring", stiffness: 110, damping: 12, mass: 1.1 } 
+                  }
+                }}
+                className="block text-5xl sm:text-6xl md:text-[5.5rem] lg:text-[6.5rem] font-black tracking-tighter leading-[0.9] text-gradient drop-shadow-md"
+                style={{ fontFamily: 'var(--font-display)' }}
+              >
+                Start production.
+              </motion.span>
+            </div>
           </motion.h2>
         </div>
 

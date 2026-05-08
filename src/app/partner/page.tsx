@@ -2,7 +2,7 @@
 
 import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { Globe, Package, TrendingUp, Users, CheckCircle, ArrowRight, Building2, ClipboardCheck, Handshake, Truck, Factory, Award, ShieldCheck } from 'lucide-react';
+import { Globe, Package, TrendingUp, Users, CheckCircle, ArrowRight, Building2, ClipboardCheck, Handshake, Truck, Factory, Award, ShieldCheck, Calculator } from 'lucide-react';
 import Image from 'next/image';
 import { PartnerForm } from '@/components/sections/PartnerForm';
 import { FAQAccordion } from '@/components/ui/FAQAccordion';
@@ -13,34 +13,55 @@ const BENEFITS = [
   {
     icon: Globe,
     color: '#0EA5E9',
-    title: 'Global Market Access',
-    description: 'Reach 200+ fashion brands across the USA, UK, Germany, UAE, Australia, and Canada — all actively sourcing through Scalular.',
+    title: 'Global Buyer Access',
+    description: (
+      <>
+        <span className="block mb-4">Connect with verified and trusted fashion brands across the USA, UK, Germany, UAE, Australia, Canada, and other key sourcing markets actively manufacturing through Scalular.</span>
+        <span className="block">Expand beyond local networks and gain direct access to buyers looking for reliable, compliance-certified production partners.</span>
+      </>
+    ),
   },
   {
     icon: Package,
     color: '#38BDF8',
-    title: 'Volume Orders',
-    description: 'Consistent, high-volume purchase orders from verified brands. No more chasing small buyers — get orders that fill your production capacity.',
+    title: 'Consistent Volume Based Orders',
+    description: (
+      <>
+        <span className="block mb-4">Secure steady, high-volume purchase orders from trusted global brands—reducing dependency on small, inconsistent buyers.</span>
+        <span className="block">Keep your production lines active with repeat business built for long-term manufacturing partnerships.</span>
+      </>
+    ),
   },
   {
     icon: TrendingUp,
     color: '#94A3B8',
-    title: 'Factoring Solutions',
-    description: 'Access working capital through our integrated factoring partners. Get paid faster without waiting on buyer payment terms.',
+    title: 'Factoring & Payment Support',
+    description: (
+      <>
+        <span className="block mb-4">Access integrated factoring solutions that improve cash flow and reduce payment delays, helping factories get paid faster without waiting on extended buyer payment terms.</span>
+        <span className="block">Built for smoother transactions, stronger liquidity, and uninterrupted production.</span>
+      </>
+    ),
   },
   {
     icon: Users,
     color: '#4A6085',
-    title: 'Brand Connections',
-    description: 'Join a curated network. Our platform directly matches your specialties, capacities, and certifications with the right buyers.',
+    title: 'Verified Buyer Network',
+    description: (
+      <>
+        <span className="block mb-4">Work with trusted buyers who value quality, compliance, and long-term partnerships not just unrealistic prices.</span>
+        <span className="block">Our platform matches your factory’s strengths, certifications, and production capacity with the right brands for sustainable growth.</span>
+      </>
+    ),
   },
 ];
 
 const STEPS = [
   { icon: ClipboardCheck, step: '01', title: 'Apply', description: 'Fill out our partner application with your factory details, certifications, and product specialties.' },
-  { icon: Building2, step: '02', title: 'Audit', description: 'Our on-ground team conducts a factory audit covering quality, capacity, ethical standards, and compliance.' },
-  { icon: Handshake, step: '03', title: 'Onboard', description: 'Once verified, you join the Scalular platform — your factory profile goes live to 200+ global brands.' },
-  { icon: Truck, step: '04', title: 'Receive Orders', description: 'Start receiving matched purchase orders from brands that fit your specialties and minimum order quantities.' },
+  { icon: Calculator, step: '02', title: 'Costing Exercise', description: 'We evaluate pricing, production feasibility, and commercial competitiveness to ensure your costs align with buyer expectations and market benchmarks before live orders.' },
+  { icon: Building2, step: '03', title: 'Audit', description: 'Our on-ground team conducts a factory audit covering quality, capacity, ethical standards, and compliance.' },
+  { icon: Handshake, step: '04', title: 'Onboard', description: 'Once verified, you join the Scalular platform — your factory profile goes live to global brands.' },
+  { icon: Truck, step: '05', title: 'Receive Orders', description: 'Start receiving matched purchase orders from brands that fit your specialties and minimum order quantities.' },
 ];
 
 const CERTS = [
@@ -119,15 +140,7 @@ export default function PartnerPage() {
         </motion.div>
 
         <div className="max-w-5xl mx-auto text-center relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white shadow-sm border border-slate-200 text-slate-800 text-xs font-black tracking-[0.3em] uppercase mb-10"
-          >
-            <div className="w-2 h-2 rounded-full bg-[#0EA5E9] animate-pulse" />
-            Factory Partner Program
-          </motion.div>
+
 
           <motion.h1
             initial={{ opacity: 0, y: 30, filter: 'blur(10px)' }}
@@ -162,45 +175,7 @@ export default function PartnerPage() {
         </div>
       </motion.section>
 
-      {/* ═══ PROBLEM STATEMENT (The Pivot — Light → Dark) ═══ */}
-      <section className="relative z-20 py-12 md:py-36 px-6 md:px-12">
-        <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8 }}
-          >
-            <div className="text-[11px] font-black tracking-[0.4em] uppercase text-[#0EA5E9] mb-6 flex items-center gap-3">
-              <span className="w-8 h-[2px] bg-[#0EA5E9]" /> The Problem
-            </div>
-            <h2 className="text-3xl sm:text-4xl md:text-6xl font-black text-white tracking-tighter leading-[1.05] mb-8">
-              Your Factory Deserves <span className="text-[#0EA5E9]">Better.</span>
-            </h2>
-            <div className="space-y-5 text-white/70 text-lg leading-relaxed font-light">
-              <div>Cold emails go unanswered. Trade fairs cost thousands with no guarantee. Middlemen eat into your margins. The traditional way of finding international buyers is broken.</div>
-              <div>You built a world-class production facility. You invested in certifications, training, and quality systems. But without the right connections, your capacity goes unfilled and your growth stalls.</div>
-              <div className="text-[#0EA5E9] font-medium">There's a better way — and 30+ factories have already found it.</div>
-            </div>
-          </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8, delay: 0.15 }}
-            className="relative h-[400px] md:h-[500px] rounded-3xl overflow-hidden"
-          >
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0A0F1C] via-transparent to-transparent z-10" />
-            <Image
-              src="/images/trust/factory-struggle.png"
-              alt="Factory owner waiting at empty loading dock"
-              fill
-              className="object-cover"
-            />
-          </motion.div>
-        </div>
-      </section>
 
       {/* ═══ DARK MODE SECTIONS ═══ */}
       <div className="relative z-20 text-white pb-32">
@@ -300,7 +275,7 @@ export default function PartnerPage() {
             </div>
 
             {/* Timeline grid */}
-            <div className="grid md:grid-cols-4 gap-6">
+            <div className="grid md:grid-cols-5 gap-4 lg:gap-6">
               {STEPS.map((s, i) => {
                 const Icon = s.icon;
                 return (
@@ -313,11 +288,7 @@ export default function PartnerPage() {
                     viewport={{ once: true }}
                     className="relative"
                   >
-                    {/* Connector line */}
-                    {i < STEPS.length - 1 && (
-                      <div className="hidden md:block absolute top-10 left-full w-full h-[2px] bg-gradient-to-r from-[#0EA5E9]/40 to-transparent z-0" />
-                    )}
-                    <div className="bg-white/[0.02] border border-white/[0.08] rounded-[2rem] p-8 text-center relative z-10">
+                    <div className="bg-white/[0.02] border border-white/[0.08] rounded-[2rem] p-5 md:p-6 lg:p-8 text-center relative z-10">
                       <div className="text-[10px] font-black tracking-[0.3em] text-[#0EA5E9]/60 mb-4">{s.step}</div>
                       <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mx-auto mb-5">
                         <Icon className="w-7 h-7 text-[#0EA5E9]" />

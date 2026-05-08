@@ -2,7 +2,7 @@
 
 import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { Leaf, ShieldCheck, Zap, Award, Globe, Users, Package, ArrowRight, CheckCircle, Factory, Network, Sparkles, Building2, UserCircle } from 'lucide-react';
+import { Leaf, ShieldCheck, Zap, Award, Globe, Users, Package, ArrowRight, CheckCircle, Factory, Network, Sparkles, Building2, UserCircle, MapPin, CreditCard } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { AnimatedCounter } from '@/components/ui/AnimatedCounter';
@@ -10,28 +10,28 @@ import { GetStartedButton } from '@/components/ui/get-started-button';
 
 const VALUES = [
   {
-    icon: Zap,
+    icon: MapPin,
     color: '#0EA5E9',
-    title: 'Instant Quotes',
-    description: 'Our instant quotation system delivers pricing in seconds, not weeks — eliminating the back-and-forth that traditionally slowed apparel sourcing.',
+    title: 'On-Ground Support and Traceability',
+    description: 'Our on-ground team actively manages production, resolving issues in real time while ensuring complete traceability from raw material sourcing to packaging.',
   },
   {
-    icon: Factory,
+    icon: CreditCard,
     color: '#38BDF8',
-    title: 'Reliable Factoring',
-    description: 'Every factory in our network is audited and verified, ensuring consistent quality, on-time delivery, and reliable production at scale.',
+    title: 'Factoring & Payment Solutions',
+    description: 'Flexible payment support backed by factoring services, helping buyers manage cash flow while ensuring factories are paid smoothly and on time.',
   },
   {
     icon: Award,
     color: '#94A3B8',
-    title: 'Certified Factories',
-    description: 'We partner with factories holding certifications from GOTS, OEKO-TEX, Sedex, WRAP, and more — meeting the highest global compliance standards.',
+    title: 'Compliance-Certified Factories',
+    description: 'We work with 30+ factories across 10 countries that meet global compliance standards including WRAP, SLCP, SEDEX, BSCI, GOTS, OEKO-TEX, and more.',
   },
   {
-    icon: Network,
+    icon: Zap,
     color: '#4A6085',
-    title: 'Large Supplier Network',
-    description: 'Access 30+ verified suppliers across 10 countries, specializing in garment development across all categories from knitwear to denim.',
+    title: 'Streamlined Product Lifecycle',
+    description: 'Get AI-powered pricing in seconds and track production end-to-end from sampling to final delivery with complete visibility.',
   },
 ];
 
@@ -112,20 +112,10 @@ export default function AboutPage() {
       >
 
         <div className="max-w-5xl mx-auto text-center relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white shadow-sm border border-slate-200 text-slate-800 text-xs font-black tracking-[0.3em] uppercase mb-10"
-          >
-            <div className="w-2 h-2 rounded-full bg-[#0EA5E9] animate-pulse" />
-            About Scalular
-          </motion.div>
-
           <motion.h1
             initial={{ opacity: 0, y: 30, filter: 'blur(10px)' }}
             animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-            transition={{ duration: 1, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
             className="text-3xl sm:text-5xl md:text-8xl lg:text-[7rem] font-black text-[#0F172A] leading-[0.95] tracking-tighter mb-8"
           >
             Where Global Apparel<br />
@@ -328,14 +318,19 @@ export default function AboutPage() {
               <div className="text-[11px] font-black tracking-[0.4em] uppercase text-[#0EA5E9] mb-6 flex items-center gap-3">
                 <span className="w-8 h-[2px] bg-[#0EA5E9]"></span> Robust Supplier Network
               </div>
-              <h2 className="text-5xl md:text-6xl font-black text-white tracking-tighter leading-[1.05] mb-8">
-                Strengthened by <span className="text-[#0EA5E9]">30+ Global Factories.</span>
+              <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter leading-[1.05] mb-8">
+                Powered by <br className="hidden md:block" /><span className="text-[#0EA5E9]">25+ Audited Manufacturing Partners.</span>
               </h2>
-              <div className="text-white/70 text-lg md:text-xl leading-relaxed font-light mb-6">
-                We pride ourselves on our constantly expanding list of trusted partners, each specializing in the development of garments across all categories.
-              </div>
-              <div className="text-white/70 text-lg md:text-xl leading-relaxed font-light">
-                Our diverse network offers vertically integrated solutions spanning 10 countries, delivering high-quality products at scale, on time, while continuously adapting to the dynamic demands of the apparel industry.
+              <div className="space-y-6 text-white/70 text-lg md:text-xl leading-relaxed font-light">
+                <p>
+                  Our network of trusted factories spans global sourcing hubs, specializing in apparel production across categories from knitwear to denim and beyond.
+                </p>
+                <p>
+                  Every factory we work with is at least SEDEX 4-Pillar certified, along with additional compliance standards such as SLCP, WRAP, BSCI, GOTS, OEKO-TEX, and more, ensuring ethical production, verified quality, and global compliance.
+                </p>
+                <p>
+                  From sourcing and sampling to cutting, stitching, finishing, packaging, factoring, and final delivery, our end-to-end production ecosystem is built for speed, scale, and agile execution.
+                </p>
               </div>
             </motion.div>
 

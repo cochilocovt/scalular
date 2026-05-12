@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Plus_Jakarta_Sans, Outfit, Urbanist } from 'next/font/google';
+import { Plus_Jakarta_Sans, Outfit } from 'next/font/google';
 import './globals.css';
 import { Navbar } from '@/components/ui/Navbar';
 import { SharedFooter } from '@/components/ui/SharedFooter';
@@ -8,19 +8,11 @@ import { SmoothScroll } from '@/components/ui/SmoothScroll';
 const plusJakartaSans = Plus_Jakarta_Sans({
   variable: '--font-display',
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700', '800'],
 });
 
 const outfit = Outfit({
   variable: '--font-sans',
   subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700'],
-});
-
-const urbanist = Urbanist({
-  variable: '--font-brand',
-  subsets: ['latin'],
-  weight: ['300', '400'],
 });
 
 export const metadata: Metadata = {
@@ -34,7 +26,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${plusJakartaSans.variable} ${outfit.variable} ${urbanist.variable} antialiased light`} suppressHydrationWarning>
+    <html lang="en" className={`${plusJakartaSans.variable} ${outfit.variable} antialiased light`} suppressHydrationWarning>
       <body className="relative min-h-full flex flex-col bg-background text-text-primary font-sans" suppressHydrationWarning>
         <SmoothScroll>
           <a

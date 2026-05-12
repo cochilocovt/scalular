@@ -5,6 +5,11 @@ import Lenis from 'lenis';
 
 export function SmoothScroll({ children }: { children: React.ReactNode }) {
   useEffect(() => {
+    // Conditionally disable Lenis on mobile to allow native CSS scroll snapping (Task 6)
+    if (window.innerWidth < 768) {
+      return;
+    }
+
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),

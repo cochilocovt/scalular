@@ -347,3 +347,17 @@ a, button, [role="button"], input, select, textarea,
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   MOBILE SNAP SCROLLING (Task 6)
+   ═══════════════════════════════════════════════════════════════ */
+@media (max-width: 767px) {
+  html {
+    scroll-snap-type: y proximity;
+  }
+  main#main-content > div, 
+  main#main-content > section {
+    scroll-snap-align: start;
+    scroll-snap-stop: normal;
+  }
+}

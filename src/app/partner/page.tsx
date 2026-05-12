@@ -45,7 +45,7 @@ const BENEFITS = [
   },
   {
     icon: Users,
-    color: '#4A6085',
+    color: '#171B2E',
     title: 'Verified Buyer Network',
     description: (
       <>
@@ -149,7 +149,7 @@ export default function PartnerPage() {
             className="text-3xl sm:text-5xl md:text-8xl lg:text-[7rem] font-black text-[#0F172A] leading-[0.95] tracking-tighter mb-8"
           >
             Grow Your Factory<br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#4A6085] to-[#0EA5E9]">With Global Brands.</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#171B2E] to-[#0EA5E9]">With Global Brands.</span>
           </motion.h1>
 
           <motion.div
@@ -168,7 +168,7 @@ export default function PartnerPage() {
             className="flex flex-col sm:flex-row items-center justify-center gap-5"
           >
             <GetStartedButton label="Apply Now" size="lg" href="#apply" />
-            <a href="#how-it-works" className="inline-flex items-center gap-2 text-[#4A6085] font-bold text-sm hover:text-[#0EA5E9] hover:gap-3 transition-all">
+            <a href="#how-it-works" className="inline-flex items-center gap-2 text-[#171B2E] font-bold text-sm hover:text-[#0EA5E9] hover:gap-3 transition-all">
               See How It Works <ArrowRight className="w-4 h-4" />
             </a>
           </motion.div>

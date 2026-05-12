@@ -29,7 +29,7 @@ const VALUES = [
   },
   {
     icon: Zap,
-    color: '#4A6085',
+    color: '#171B2E',
     title: 'Streamlined Product Lifecycle',
     description: 'Get AI-powered pricing in seconds and track production end-to-end from sampling to final delivery with complete visibility.',
   },
@@ -50,7 +50,7 @@ const SUSTAINABILITY = [
   },
   {
     icon: Sparkles,
-    color: '#4A6085',
+    color: '#171B2E',
     title: 'Digital Transformation & Transparency',
     description: 'Scalular empowers factories with digital tools to enhance operational efficiency, transparency, and innovation. Our instant quotation system streamlines garment sourcing, making it easier for buyers to connect with verified manufacturers.',
   },
@@ -119,7 +119,7 @@ export default function AboutPage() {
             className="text-3xl sm:text-5xl md:text-8xl lg:text-[7rem] font-black text-[#0F172A] leading-[0.95] tracking-tighter mb-8"
           >
             Where Global Apparel<br />
-            Meets <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#4A6085] to-[#0EA5E9]">Agile Execution.</span>
+            Meets <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#171B2E] to-[#0EA5E9]">Agile Execution.</span>
           </motion.h1>
 
           <motion.div

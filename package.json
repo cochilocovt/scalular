@@ -9,7 +9,6 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@paper-design/shaders": "^0.0.72",
     "@radix-ui/react-slot": "^1.2.4",
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.5.0",

@@ -17,7 +17,7 @@ function Loader() {
 }
 
 /* ─── Safe Canvas Wrapper ───────────────────────────────── */
-function SafeCanvas({ children }: { children: React.ReactNode }) {
+function SafeCanvas({ children, isMobileCanvas = false }: { children: React.ReactNode; isMobileCanvas?: boolean }) {
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
   if (!mounted) return null;
@@ -32,7 +32,7 @@ function SafeCanvas({ children }: { children: React.ReactNode }) {
       <ambientLight intensity={0.5} />
       <directionalLight position={[4, 6, 4]} intensity={1.2} />
       <directionalLight position={[-4, 2, -2]} intensity={0.4} />
-      <OrbitControls enableZoom={false} enablePan={false} autoRotate autoRotateSpeed={2} />
+      <OrbitControls enableZoom={false} enablePan={false} autoRotate autoRotateSpeed={2} enableRotate={!isMobileCanvas} />
       <Suspense fallback={<Loader />}>
         {children}
       </Suspense>
@@ -148,9 +148,9 @@ export function ProductShowcase() {
         </div>
 
         {/* ── Right Side (Desktop) / Top (Mobile): 3D Stage ── */}
-        <div className="relative w-full md:w-[55%] h-[70%] md:h-full flex items-center justify-center">
+        <div className="relative w-full md:w-[55%] h-[70%] md:h-full flex items-center justify-center" style={{ touchAction: isMobile ? 'pan-y' : 'none' }}>
           <div className="absolute inset-0 bg-white/5 pointer-events-none" />
-          <SafeCanvas>
+          <SafeCanvas isMobileCanvas={isMobile}>
             {/* Added key prop bound to url. This forces React to unmount and remount GLBModel + Center, 
                 re-evaluating bounding boxes natively from 0 each time, preventing the "Center" offset from drifting across loop boundaries. */}
             <GLBModel key={GARMENT_CATALOG[activeIndex].url} url={GARMENT_CATALOG[activeIndex].url} isActive={true} />

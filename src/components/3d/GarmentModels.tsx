@@ -53,7 +53,7 @@ export function GLBModel({ url, isActive = false }: { url: string; isActive?: bo
     } else {
       // For all other garments, retain their original texture maps (normal, bump, etc)
       // but override the base color to a lighter blue, and fix the "shiny plastic" look.
-      const brandColor = new THREE.Color('#4A6085');
+      const brandColor = new THREE.Color('#171B2E');
       clone.traverse((child) => {
         const mesh = child as THREE.Mesh;
         if (mesh.isMesh) {

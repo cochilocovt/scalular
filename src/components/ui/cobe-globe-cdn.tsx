@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useCallback } from "react"
+import { useEffect, useRef, useCallback, useState } from "react"
 import createGlobe from "cobe"
 
 import { FACTORIES, BUYER_HUBS, SUPPLY_ARCS } from '@/data/factories';
@@ -96,6 +96,15 @@ export function GlobeCdn({
   const currentPhiRef = useRef(0)
   const activeMarkerRef = useRef<string | null>(null)
   const activeStartTimeRef = useRef<number>(0)
+
+  // Mobile detection — disable touch interaction so page scrolls freely
+  const [isMobile, setIsMobile] = useState(false)
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768)
+    check()
+    window.addEventListener('resize', check)
+    return () => window.removeEventListener('resize', check)
+  }, [])
 
   const handlePointerDown = useCallback((e: React.PointerEvent) => {
     pointerInteracting.current = { x: e.clientX, y: e.clientY }
@@ -337,7 +346,7 @@ export function GlobeCdn({
   const renderKineticWeave = (isActive: boolean, baseColor?: string) => {
     const size = isActive ? 22 : 14;
     const strokeWidth = isActive ? 1.5 : 1;
-    const color = isActive ? '#7dd3fc' : (baseColor || '#4A6085'); // using primary or cyan
+    const color = isActive ? '#7dd3fc' : (baseColor || '#171B2E'); // using primary or cyan
     const glow = isActive 
       ? `0 0 10px ${color}, inset 0 0 6px ${color}` 
       : `0 0 4px ${color}`;
@@ -403,22 +412,23 @@ export function GlobeCdn({
 
       <canvas
         ref={canvasRef}
-        onPointerDown={handlePointerDown}
+        onPointerDown={isMobile ? undefined : handlePointerDown}
         style={{
           width: "100%",
           height: "100%",
-          cursor: "grab",
+          cursor: isMobile ? "default" : "grab",
           opacity: 0,
           transition: "opacity 1.2s ease",
           borderRadius: "50%",
-          touchAction: "none",
+          touchAction: isMobile ? "auto" : "none",
+          pointerEvents: isMobile ? "none" : "auto",
           margin: "auto",
           display: "block",
         }}
       />
 
       {/* ── Factory markers: 3D pyramid + specialty card ──────────── */}
-      <div className="hidden md:contents">
+      <div className="contents">
       {factories.map((m) => {
         const isActive = activeId === m.id
         return (

@@ -97,9 +97,15 @@ export function GlobeCdn({
   const activeMarkerRef = useRef<string | null>(null)
   const activeStartTimeRef = useRef<number>(0)
 
-  // Mobile detection — disable touch interaction so page scrolls freely
+  // Mobile detection and Polyfill for Safari
   const [isMobile, setIsMobile] = useState(false)
   useEffect(() => {
+    // Safari/iOS does not support CSS Anchor Positioning yet
+    // This dynamically imports the polyfill only on the client
+    if (typeof window !== "undefined" && !("anchorName" in document.documentElement.style)) {
+      import("@oddbird/css-anchor-positioning").catch(console.error);
+    }
+
     const check = () => setIsMobile(window.innerWidth < 768)
     check()
     window.addEventListener('resize', check)

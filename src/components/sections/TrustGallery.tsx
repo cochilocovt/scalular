@@ -23,15 +23,15 @@ const METRICS = [
 export function TrustGallery() {
   return (
     <section
-      className="relative w-full py-12 md:py-20 px-6 md:px-12 lg:px-20 bg-background overflow-hidden"
+      className="relative w-full py-6 md:py-20 px-4 md:px-12 lg:px-20 bg-background overflow-hidden min-h-[100svh] md:min-h-0 flex flex-col justify-center md:block"
     >
       {/* ── Section header ─────────────────────────────────── */}
-      <div className="max-w-6xl mx-auto mb-8">
+      <div className="max-w-6xl w-full mx-auto mb-5 md:mb-8">
         <motion.p
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-xs font-semibold uppercase tracking-[0.2em] text-primary mb-3"
+          className="text-[10px] md:text-xs font-semibold uppercase tracking-[0.2em] text-primary mb-2 md:mb-3"
         >
           Audited Factory ecosystem
         </motion.p>
@@ -40,7 +40,7 @@ export function TrustGallery() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.05 }}
-          className="text-3xl md:text-5xl font-bold text-text-primary tracking-tighter mb-4"
+          className="text-[28px] leading-[1.1] md:text-5xl font-bold text-text-primary tracking-tighter mb-3 md:mb-4"
           style={{ fontFamily: 'var(--font-display)' }}
         >
           Real factories. Real people.
@@ -52,7 +52,7 @@ export function TrustGallery() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.1 }}
-          className="text-base md:text-lg text-text-secondary max-w-xl"
+          className="text-[13px] leading-snug md:text-lg text-text-secondary max-w-xl"
         >
           Every factory in our network is carefully chosen, audited and monitored.
           These are real photos from our partner facilities.
@@ -62,11 +62,11 @@ export function TrustGallery() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.15 }}
-          className="mt-6"
+          className="mt-4 md:mt-6"
         >
           <Link 
             href="/gallery"
-            className="inline-flex items-center gap-2 text-sm font-bold text-primary hover:text-primary-alt transition-colors group"
+            className="inline-flex items-center gap-2 text-[13px] md:text-sm font-bold text-primary hover:text-primary-alt transition-colors group"
           >
             <span className="border-b border-primary/30 group-hover:border-primary transition-colors pb-0.5">
               Explore the Full Gallery
@@ -76,11 +76,11 @@ export function TrustGallery() {
         </motion.div>
       </div>
 
-      {/* ── Photo grid — editorial asymmetric layout ────────── */}
-      <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-12 gap-3 md:gap-4 auto-rows-[150px] md:auto-rows-[220px]">
-        {/* Large hero image — spans 2 rows */}
+      {/* ── Photo grid — compact bento box on mobile, asymmetric on desktop ────────── */}
+      <div className="max-w-6xl w-full mx-auto grid grid-cols-2 md:grid-cols-12 gap-2 md:gap-4 md:auto-rows-[220px]">
+        {/* Large hero image — spans full width on mobile, 2 rows on desktop */}
         <div
-          className="col-span-2 md:col-span-7 row-span-2 relative rounded-2xl overflow-hidden group"
+          className="col-span-2 h-[160px] md:h-auto md:col-span-7 md:row-span-2 relative rounded-2xl overflow-hidden group"
         >
           <Image
             src={PHOTOS[0].src}
@@ -90,19 +90,19 @@ export function TrustGallery() {
             sizes="(max-width: 768px) 100vw, 58vw"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
-          <div className="absolute bottom-4 left-5 z-10">
-            <span className="text-xs font-semibold text-white/70 uppercase tracking-wider">{PHOTOS[0].label}</span>
+          <div className="absolute bottom-3 md:bottom-4 left-4 md:left-5 z-10">
+            <span className="text-[10px] md:text-xs font-semibold text-white/80 uppercase tracking-wider">{PHOTOS[0].label}</span>
           </div>
           {/* Metric badge */}
-          <div className="absolute top-4 right-5 z-10 bg-white/90 backdrop-blur-sm rounded-xl px-4 py-2.5 shadow-lg">
-            <div className="text-2xl font-bold text-text-primary tracking-tight leading-none">{METRICS[0].value}</div>
-            <div className="text-[10px] font-semibold text-text-secondary uppercase tracking-wider mt-0.5">{METRICS[0].label}</div>
+          <div className="absolute top-3 md:top-4 right-3 md:right-5 z-10 bg-white/90 backdrop-blur-sm rounded-xl px-3 md:px-4 py-2 md:py-2.5 shadow-lg">
+            <div className="text-lg md:text-2xl font-bold text-text-primary tracking-tight leading-none">{METRICS[0].value}</div>
+            <div className="text-[9px] md:text-[10px] font-semibold text-text-secondary uppercase tracking-wider mt-0.5">{METRICS[0].label}</div>
           </div>
         </div>
 
         {/* Top right */}
         <div
-          className="col-span-1 md:col-span-5 relative rounded-2xl overflow-hidden group"
+          className="col-span-1 h-[110px] md:h-auto md:col-span-5 relative rounded-2xl overflow-hidden group"
         >
           <Image
             src={PHOTOS[1].src}
@@ -112,14 +112,14 @@ export function TrustGallery() {
             sizes="(max-width: 768px) 50vw, 42vw"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-          <div className="absolute bottom-3 left-4 z-10">
-            <span className="text-xs font-semibold text-white/70 uppercase tracking-wider">{PHOTOS[1].label}</span>
+          <div className="absolute bottom-2 md:bottom-3 left-3 md:left-4 z-10">
+            <span className="text-[10px] md:text-xs font-semibold text-white/80 uppercase tracking-wider">{PHOTOS[1].label}</span>
           </div>
         </div>
 
         {/* Bottom right */}
         <div
-          className="col-span-1 md:col-span-5 relative rounded-2xl overflow-hidden group"
+          className="col-span-1 h-[110px] md:h-auto md:col-span-5 relative rounded-2xl overflow-hidden group"
         >
           <Image
             src={PHOTOS[2].src}
@@ -129,17 +129,17 @@ export function TrustGallery() {
             sizes="(max-width: 768px) 50vw, 42vw"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-          <div className="absolute bottom-3 left-4 z-10">
-            <span className="text-xs font-semibold text-white/70 uppercase tracking-wider">{PHOTOS[2].label}</span>
+          <div className="absolute bottom-2 md:bottom-3 left-3 md:left-4 z-10">
+            <span className="text-[10px] md:text-xs font-semibold text-white/80 uppercase tracking-wider">{PHOTOS[2].label}</span>
           </div>
           {/* Metric badge */}
-          <div className="absolute top-3 right-4 z-10 bg-white/90 backdrop-blur-sm rounded-xl px-3 py-2 shadow-lg">
-            <div className="text-xl font-bold text-text-primary tracking-tight leading-none">{METRICS[1].value}</div>
-            <div className="text-[10px] font-semibold text-text-secondary uppercase tracking-wider mt-0.5">{METRICS[1].label}</div>
+          <div className="absolute top-2 md:top-3 right-2 md:right-4 z-10 bg-white/90 backdrop-blur-sm rounded-lg md:rounded-xl px-2 md:px-3 py-1.5 md:py-2 shadow-lg">
+            <div className="text-base md:text-xl font-bold text-text-primary tracking-tight leading-none">{METRICS[1].value}</div>
+            <div className="text-[8px] md:text-[10px] font-semibold text-text-secondary uppercase tracking-wider mt-0.5">{METRICS[1].label}</div>
           </div>
         </div>
 
-        {/* Second row — three equal columns */}
+        {/* Second row — three equal columns (Hidden on mobile to save space) */}
         {PHOTOS.slice(3).map((photo, i) => (
           <motion.div
             key={photo.src}
@@ -147,7 +147,7 @@ export function TrustGallery() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: i * 0.08 }}
-            className={`col-span-1 md:col-span-4 relative rounded-2xl overflow-hidden group${i >= 0 && i < 2 ? ' hidden md:block' : ''}`}
+            className={`hidden md:block col-span-1 md:col-span-4 relative rounded-2xl overflow-hidden group`}
           >
             <Image
               src={photo.src}

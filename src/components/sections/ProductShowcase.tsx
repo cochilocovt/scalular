@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Canvas } from '@react-three/fiber';
 import { Environment, Html, OrbitControls } from '@react-three/drei';
@@ -25,8 +25,9 @@ function SafeCanvas({ children, isMobileCanvas = false }: { children: React.Reac
   return (
     <Canvas
       camera={{ position: [0, 0, 4.5], fov: 38 }}
-      gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
+      gl={{ antialias: true, alpha: true, powerPreference: isMobileCanvas ? 'low-power' : 'high-performance' }}
       style={{ background: 'transparent', width: '100%', height: '100%', outline: 'none' }}
+      dpr={isMobileCanvas ? 1 : undefined}
     >
       <Environment preset="studio" />
       <ambientLight intensity={0.5} />
@@ -45,6 +46,7 @@ export function ProductShowcase() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const interactTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Safely check layout bounds for responsive item heights
   useEffect(() => {
@@ -54,41 +56,54 @@ export function ProductShowcase() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const ITEM_HEIGHT = isMobile ? 40 : 55;
-
-  // Auto-play the carousel every 2 seconds when not hovered
+  // Auto-play the carousel every 2 seconds when not hovered/paused
   useEffect(() => {
-    if (isHovered) return;
+    if (isHovered) return; // Pause on desktop hover OR mobile temporary tap
+
     const interval = setInterval(() => {
       setActiveIndex((prev) => (prev + 1) % GARMENT_CATALOG.length);
     }, 2000);
+    
     return () => clearInterval(interval);
   }, [isHovered]);
+
+  const handleMobileTap = (idx: number) => {
+    setActiveIndex(idx);
+    
+    // Temporarily pause auto-cycle on mobile for 2 seconds
+    if (interactTimeoutRef.current) {
+      clearTimeout(interactTimeoutRef.current);
+    }
+    
+    setIsHovered(true); // Signal to pause
+    
+    interactTimeoutRef.current = setTimeout(() => {
+      setIsHovered(false); // Resume after 2 seconds
+    }, 2000);
+  };
 
   return (
     <div className="relative w-full py-0 md:py-4">
       
       {/* Header - Moved above the display box */}
-      <div className="relative w-full max-w-7xl mx-auto px-6 mb-10 z-10 flex items-center justify-center">
+      <div className="relative w-full max-w-7xl mx-auto px-6 mb-8 md:mb-10 z-10 flex items-center justify-center">
         <span className="text-xs md:text-sm font-bold uppercase tracking-[0.3em] text-primary/80">
           What we manufacture
         </span>
       </div>
 
-      {/* Container inner styling restored */}
+      {/* DESKTOP LAYOUT */}
       <div 
-        className="relative mx-auto w-full max-w-7xl h-[480px] md:h-[550px] flex flex-col-reverse md:flex-row overflow-hidden bg-background/50 rounded-3xl border border-border/50 shadow-xl z-10"
+        className="hidden md:flex relative mx-auto w-full max-w-7xl h-[550px] flex-col-reverse md:flex-row overflow-hidden bg-background/50 rounded-3xl border border-border/50 shadow-xl z-10"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
         {/* Minimal, crisp top accent bar using brand colors */}
         <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-primary via-blue-600 to-transparent z-30 opacity-80" />
         
-        {/* ── Left Side (Desktop) / Bottom Strip (Mobile): Static List ── */}
-        <div className="relative w-full md:w-[45%] h-[30%] md:h-full flex flex-col justify-center md:border-r border-border/50">
-          
-          <div className="w-full h-full relative overflow-hidden hidden md:flex flex-col items-start justify-center px-6 md:px-12 py-2">
-            {/* The list of garments, statically positioned but dynamically sized */}
+        {/* Left Side (Desktop): Static List */}
+        <div className="relative w-full md:w-[45%] h-full flex flex-col justify-center border-r border-border/50">
+          <div className="w-full h-full relative overflow-hidden flex flex-col items-start justify-center px-12 py-2">
             {GARMENT_CATALOG.map((entry, idx) => {
               const isActive = idx === activeIndex;
 
@@ -117,47 +132,73 @@ export function ProductShowcase() {
               );
             })}
           </div>
+        </div>
 
-          {/* Mobile horizontal strip — replaces vertical list below md */}
-          <div
-            className="flex md:hidden items-center gap-2 overflow-x-auto snap-x snap-mandatory w-full h-full px-4"
-            style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}
-          >
+        {/* Right Side (Desktop): 3D Stage */}
+        <div className="relative w-full md:w-[55%] h-full flex items-center justify-center">
+          <div className="absolute inset-0 bg-white/5 pointer-events-none" />
+          <SafeCanvas isMobileCanvas={false}>
+            <GLBModel key={GARMENT_CATALOG[activeIndex].url} url={GARMENT_CATALOG[activeIndex].url} isActive={true} />
+          </SafeCanvas>
+        </div>
+      </div>
+
+      {/* MOBILE LAYOUT (Option A: 2-Column Grid) */}
+      <div className="flex md:hidden flex-col w-full px-2 max-w-[400px] mx-auto">
+        
+        {/* Sticky 3D Viewer */}
+        <div className="sticky top-[56px] z-20 w-full h-[300px] flex items-center justify-center -mt-4 bg-background">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.03)_0%,transparent_70%)] pointer-events-none" />
+          <div className="w-full h-full pointer-events-none" style={{ touchAction: 'auto' }}>
+            <SafeCanvas isMobileCanvas={true}>
+              <GLBModel key={GARMENT_CATALOG[activeIndex].url} url={GARMENT_CATALOG[activeIndex].url} isActive={true} />
+            </SafeCanvas>
+          </div>
+        </div>
+
+        {/* 2-Column Grid List */}
+        <div className="w-full z-10 pb-8 mt-2 bg-background">
+          <div className="grid grid-cols-2 gap-x-2 gap-y-0 relative">
             {GARMENT_CATALOG.map((entry, idx) => {
               const isActive = idx === activeIndex;
               return (
                 <button
                   key={entry.id}
-                  onClick={() => setActiveIndex(idx)}
+                  onClick={() => handleMobileTap(idx)}
                   className={`
-                    snap-center shrink-0 px-5 py-2 rounded-full text-sm font-bold uppercase tracking-wider
-                    transition-all duration-300 whitespace-nowrap
-                    focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50
-                    ${
-                      isActive
-                        ? 'bg-primary text-white shadow-lg shadow-primary/20'
-                        : 'text-text-secondary/60 hover:text-text-primary'
-                    }
+                    relative w-full h-[44px] flex items-center px-3 text-left
+                    transition-colors duration-300 overflow-hidden rounded-md
+                    ${isActive ? 'bg-primary/5' : 'bg-transparent'}
+                    ${idx === GARMENT_CATALOG.length - 1 && GARMENT_CATALOG.length % 2 !== 0 ? 'col-span-2' : ''}
                   `}
                 >
-                  {entry.name}
+                  {/* Left Accent Bar */}
+                  {isActive && (
+                    <motion.div 
+                      layoutId="mobileAccentBar"
+                      className="absolute left-0 top-1 bottom-1 w-[3px] bg-primary rounded-r-sm"
+                      transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                    />
+                  )}
+                  
+                  <span 
+                    className={`
+                      w-full truncate transition-all duration-300
+                      ${isActive 
+                        ? 'font-black text-primary text-[15px] uppercase tracking-tight ml-2' 
+                        : 'font-medium text-text-secondary/60 text-sm uppercase tracking-wider'
+                      }
+                    `}
+                  >
+                    {entry.name}
+                  </span>
                 </button>
               );
             })}
           </div>
         </div>
-
-        {/* ── Right Side (Desktop) / Top (Mobile): 3D Stage ── */}
-        <div className="relative w-full md:w-[55%] h-[70%] md:h-full flex items-center justify-center" style={{ touchAction: isMobile ? 'pan-y' : 'none' }}>
-          <div className="absolute inset-0 bg-white/5 pointer-events-none" />
-          <SafeCanvas isMobileCanvas={isMobile}>
-            {/* Added key prop bound to url. This forces React to unmount and remount GLBModel + Center, 
-                re-evaluating bounding boxes natively from 0 each time, preventing the "Center" offset from drifting across loop boundaries. */}
-            <GLBModel key={GARMENT_CATALOG[activeIndex].url} url={GARMENT_CATALOG[activeIndex].url} isActive={true} />
-          </SafeCanvas>
-        </div>
-        
       </div>
+
     </div>
   );
 }

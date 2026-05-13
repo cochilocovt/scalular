@@ -86,6 +86,7 @@ export function GlobeCdn({
 }: GlobeCdnProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
+  const markersContainerRef = useRef<HTMLDivElement>(null)
   const pointerInteracting = useRef<{ x: number; y: number } | null>(null)
   const lastInteractionTime = useRef<number>(0)
   const dragOffset = useRef({ phi: 0, theta: 0 })
@@ -97,15 +98,9 @@ export function GlobeCdn({
   const activeMarkerRef = useRef<string | null>(null)
   const activeStartTimeRef = useRef<number>(0)
 
-  // Mobile detection and Polyfill for Safari
+  // Mobile detection
   const [isMobile, setIsMobile] = useState(false)
   useEffect(() => {
-    // Safari/iOS does not support CSS Anchor Positioning yet
-    // This dynamically imports the polyfill only on the client
-    if (typeof window !== "undefined" && !("anchorName" in document.documentElement.style)) {
-      import("@oddbird/css-anchor-positioning").catch(console.error);
-    }
-
     const check = () => setIsMobile(window.innerWidth < 768)
     check()
     window.addEventListener('resize', check)
@@ -164,9 +159,13 @@ export function GlobeCdn({
 
       if (size === 0 || globe) return
 
-      // Set canvas display size
+      // Set canvas and marker container display size
       canvas.style.width = `${size}px`
       canvas.style.height = `${size}px`
+      if (markersContainerRef.current) {
+        markersContainerRef.current.style.width = `${size}px`
+        markersContainerRef.current.style.height = `${size}px`
+      }
 
       globe = createGlobe(canvas, {
         devicePixelRatio: Math.min(window.devicePixelRatio || 1, 2),
@@ -193,6 +192,17 @@ export function GlobeCdn({
         arcHeight: 0.25,
         opacity: 0.9,
       })
+
+      // Pre-compute 3D vectors for manual coordinate projection
+      const markerVectors = markers.map(m => {
+        const r = m.location[0] * Math.PI / 180;
+        const a = m.location[1] * Math.PI / 180 - Math.PI;
+        const o = Math.cos(r);
+        return {
+          id: m.id,
+          vector: [-o * Math.cos(a), Math.sin(r), o * Math.sin(a)]
+        }
+      });
 
       function animate() {
         const now = Date.now()
@@ -296,6 +306,29 @@ export function GlobeCdn({
           markers: dynamicMarkers,
         })
 
+        // Manual coordinate projection for markers
+        const r_t = Math.cos(currentTotalTheta);
+        const a_t = Math.cos(currentTotalPhi);
+        const o_t = Math.sin(currentTotalTheta);
+        const i_t = Math.sin(currentTotalPhi);
+
+        markerVectors.forEach(({ id, vector: vec }) => {
+          const c = a_t * vec[0] + i_t * vec[2];
+          const s = i_t * o_t * vec[0] + r_t * vec[1] - a_t * o_t * vec[2];
+          
+          const x = (c + 1) / 2;
+          const y = (-s + 1) / 2;
+          // Determine visibility based on sphere math
+          const visible = -i_t * r_t * vec[0] + o_t * vec[1] + a_t * r_t * vec[2] >= 0 || c * c + s * s >= 0.64;
+          
+          const el = document.getElementById(`marker-${id}`);
+          if (el) {
+            el.style.left = `${x * 100}%`;
+            el.style.top = `${y * 100}%`;
+            el.style.setProperty(`--cobe-visible-${id}`, visible ? "1" : "0");
+          }
+        });
+
         let closestMarkerId: string | null = null
         let minDistance = 0.2 // Tighter threshold so it only triggers near true center
 
@@ -392,7 +425,7 @@ export function GlobeCdn({
   const hubs = markers.filter((m) => m.isBuyer)
 
   return (
-    <div ref={containerRef} className={`relative select-none ${className}`}>
+    <div ref={containerRef} className={`relative select-none flex items-center justify-center ${className}`}>
       <style>{`
         @keyframes factory-pulse {
           0%, 100% { transform: scale(1); opacity: 0.85; }
@@ -416,180 +449,178 @@ export function GlobeCdn({
         }
       `}</style>
 
-      <canvas
-        ref={canvasRef}
-        onPointerDown={isMobile ? undefined : handlePointerDown}
-        style={{
-          width: "100%",
-          height: "100%",
-          cursor: isMobile ? "default" : "grab",
-          opacity: 0,
-          transition: "opacity 1.2s ease",
-          borderRadius: "50%",
-          touchAction: isMobile ? "auto" : "none",
-          pointerEvents: isMobile ? "none" : "auto",
-          margin: "auto",
-          display: "block",
-        }}
-      />
+      {/* Wrapper to constrain markers exactly to the canvas dimensions */}
+      <div ref={markersContainerRef} style={{ position: "relative", margin: "auto" }}>
+        <canvas
+          ref={canvasRef}
+          onPointerDown={isMobile ? undefined : handlePointerDown}
+          style={{
+            width: "100%",
+            height: "100%",
+            cursor: isMobile ? "default" : "grab",
+            opacity: 0,
+            transition: "opacity 1.2s ease",
+            borderRadius: "50%",
+            touchAction: isMobile ? "auto" : "none",
+            pointerEvents: isMobile ? "none" : "auto",
+            display: "block",
+          }}
+        />
 
-      {/* ── Factory markers: 3D pyramid + specialty card ──────────── */}
-      <div className="contents">
-      {factories.map((m) => {
-        const isActive = activeId === m.id
-        return (
-          <div
-            key={m.id}
-            style={{
-              position: "absolute",
-              positionAnchor: `--cobe-${m.id}`,
-              bottom: "anchor(top)",
-              left: "anchor(center)",
-              translate: "-50% 0",
-              display: "flex",
-              flexDirection: "column" as const,
-              alignItems: "center",
-              gap: 8,
-              pointerEvents: "none" as const,
-              opacity: `var(--cobe-visible-${m.id}, 0)`,
-              filter: `blur(calc((1 - var(--cobe-visible-${m.id}, 0)) * 8px))`,
-              transition: "opacity 0.3s, filter 0.3s",
-            }}
-          >
-            {/* Factory Marker */}
+        {/* ── Factory markers: 3D pyramid + specialty card ──────────── */}
+        <div className="contents">
+        {factories.map((m) => {
+          const isActive = activeId === m.id
+          return (
             <div
+              key={m.id}
+              id={`marker-${m.id}`}
               style={{
                 position: "absolute",
-                bottom: -6,
-                animation: "factory-pulse 2.5s ease-in-out infinite",
-              }}
-            >
-              <div style={{ filter: isActive ? 'drop-shadow(0 0 8px rgba(56,189,248,0.6))' : 'none', transition: 'filter 0.3s' }}>
-                {renderKineticWeave(isActive, m.color)}
-              </div>
-            </div>
-
-            {/* Auto-appearing specialty card (only active) */}
-            <div
-              style={{
+                transform: "translate(-50%, -100%)",
                 display: "flex",
-                alignItems: "center",
-                gap: 6,
-                background: "var(--background)",
-                padding: "6px 10px",
-                borderRadius: 6,
-                boxShadow: "0 4px 12px var(--neu-shadow-dark), 0 0 0 1px var(--glass-border)",
-                whiteSpace: "nowrap" as const,
-                opacity: isActive ? 1 : 0,
-                transform: isActive ? "translateY(-24px) scale(1)" : "translateY(-14px) scale(0.95)",
-                transition: "opacity 0.4s ease, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1)",
-                pointerEvents: isActive ? "auto" : "none",
-              }}
-            >
-              {isActive && (
-                <div
-                  style={{
-                    position: "absolute",
-                    bottom: -4,
-                    left: "50%",
-                    transform: "translateX(-50%) rotate(45deg)",
-                    width: 8,
-                    height: 8,
-                    background: "var(--background)",
-                    borderBottom: "1px solid var(--glass-border)",
-                    borderRight: "1px solid var(--glass-border)",
-                  }}
-                />
-              )}
-              <span
-                style={{
-                  fontFamily: "var(--font-family)",
-                  fontSize: "0.6rem",
-                  fontWeight: 600,
-                  color: "var(--text-primary)",
-                  letterSpacing: "0.02em",
-                  textTransform: "uppercase",
-                }}
-              >
-                {m.region}
-              </span>
-            </div>
-          </div>
-        )
-      })}
-
-
-      {/* ── Buyer hub floating labels ───────────────── */}
-      {hubs.map((m) => {
-        const activeFactory = factories.find(f => f.id === activeId);
-        const isConnected = activeFactory && arcs.some(a =>
-          a.from[0] === activeFactory.location[0] && a.from[1] === activeFactory.location[1] &&
-          a.to[0] === m.location[0] && a.to[1] === m.location[1]
-        );
-
-        return (
-          <div
-            key={m.id}
-            style={{
-              position: "absolute",
-              positionAnchor: `--cobe-${m.id}`,
-              bottom: "anchor(center)",
-              left: "anchor(center)",
-              translate: "-50% -50%",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              gap: 4,
-              pointerEvents: "none",
-              opacity: `var(--cobe-visible-${m.id}, 0)`,
-              filter: `blur(calc((1 - var(--cobe-visible-${m.id}, 0)) * 8px))`,
-              transition: "opacity 0.3s, filter 0.3s",
-              zIndex: 40,
-            }}
-          >
-            {/* Conditionally-visible Label inside pill */}
-            <div
-              style={{
-                display: "flex",
+                flexDirection: "column" as const,
                 alignItems: "center",
                 gap: 8,
-                background: "var(--background)",
-                padding: "8px 14px",
-                borderRadius: 8,
-                boxShadow: "0 8px 24px rgba(0, 0, 0, 0.4), 0 0 0 1px var(--glass-border)",
-                whiteSpace: "nowrap",
-                opacity: isConnected ? 1 : 0,
-                transform: isConnected ? "translateY(-20px) scale(1)" : "translateY(0px) scale(0.9)",
-                transition: "opacity 0.5s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1)",
-                pointerEvents: isConnected ? "auto" : "none",
-                position: "relative",
+                pointerEvents: "none" as const,
+                opacity: `var(--cobe-visible-${m.id}, 0)`,
+                filter: `blur(calc((1 - var(--cobe-visible-${m.id}, 0)) * 8px))`,
+                transition: "opacity 0.3s, filter 0.3s",
               }}
             >
+              {/* Factory Marker */}
               <div
                 style={{
-                  width: 8,
-                  height: 8,
-                  borderRadius: "50%",
-                  background: m.color || "#171B2E",
-                  boxShadow: `0 0 12px ${m.color || "#171B2E"}`
-                }}
-              />
-              <span
-                style={{
-                  fontFamily: "var(--font-family)",
-                  fontSize: "0.65rem",
-                  fontWeight: 700,
-                  color: "var(--text-primary)",
-                  letterSpacing: "0.1em",
-                  textTransform: "uppercase",
+                  position: "absolute",
+                  bottom: -6,
+                  animation: "factory-pulse 2.5s ease-in-out infinite",
                 }}
               >
-                {m.region} HUB
-              </span>
+                <div style={{ filter: isActive ? 'drop-shadow(0 0 8px rgba(56,189,248,0.6))' : 'none', transition: 'filter 0.3s' }}>
+                  {renderKineticWeave(isActive, m.color)}
+                </div>
+              </div>
+
+              {/* Auto-appearing specialty card (only active) */}
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 6,
+                  background: "var(--background)",
+                  padding: "6px 10px",
+                  borderRadius: 6,
+                  boxShadow: "0 4px 12px var(--neu-shadow-dark), 0 0 0 1px var(--glass-border)",
+                  whiteSpace: "nowrap" as const,
+                  opacity: isActive ? 1 : 0,
+                  transform: isActive ? "translateY(-24px) scale(1)" : "translateY(-14px) scale(0.95)",
+                  transition: "opacity 0.4s ease, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1)",
+                  pointerEvents: isActive ? "auto" : "none",
+                }}
+              >
+                {isActive && (
+                  <div
+                    style={{
+                      position: "absolute",
+                      bottom: -4,
+                      left: "50%",
+                      transform: "translateX(-50%) rotate(45deg)",
+                      width: 8,
+                      height: 8,
+                      background: "var(--background)",
+                      borderBottom: "1px solid var(--glass-border)",
+                      borderRight: "1px solid var(--glass-border)",
+                    }}
+                  />
+                )}
+                <span
+                  style={{
+                    fontFamily: "var(--font-family)",
+                    fontSize: "0.6rem",
+                    fontWeight: 600,
+                    color: "var(--text-primary)",
+                    letterSpacing: "0.02em",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  {m.region}
+                </span>
+              </div>
             </div>
-          </div>
-        )
-      })}
+          )
+        })}
+
+
+        {/* ── Buyer hub floating labels ───────────────── */}
+        {hubs.map((m) => {
+          const activeFactory = factories.find(f => f.id === activeId);
+          const isConnected = activeFactory && arcs.some(a =>
+            a.from[0] === activeFactory.location[0] && a.from[1] === activeFactory.location[1] &&
+            a.to[0] === m.location[0] && a.to[1] === m.location[1]
+          );
+
+          return (
+            <div
+              key={m.id}
+              id={`marker-${m.id}`}
+              style={{
+                position: "absolute",
+                transform: "translate(-50%, -50%)",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: 4,
+                pointerEvents: "none",
+                opacity: `var(--cobe-visible-${m.id}, 0)`,
+                filter: `blur(calc((1 - var(--cobe-visible-${m.id}, 0)) * 8px))`,
+                transition: "opacity 0.3s, filter 0.3s",
+                zIndex: 40,
+              }}
+            >
+              {/* Conditionally-visible Label inside pill */}
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 8,
+                  background: "var(--background)",
+                  padding: "8px 14px",
+                  borderRadius: 8,
+                  boxShadow: "0 8px 24px rgba(0, 0, 0, 0.4), 0 0 0 1px var(--glass-border)",
+                  whiteSpace: "nowrap",
+                  opacity: isConnected ? 1 : 0,
+                  transform: isConnected ? "translateY(-20px) scale(1)" : "translateY(0px) scale(0.9)",
+                  transition: "opacity 0.5s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1)",
+                  pointerEvents: isConnected ? "auto" : "none",
+                  position: "relative",
+                }}
+              >
+                <div
+                  style={{
+                    width: 8,
+                    height: 8,
+                    borderRadius: "50%",
+                    background: m.color || "#171B2E",
+                    boxShadow: `0 0 12px ${m.color || "#171B2E"}`
+                  }}
+                />
+                <span
+                  style={{
+                    fontFamily: "var(--font-family)",
+                    fontSize: "0.65rem",
+                    fontWeight: 700,
+                    color: "var(--text-primary)",
+                    letterSpacing: "0.1em",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  {m.region} HUB
+                </span>
+              </div>
+            </div>
+          )
+        })}
+        </div>
       </div>
     </div>
   )

@@ -4,6 +4,7 @@ import './globals.css';
 import { Navbar } from '@/components/ui/Navbar';
 import { SharedFooter } from '@/components/ui/SharedFooter';
 import { SmoothScroll } from '@/components/ui/SmoothScroll';
+import { SectionScrollbar } from '@/components/ui/SectionScrollbar';
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   variable: '--font-display',
@@ -37,6 +38,7 @@ export default function RootLayout({
           </a>
           <Navbar />
           {children}
+          <SectionScrollbar />
           <SharedFooter />
         </SmoothScroll>
       </body>

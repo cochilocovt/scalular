@@ -6,7 +6,7 @@ import { TrustShowcase } from './TrustShowcase';
 
 export function ShowcaseSection() {
   return (
-    <section className="relative w-full bg-mesh-gradient py-20 overflow-hidden">
+    <section id="showcase" className="relative w-full bg-mesh-gradient py-20 overflow-hidden">
       {/* Subtle top border */}
       <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
 

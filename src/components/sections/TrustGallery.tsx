@@ -23,6 +23,7 @@ const METRICS = [
 export function TrustGallery() {
   return (
     <section
+      id="gallery"
       className="relative w-full py-6 md:py-20 px-4 md:px-12 lg:px-20 bg-background overflow-hidden min-h-[100svh] md:min-h-0 flex flex-col justify-center md:block"
     >
       {/* ── Section header ─────────────────────────────────── */}

@@ -186,7 +186,7 @@ export function ScalularServices() {
         </div>
 
         {/* Header — left-aligned for Linear feel */}
-        <div className="max-w-2xl mb-4 md:mb-8 h-auto">
+        <div className="max-w-2xl mb-4 md:mb-6 h-auto">
           <motion.p
             key={`subtitle-${activeTab}`}
             initial={{ opacity: 0, y: 12 }}
@@ -201,7 +201,7 @@ export function ScalularServices() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.05 }}
-            className="text-3xl md:text-4xl font-bold text-text-primary leading-tight mb-3 tracking-tighter"
+            className="text-2xl md:text-3xl font-bold text-text-primary leading-tight mb-2 tracking-tighter"
             style={{ fontFamily: 'var(--font-display)' }}
           >
             {activeTab === "brands" ? (
@@ -210,18 +210,6 @@ export function ScalularServices() {
               <>Everything you need to <span className="text-primary">grow your factory</span></>
             )}
           </motion.h2>
-
-          <motion.p
-            key={`desc-${activeTab}`}
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="text-base md:text-lg text-text-secondary leading-relaxed max-w-xl"
-          >
-            {activeTab === "brands"
-              ? "From instant quotes to real-time order tracking and on-ground production support, manage your entire manufacturing lifecycle without the chaos."
-              : "Connect with premium brands, secure payments, and streamline your production workflow."}
-          </motion.p>
         </div>
 
         {/* Orbital timeline */}

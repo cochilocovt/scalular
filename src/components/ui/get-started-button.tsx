@@ -15,10 +15,10 @@ const glassButtonVariants = cva(
   {
     variants: {
       size: {
-        default: "px-6 py-3 text-sm font-medium",
-        sm: "px-5 py-2 text-[13px] font-medium",
-        lg: "px-7 py-3.5 text-[15px] font-medium",
-        icon: "h-10 w-10 p-0 gap-0",
+        default: "px-5 py-2.5 md:px-6 md:py-3 text-[13.5px] md:text-sm font-medium",
+        sm: "px-4 py-2 md:px-5 md:py-2 text-[12px] md:text-[13px] font-medium",
+        lg: "px-5 py-2.5 md:px-7 md:py-3.5 text-[14px] md:text-[15px] font-medium",
+        icon: "h-9 w-9 md:h-10 md:w-10 p-0 gap-0",
       },
     },
     defaultVariants: {
@@ -202,7 +202,11 @@ export const GetStartedButton = React.forwardRef<HTMLButtonElement, GetStartedBu
             transition={{ type: "spring", stiffness: 300, damping: 20 }}
             className="relative z-20"
           >
-            <ChevronRight size={size === 'sm' ? 16 : 18} strokeWidth={3} aria-hidden="true" />
+            <ChevronRight 
+              className={size === 'sm' ? "w-3.5 h-3.5 md:w-4 md:h-4" : "w-4 h-4 md:w-[18px] md:h-[18px]"} 
+              strokeWidth={3} 
+              aria-hidden="true" 
+            />
           </motion.div>
         </span>
       </>

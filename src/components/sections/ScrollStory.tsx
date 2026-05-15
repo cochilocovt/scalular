@@ -243,7 +243,7 @@ export function ScrollStory() {
         >
           <div className="absolute inset-x-0 bottom-0 h-1/6 md:h-1/4 bg-gradient-to-t from-background to-transparent z-10 pointer-events-none opacity-40" />
           <GlobeCdn
-            speed={0.008}
+            speed={0.03}
             activeId={selectedId}
             onActiveChange={setSelectedId}
             className="w-full h-full"

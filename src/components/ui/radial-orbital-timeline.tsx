@@ -167,19 +167,16 @@ export default function RadialOrbitalTimeline({
     enter: (dir: number) => ({
       x: dir > 0 ? 60 : -60,
       opacity: 0,
-      filter: 'blur(4px)'
     }),
     center: {
       zIndex: 1,
       x: 0,
       opacity: 1,
-      filter: 'blur(0px)'
     },
     exit: (dir: number) => ({
       zIndex: 0,
       x: dir < 0 ? 60 : -60,
       opacity: 0,
-      filter: 'blur(4px)'
     })
   };
 
@@ -263,7 +260,7 @@ export default function RadialOrbitalTimeline({
               }}
             >
               {/* Dial Background styling */}
-              <div className="absolute inset-[20px] rounded-full border-t border-l border-border/80 bg-surface/50 backdrop-blur-md shadow-[inset_0_2px_20px_rgba(255,255,255,0.03),0_-10px_40px_rgba(0,0,0,0.2)]"></div>
+              <div className="absolute inset-[20px] rounded-full border-t border-l border-border/80 bg-surface/95 shadow-[inset_0_2px_20px_rgba(255,255,255,0.03),0_-10px_40px_rgba(0,0,0,0.2)]"></div>
               <div className="absolute inset-[40px] rounded-full border border-border/40 border-dashed opacity-60"></div>
               
               {/* Nodes */}
@@ -315,7 +312,7 @@ export default function RadialOrbitalTimeline({
             </motion.div>
 
             {/* Center mechanical hub */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[160px] h-[160px] rounded-full border border-border/50 bg-background/95 backdrop-blur-xl flex items-center justify-center pointer-events-none shadow-[0_0_50px_rgba(0,0,0,0.1),inset_0_0_30px_rgba(0,0,0,0.05)]">
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[160px] h-[160px] rounded-full border border-border/50 bg-background flex items-center justify-center pointer-events-none shadow-[0_0_50px_rgba(0,0,0,0.1),inset_0_0_30px_rgba(0,0,0,0.05)]">
               <div className="w-[100px] h-[100px] rounded-full border border-border/30 flex items-center justify-center bg-surface/50">
                  <Image src={logo} alt="Scalular" width={48} height={48} className="rounded-full opacity-60 grayscale" loading="lazy" />
               </div>

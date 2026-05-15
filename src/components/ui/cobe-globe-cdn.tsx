@@ -312,8 +312,8 @@ export function GlobeCdn({
         const o_t = Math.sin(currentTotalTheta);
         const i_t = Math.sin(currentTotalPhi);
 
-        // Collect projected positions for collision detection
-        const hubPositions: { id: string; x: number; y: number; visible: boolean }[] = [];
+        // Collect projected positions for all markers
+        const projectedMarkers: { id: string; x: number; y: number; visible: boolean; isBuyer: boolean }[] = [];
 
         markerVectors.forEach(({ id, vector: vec }) => {
           const c = a_t * vec[0] + i_t * vec[2];
@@ -324,23 +324,19 @@ export function GlobeCdn({
           // Determine visibility based on sphere math
           const visible = -i_t * r_t * vec[0] + o_t * vec[1] + a_t * r_t * vec[2] >= 0 || c * c + s * s >= 0.64;
           
-          const el = document.getElementById(`marker-${id}`);
-          if (el) {
-            el.style.left = `${x * 100}%`;
-            el.style.top = `${y * 100}%`;
-            el.style.setProperty(`--cobe-visible-${id}`, visible ? "1" : "0");
-          }
-
-          // Track hub marker positions for collision resolution
           const markerData = markers.find(m => m.id === id);
-          if (markerData?.isBuyer) {
-            hubPositions.push({ id, x, y, visible });
-          }
+          projectedMarkers.push({ 
+            id, 
+            x, 
+            y, 
+            visible,
+            isBuyer: markerData?.isBuyer ?? false
+          });
         });
 
         // Collision-aware vertical nudging for hub labels
         // Only process visible hubs to avoid unnecessary work
-        const visibleHubs = hubPositions.filter(h => h.visible);
+        const visibleHubs = projectedMarkers.filter(m => m.isBuyer && m.visible);
         visibleHubs.sort((a, b) => a.y - b.y);
 
         const MIN_GAP = 0.08; // 8% of globe size ≈ 30px on a 400px globe
@@ -358,12 +354,14 @@ export function GlobeCdn({
           }
         }
 
-        // Apply nudge offsets as CSS custom properties
-        hubPositions.forEach(({ id }) => {
+        // Apply final positions
+        projectedMarkers.forEach(({ id, x, y, visible }) => {
           const el = document.getElementById(`marker-${id}`);
           if (el) {
             const nudge = nudges[id] || 0;
-            el.style.setProperty(`--cobe-nudge-${id}`, `${nudge * 100}%`);
+            el.style.left = `${x * 100}%`;
+            el.style.top = `${(y + nudge) * 100}%`;
+            el.style.setProperty(`--cobe-visible-${id}`, visible ? "1" : "0");
           }
         });
 
@@ -603,7 +601,7 @@ export function GlobeCdn({
               id={`marker-${m.id}`}
               style={{
                 position: "absolute",
-                transform: `translate(-50%, calc(-50% + var(--cobe-nudge-${m.id}, 0%)))`,
+                transform: `translate(-50%, -50%)`,
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",

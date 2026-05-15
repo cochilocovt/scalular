@@ -35,10 +35,11 @@ interface GetStartedButtonProps extends React.ButtonHTMLAttributes<HTMLButtonEle
   href?: string;
   target?: string;
   withLamp?: boolean;
+  baseColor?: string;
 }
 
 export const GetStartedButton = React.forwardRef<HTMLButtonElement, GetStartedButtonProps>(
-  ({ label = 'Get Started', onClick, className, size = 'lg', href, target, withLamp = false, ...props }, ref) => {
+  ({ label = 'Get Started', onClick, className, size = 'lg', href, target, withLamp = false, baseColor = 'var(--color-primary)', ...props }, ref) => {
     const filterId = React.useId().replace(/:/g, "");
     const [isHovered, setIsHovered] = useState(false);
     const [isDesktop, setIsDesktop] = useState(false);
@@ -142,7 +143,7 @@ export const GetStartedButton = React.forwardRef<HTMLButtonElement, GetStartedBu
 
           .btn-liquid-lens-${filterId} {
             /* Using a deep navy base to match Scalular aesthetic */
-            background-color: color-mix(in srgb, var(--color-primary) 70%, transparent);
+            background-color: color-mix(in srgb, ${baseColor} 70%, transparent);
             
             backdrop-filter: blur(12px) url(#liquid-glass-${filterId}) saturate(150%);
             -webkit-backdrop-filter: blur(12px) saturate(150%);
@@ -157,7 +158,7 @@ export const GetStartedButton = React.forwardRef<HTMLButtonElement, GetStartedBu
               inset 0px 3px 4px -2px color-mix(in srgb, black calc(var(--glass-reflex-dark) * 40%), transparent), 
               inset 2px -6.5px 1px -4px color-mix(in srgb, black calc(var(--glass-reflex-dark) * 20%), transparent), 
               0px 2px 8px 0px color-mix(in srgb, black calc(var(--glass-reflex-dark) * 20%), transparent), 
-              0px 8px 24px 0px color-mix(in srgb, var(--color-primary) calc(var(--glass-reflex-dark) * 30%), transparent);
+              0px 8px 24px 0px color-mix(in srgb, ${baseColor} calc(var(--glass-reflex-dark) * 30%), transparent);
               
             transition: background-color 400ms cubic-bezier(1, 0.0, 0.4, 1), box-shadow 400ms cubic-bezier(1, 0.0, 0.4, 1);
           }
@@ -172,7 +173,7 @@ export const GetStartedButton = React.forwardRef<HTMLButtonElement, GetStartedBu
               transform: scale(1.02);
             }
             .btn-liquid-${filterId}:not(:disabled):hover .btn-liquid-lens-${filterId} {
-               background-color: color-mix(in srgb, var(--color-primary) 85%, transparent);
+               background-color: color-mix(in srgb, ${baseColor} 85%, transparent);
                box-shadow: 
                  inset 0 0 0 1px color-mix(in srgb, white calc(var(--glass-reflex-light) * 25%), transparent),
                  inset 1.8px 3px 0px -2px color-mix(in srgb, white calc(var(--glass-reflex-light) * 90%), transparent), 
@@ -183,7 +184,7 @@ export const GetStartedButton = React.forwardRef<HTMLButtonElement, GetStartedBu
                  inset 0px 3px 4px -2px color-mix(in srgb, black calc(var(--glass-reflex-dark) * 50%), transparent), 
                  inset 2px -6.5px 1px -4px color-mix(in srgb, black calc(var(--glass-reflex-dark) * 30%), transparent), 
                  0px 4px 12px 0px color-mix(in srgb, black calc(var(--glass-reflex-dark) * 30%), transparent), 
-                 0px 12px 32px 0px color-mix(in srgb, var(--color-primary) calc(var(--glass-reflex-dark) * 50%), transparent);
+                 0px 12px 32px 0px color-mix(in srgb, ${baseColor} calc(var(--glass-reflex-dark) * 50%), transparent);
             }
           }
           .btn-liquid-${filterId}:not(:disabled):active {

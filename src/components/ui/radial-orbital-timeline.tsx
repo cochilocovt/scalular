@@ -35,15 +35,6 @@ export default function RadialOrbitalTimeline({
   const orbitRef = useRef<HTMLDivElement>(null);
   const nodeRefs = useRef<Record<number, HTMLDivElement | null>>({});
 
-  const [isDesktop, setIsDesktop] = useState(true);
-  
-  useEffect(() => {
-    const checkIsDesktop = () => setIsDesktop(window.innerWidth >= 1024);
-    checkIsDesktop();
-    window.addEventListener('resize', checkIsDesktop);
-    return () => window.removeEventListener('resize', checkIsDesktop);
-  }, []);
-
   // Auto-select first node on mount to teach the interaction pattern
   useEffect(() => {
     if (timelineData.length > 0 && activeNodeId === null) {
@@ -78,7 +69,7 @@ export default function RadialOrbitalTimeline({
   // Auto-cycle through services every 5.5 seconds
   useEffect(() => {
     // Only auto-cycle if a node is currently selected
-    if (!isDesktop || activeNodeId === null) return;
+    if (activeNodeId === null) return;
 
     const cycleTimer = setInterval(() => {
       const currentIndex = timelineData.findIndex(item => item.id === activeNodeId);
@@ -92,10 +83,10 @@ export default function RadialOrbitalTimeline({
     }, 5500);
 
     return () => clearInterval(cycleTimer);
-  }, [activeNodeId, timelineData, isDesktop]);
+  }, [activeNodeId, timelineData]);
 
   useEffect(() => {
-    if (!isDesktop || !autoRotate) return;
+    if (!autoRotate) return;
 
     let animationFrameId: number;
     let lastTime = performance.now();
@@ -116,7 +107,7 @@ export default function RadialOrbitalTimeline({
     return () => {
       cancelAnimationFrame(animationFrameId);
     };
-  }, [autoRotate, isDesktop]);
+  }, [autoRotate]);
 
   const centerViewOnNode = (nodeId: number) => {
     const nodeIndex = timelineData.findIndex((item) => item.id === nodeId);
@@ -192,33 +183,142 @@ export default function RadialOrbitalTimeline({
     >
       <div className="relative w-full max-w-6xl mx-auto flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-12 px-6">
 
-        {/* ── Mobile: Distilled Linear Flow ──────────── */}
-        <div className="w-[calc(100%+3rem)] -mx-6 flex lg:hidden flex-col gap-4 px-6 py-8 border-t border-border/30 bg-transparent">
-          {timelineData.map((item) => {
-            const Icon = item.icon;
-            return (
-              <div key={item.id} className="flex gap-4 p-5 rounded-2xl bg-surface border border-border/50 shadow-sm relative overflow-hidden">
-                {/* Subtle highlight in the corner */}
-                <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-bl-full -z-10" />
-                
-                <div className="mt-1 flex-shrink-0 w-12 h-12 rounded-full bg-background border border-border/60 flex items-center justify-center text-primary shadow-inner">
-                  <Icon size={20} />
-                </div>
-                
-                <div className="flex flex-col">
-                  <div className="text-[10px] font-bold uppercase tracking-[0.25em] text-primary mb-1.5">
-                    {item.category}
+        {/* ── Mobile: Precision Vault Dial ──────────── */}
+        <div className="w-[calc(100%+3rem)] -mx-6 flex lg:hidden relative h-[540px] flex-col overflow-hidden bg-transparent border-t border-border/30">
+          {/* Top 60%: Content Area */}
+          <div className="absolute top-0 left-0 w-full h-[55%] px-6 pt-10 z-20 flex flex-col pointer-events-none text-left">
+            <AnimatePresence mode="wait" custom={direction}>
+              {activeItem ? (
+                <motion.div
+                  key={activeItem.id}
+                  custom={direction}
+                  variants={textVariants}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                  transition={{ duration: 0.4, ease: "easeOut" }}
+                  className="flex flex-col"
+                >
+                  <div className="text-[10px] font-bold uppercase tracking-[0.25em] text-primary mb-3">
+                    {activeItem.category}
                   </div>
-                  <h3 className="text-xl font-bold text-text-primary tracking-tight mb-2 leading-tight" style={{ fontFamily: 'var(--font-display)' }}>
-                    {item.title}
+                  <h3
+                    className="text-3xl font-extrabold text-text-primary tracking-tight leading-[1.1] mb-3"
+                    style={{ fontFamily: 'var(--font-display)' }}
+                  >
+                    {activeItem.title}
                   </h3>
-                  <p className="text-sm text-text-secondary leading-relaxed">
-                    {item.content}
+                  <p className="text-sm sm:text-base text-text-secondary leading-relaxed line-clamp-4 pr-4">
+                    {activeItem.content}
                   </p>
+                </motion.div>
+              ) : (
+                <div className="text-text-secondary/50 text-sm font-medium mt-auto mb-auto text-center">
+                  Rotate dial to select
                 </div>
+              )}
+            </AnimatePresence>
+          </div>
+
+          {/* Bottom: The Vault Dial */}
+          <div className="absolute -bottom-[260px] left-1/2 -translate-x-1/2 w-[560px] h-[560px] pointer-events-auto z-30">
+            <motion.div 
+              className="relative w-full h-full rounded-full flex items-center justify-center origin-center cursor-grab active:cursor-grabbing"
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={0.05}
+              onDrag={(event, info) => {
+                setAutoRotate(false);
+                if (animationRef.current) animationRef.current.stop();
+                setRotationAngle(prev => prev + info.delta.x * 0.35);
+              }}
+              onDragEnd={(event, info) => {
+                const current = rotationAngleRef.current;
+                const total = timelineData.length;
+                const segment = 360 / total;
+                let currentTarget = (270 - current) % 360;
+                if (currentTarget < 0) currentTarget += 360;
+                
+                // Add momentum
+                const velocity = info.velocity.x;
+                let snapIndexOffset = Math.round(-velocity / 800); 
+                
+                const nearestIndex = (Math.round(currentTarget / segment) + snapIndexOffset) % total;
+                const normalizedIndex = nearestIndex < 0 ? nearestIndex + total : nearestIndex;
+                const targetId = timelineData[normalizedIndex].id;
+                
+                setActiveNodeId(targetId);
+                centerViewOnNode(targetId);
+                
+                // Restart auto rotate
+                setTimeout(() => setAutoRotate(true), 6000);
+              }}
+            >
+              {/* Dial Background styling */}
+              <div className="absolute inset-[20px] rounded-full border-t border-l border-border/80 bg-surface/95 shadow-[inset_0_2px_20px_rgba(255,255,255,0.03),0_-10px_40px_rgba(0,0,0,0.2)]"></div>
+              <div className="absolute inset-[40px] rounded-full border border-border/40 border-dashed opacity-60"></div>
+              
+              {/* Nodes */}
+              {timelineData.map((item, index) => {
+                const position = calculateNodePosition(index, timelineData.length, 280); 
+                const isActive = activeNodeId === item.id;
+                const Icon = item.icon;
+
+                const nodeStyle = {
+                  transform: `translate(${position.x}px, ${position.y}px)`,
+                  zIndex: isActive ? 200 : position.zIndex,
+                };
+
+                // Mobile fade out logic (hide nodes that are too far down the dial)
+                // Smooth JS interpolation instead of CSS transitions to prevent lag
+                let mobileOpacity = Math.max(0.1, position.opacity);
+                const fadeStart = 30;
+                const fadeEnd = 80;
+                if (position.y > fadeStart) {
+                  const fadeFactor = 1 - Math.min(1, (position.y - fadeStart) / (fadeEnd - fadeStart));
+                  mobileOpacity *= fadeFactor;
+                }
+
+                return (
+                  <div
+                    key={item.id}
+                    className="absolute"
+                    style={{
+                      ...nodeStyle,
+                      opacity: isActive ? 1 : mobileOpacity,
+                      pointerEvents: mobileOpacity === 0 ? 'none' : 'auto'
+                    }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      selectNode(item.id);
+                    }}
+                    onPointerDownCapture={(e) => e.stopPropagation()}
+                  >
+                    <div
+                      className={`
+                      w-14 h-14 rounded-full flex items-center justify-center
+                      ${isActive
+                        ? 'bg-primary text-white border-primary shadow-[0_0_25px_var(--primary-opacity-30)]'
+                        : 'bg-surface text-text-primary border-border hover:border-primary/50'
+                      }
+                      border transition-all duration-300
+                      ${isActive ? 'scale-110' : 'scale-90'}
+                    `}
+                    >
+                      <Icon size={isActive ? 24 : 20} />
+                    </div>
+                  </div>
+                );
+              })}
+            </motion.div>
+
+            {/* Center mechanical hub */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[160px] h-[160px] rounded-full border border-border/50 bg-background flex items-center justify-center pointer-events-none shadow-[0_0_50px_rgba(0,0,0,0.1),inset_0_0_30px_rgba(0,0,0,0.05)]">
+              <div className="w-[100px] h-[100px] rounded-full border border-border/30 flex items-center justify-center bg-surface/50">
+                 <Image src={logo} alt="Scalular" width={48} height={48} className="rounded-full opacity-60 grayscale" loading="lazy" />
               </div>
-            );
-          })}
+            </div>
+          </div>
         </div>
 
         {/* ── Desktop: Orbital wheel — left side ──────────────── */}
@@ -253,10 +353,7 @@ export default function RadialOrbitalTimeline({
                   key={item.id}
                   ref={(el) => { nodeRefs.current[item.id] = el; }}
                   className="absolute cursor-pointer"
-                  style={{
-                    ...nodeStyle,
-                    transition: 'opacity 0.3s ease',
-                  }}
+                  style={nodeStyle}
                   onClick={(e) => {
                     e.stopPropagation();
                     selectNode(item.id);

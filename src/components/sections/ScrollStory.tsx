@@ -5,7 +5,7 @@ import { motion, AnimatePresence, Variants, Easing } from 'framer-motion';
 import { GlobeCdn } from '../ui/cobe-globe-cdn';
 import { GetStartedButton } from '../ui/get-started-button';
 import Image from 'next/image';
-import { MapPin, Award, FileText } from 'lucide-react';
+import { MapPin, Award, FileText, Lock } from 'lucide-react';
 import { FACTORY_MAP, FACTORY_IDS } from '@/data/factories';
 
 /* ─── Factory data (derived from shared source of truth) ─── */
@@ -208,7 +208,7 @@ export function ScrollStory() {
           variants={textVariants}
           initial="hidden"
           animate="visible"
-          className="flex flex-col items-center mt-3 mb-1 md:mt-12 md:mb-4"
+          className="flex flex-col items-center mt-6 md:mt-16 mb-4 w-full md:max-w-[640px] mx-auto md:bg-white md:rounded-[40px] md:p-12 md:shadow-[0_40px_80px_-20px_rgba(23,27,46,0.12)] relative"
         >
           <GetStartedButton
             label="Get Your Instant Quote"
@@ -216,19 +216,32 @@ export function ScrollStory() {
             href="https://app.scalular.com/quote"
             target="_blank"
             withLamp={false}
+            baseColor="#5580DE"
+            className="w-full sm:w-auto md:min-w-[320px]"
           />
-          {/* Techpack hint — hidden on mobile to save viewport space (Task 3) */}
-          <motion.div 
-            initial={{ opacity: 0, y: 5 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.2, duration: 0.8 }}
-            className="hidden md:flex mt-4 items-center gap-2 text-text-secondary/80 bg-surface/50 border border-border/50 px-4 py-2 rounded-full shadow-sm backdrop-blur-sm"
-          >
-            <FileText className="w-3.5 h-3.5 text-primary" />
-            <span className="text-[11px] font-medium tracking-wide">
-              Just upload your techpack PDF to get an instant quote.
-            </span>
-          </motion.div>
+
+          {/* Techpack hint & Lock line container */}
+          <div className="hidden md:flex flex-col items-center gap-6 mt-12 w-full pt-10 border-t-2 border-neutral-100">
+            <motion.div 
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1.2, duration: 0.8 }}
+              className="flex items-center gap-5"
+            >
+              <div className="flex items-center justify-center w-12 h-12 rounded-2xl bg-[#5580DE]/10 text-[#5580DE] shrink-0 shadow-inner">
+                <FileText className="w-6 h-6" strokeWidth={2.5} />
+              </div>
+              <span className="text-base font-black tracking-tight text-primary">
+                Just upload your techpack PDF to get an instant quote.
+              </span>
+            </motion.div>
+
+            {/* Secure line under the PDF line */}
+            <div className="flex items-center gap-2.5 text-text-secondary/60">
+              <Lock className="w-4 h-4" strokeWidth={2.5} />
+              <span className="text-[11px] font-bold tracking-[0.25em] uppercase">All uploads are secure and confidential.</span>
+            </div>
+          </div>
         </motion.div>
       </div>
 

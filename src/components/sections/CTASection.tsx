@@ -59,6 +59,7 @@ export function CTASection() {
               size="lg"
               href="https://app.scalular.com/quote"
               target="_blank"
+              baseColor="#5580DE"
             />
 
             <a

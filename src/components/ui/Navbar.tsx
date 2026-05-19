@@ -2,11 +2,10 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
-import { FileText, Menu, X } from 'lucide-react';
+import { FileText, Menu, X, User } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import logoIcon from '@/assets/logo-icon.png';
-import { GetStartedButton } from './get-started-button';
 
 const NAV_LINKS = [
   { label: 'Network',    href: '/#regions' },
@@ -76,18 +75,20 @@ export function Navbar() {
         <div className="flex items-center gap-3">
           <Link
             href="https://app.scalular.com/login"
-            className="hidden md:inline-flex text-sm font-medium text-primary-foreground/70 hover:text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground/50 focus-visible:ring-offset-2 focus-visible:ring-offset-primary transition-colors duration-200 rounded-sm px-1"
+            className="relative w-10 h-10 md:w-auto md:h-auto rounded-full md:rounded-none flex md:inline-flex items-center justify-center border border-primary-foreground/10 md:border-none bg-primary-foreground/5 md:bg-transparent hover:bg-primary-foreground/10 md:hover:bg-transparent text-primary-foreground/70 hover:text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground/50 transition-colors text-sm font-medium px-1"
+            aria-label="Sign In"
           >
-            Sign In
+            <span className="hidden md:inline">Sign In</span>
+            <User className="w-4 h-4 md:hidden" />
           </Link>
-          <div className="hidden sm:block translate-y-[2px]">
-            <GetStartedButton
-              label="Get Quote"
-              href="https://app.scalular.com/quote"
-              target="_blank"
-              size="sm"
-            />
-          </div>
+          <Link
+            href="https://app.scalular.com/quote"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hidden sm:inline-flex items-center justify-center bg-primary-foreground text-primary hover:bg-primary-foreground/90 font-semibold text-xs tracking-wider uppercase px-4 py-2 rounded-full transition-all duration-200 shadow-sm hover:shadow-md border border-primary-foreground/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground/50 focus-visible:ring-offset-2 focus-visible:ring-offset-primary active:scale-[0.98]"
+          >
+            Get Quote
+          </Link>
           <Link
             href="https://app.scalular.com/quote"
             target="_blank"
@@ -134,18 +135,20 @@ export function Navbar() {
             ))}
             <Link
               href="https://app.scalular.com/login"
-              className="text-base font-medium text-primary-foreground/70 hover:text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground/50 transition-colors py-1 rounded-sm"
+              className="text-base font-medium text-primary-foreground/70 hover:text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground/50 transition-colors py-1 rounded-sm flex items-center gap-2"
               onClick={() => setMobileOpen(false)}
             >
+              <User className="w-4 h-4" />
               Sign In
             </Link>
             <Link
               href="https://app.scalular.com/quote"
               target="_blank"
-              className="text-base font-bold text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground/50 py-1 rounded-sm"
+              rel="noopener noreferrer"
+              className="text-center text-sm font-semibold text-primary bg-primary-foreground hover:bg-primary-foreground/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground/50 py-2.5 px-4 rounded-full transition-all mt-2 active:scale-[0.98]"
               onClick={() => setMobileOpen(false)}
             >
-              Get a Quote →
+              Get Quote
             </Link>
           </motion.div>
         )}

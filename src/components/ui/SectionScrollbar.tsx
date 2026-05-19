@@ -17,6 +17,29 @@ export function SectionScrollbar() {
   const [visible, setVisible] = useState(false);
   const hideTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const [activeChangeId, setActiveChangeId] = useState<string | null>(null);
+  const activeChangeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Track changes to activeId to trigger name card micro-animation
+  useEffect(() => {
+    if (!activeId) return;
+
+    setActiveChangeId(activeId);
+
+    if (activeChangeTimerRef.current) {
+      clearTimeout(activeChangeTimerRef.current);
+    }
+
+    activeChangeTimerRef.current = setTimeout(() => {
+      setActiveChangeId(null);
+    }, 1000);
+
+    return () => {
+      if (activeChangeTimerRef.current) {
+        clearTimeout(activeChangeTimerRef.current);
+      }
+    };
+  }, [activeId]);
 
   // Show on scroll, auto-hide after inactivity
   const showAndScheduleHide = useCallback(() => {
@@ -91,6 +114,24 @@ export function SectionScrollbar() {
       >
         {SECTIONS.map(({ id, label }) => {
           const isActive = activeId === id;
+          const isHovered = hoveredId === id;
+          const isSectionChange = activeChangeId === id;
+
+          const animateProps = isHovered
+            ? { opacity: 1, filter: 'blur(0px)', x: 0 }
+            : {
+                opacity: [0, 1, 1, 0],
+                filter: ['blur(4px)', 'blur(0px)', 'blur(0px)', 'blur(4px)'],
+                x: [6, 0, 0, 6],
+              };
+
+          const transitionProps = isHovered
+            ? { duration: 0.2, ease: 'easeOut' as const }
+            : {
+                times: [0, 0.25, 0.75, 1], // blur in (250ms), hold (500ms), blur out (250ms)
+                duration: 1.0,
+                ease: 'easeInOut' as const,
+              };
 
           return (
             <button
@@ -102,15 +143,15 @@ export function SectionScrollbar() {
               aria-label={`Scroll to ${label}`}
               aria-current={isActive ? 'true' : undefined}
             >
-              {/* Tooltip label — desktop only */}
+              {/* Tooltip label */}
               <AnimatePresence>
-                {hoveredId === id && (
+                {(isHovered || isSectionChange) && (
                   <motion.span
-                    initial={{ opacity: 0, x: 6 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: 6 }}
-                    transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
-                    className="hidden md:block text-[9px] font-bold uppercase tracking-[0.2em] text-text-primary bg-surface/90 border border-border/60 px-2.5 py-1 rounded-md shadow-sm whitespace-nowrap pointer-events-none"
+                    initial={{ opacity: 0, filter: 'blur(4px)', x: 6 }}
+                    animate={animateProps}
+                    exit={{ opacity: 0, filter: 'blur(4px)', x: 6 }}
+                    transition={transitionProps}
+                    className="block text-[9px] font-bold uppercase tracking-[0.2em] text-text-primary bg-surface/90 border border-border/60 px-2.5 py-1 rounded-md shadow-sm whitespace-nowrap pointer-events-none"
                   >
                     {label}
                   </motion.span>

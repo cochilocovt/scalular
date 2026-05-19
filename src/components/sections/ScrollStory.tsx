@@ -154,17 +154,17 @@ export function ScrollStory() {
   }, [titleNumber, rotatingPhrases.length]);
 
   return (
-    <div id="regions" className="relative w-full bg-background min-h-screen pt-20 md:pt-20 pb-6 md:pb-16 flex flex-col items-center overflow-hidden">
+    <div id="regions" className="relative w-full bg-background pt-24 md:pt-32 pb-8 md:pb-12 flex flex-col justify-center items-center overflow-hidden">
 
       {/* ── Hero text (Centered) ── */}
-      <div className="w-full max-w-4xl mx-auto px-6 text-center z-20 flex flex-col items-center relative mb-2 md:mb-16">
+      <div className="w-full max-w-4xl mx-auto px-6 text-center z-20 flex flex-col items-center relative mb-2 md:mb-8">
 
         <motion.h1
           custom={0.25}
           variants={textVariants}
           initial="hidden"
           animate="visible"
-          className="text-2xl sm:text-4xl md:text-6xl lg:text-7xl font-bold text-text-primary leading-[1.05] tracking-tighter mb-2 md:mb-6 max-w-3xl"
+          className="text-2xl sm:text-4xl md:text-6xl lg:text-7xl font-bold text-text-primary leading-[1.05] tracking-tighter mb-2 md:mb-4 max-w-3xl"
           style={{ fontFamily: 'var(--font-display)' }}
         >
           Direct Access to <br />
@@ -197,7 +197,7 @@ export function ScrollStory() {
           variants={textVariants}
           initial="hidden"
           animate="visible"
-          className="text-sm md:text-lg text-text-secondary leading-relaxed max-w-xl mx-auto mb-2 md:mb-10"
+          className="text-sm md:text-lg text-text-secondary leading-relaxed max-w-xl mx-auto mb-2 md:mb-6"
         >
           Streamline your production lifecycle with instant quoting, end-to-end
           order tracking, and pre-vetted manufacturing partners across 6 global sourcing hubs.
@@ -208,7 +208,7 @@ export function ScrollStory() {
           variants={textVariants}
           initial="hidden"
           animate="visible"
-          className="flex flex-col items-center mt-6 md:mt-16 mb-4 w-full md:max-w-[640px] mx-auto md:bg-white md:rounded-[40px] md:p-12 md:shadow-[0_40px_80px_-20px_rgba(23,27,46,0.12)] relative"
+          className="flex flex-col items-center mt-2 mb-1 md:mt-6 md:mb-2 w-full md:max-w-2xl mx-auto md:bg-transparent md:backdrop-blur-3xl md:rounded-[24px] md:p-6 md:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)]"
         >
           <GetStartedButton
             label="Get Your Instant Quote"
@@ -216,31 +216,34 @@ export function ScrollStory() {
             href="https://app.scalular.com/quote"
             target="_blank"
             withLamp={false}
-            baseColor="#5580DE"
-            className="w-full sm:w-auto md:min-w-[320px]"
+            baseColor="#043377"
           />
 
-          {/* Techpack hint & Lock line container */}
-          <div className="hidden md:flex flex-col items-center gap-6 mt-12 w-full pt-10 border-t-2 border-neutral-100">
+          {/* Text hint container */}
+          <div className="hidden md:flex flex-col items-center gap-2 mt-4">
             <motion.div 
-              initial={{ opacity: 0, y: 10 }}
+              initial={{ opacity: 0, y: 5 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1.2, duration: 0.8 }}
-              className="flex items-center gap-5"
+              className="flex items-center gap-2 text-text-secondary"
             >
-              <div className="flex items-center justify-center w-12 h-12 rounded-2xl bg-[#5580DE]/10 text-[#5580DE] shrink-0 shadow-inner">
-                <FileText className="w-6 h-6" strokeWidth={2.5} />
-              </div>
-              <span className="text-base font-black tracking-tight text-primary">
+              <FileText className="w-4 h-4 text-[#5580DE]" />
+              <span className="text-[12px] font-medium tracking-wide">
                 Just upload your techpack PDF to get an instant quote.
               </span>
             </motion.div>
 
-            {/* Secure line under the PDF line */}
-            <div className="flex items-center gap-2.5 text-text-secondary/60">
-              <Lock className="w-4 h-4" strokeWidth={2.5} />
-              <span className="text-[11px] font-bold tracking-[0.25em] uppercase">All uploads are secure and confidential.</span>
-            </div>
+            <motion.div 
+              initial={{ opacity: 0, y: 5 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1.3, duration: 0.8 }}
+              className="flex items-center gap-2 text-text-secondary"
+            >
+              <Lock className="w-4 h-4 text-[#5580DE]" />
+              <span className="text-[12px] font-medium tracking-wide">
+                All uploads are secure and confidential.
+              </span>
+            </motion.div>
           </div>
         </motion.div>
       </div>

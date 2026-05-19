@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { ProductShowcase } from './ProductShowcase';
 import { TrustShowcase } from './TrustShowcase';
+import { SpecialText } from '@/components/ui/special-text';
 
 export function ShowcaseSection() {
   return (
@@ -28,46 +29,33 @@ export function ShowcaseSection() {
             style={{ perspective: "1000px" }}
           >
             <div className="overflow-hidden pb-2 w-full flex justify-center">
-              <motion.span 
-                variants={{
-                  hidden: { y: "100%", scale: 0.9, opacity: 0, rotateX: -30, filter: 'blur(5px)' },
-                  visible: { 
-                    y: "0%", scale: 1, opacity: 1, rotateX: 0, filter: 'blur(0px)', 
-                    transition: { type: "spring", stiffness: 90, damping: 15, mass: 1 } 
-                  }
-                }}
-                className="block text-xl sm:text-2xl md:text-3xl font-serif italic text-text-primary/70 drop-shadow-sm mb-2"
+              <SpecialText 
+                className="block text-3xl sm:text-4xl md:text-[4rem] lg:text-[4.5rem] font-black tracking-tighter text-text-primary/70 drop-shadow-sm mb-2"
+                style={{ fontFamily: 'var(--font-display)' }}
+                inView={true}
               >
                 Skip negotiation.
-              </motion.span>
+              </SpecialText>
             </div>
             <div className="overflow-hidden pb-4 w-full flex justify-center">
-              <motion.span 
-                variants={{
-                  hidden: { y: "120%", scale: 0.8, opacity: 0, rotateX: -40, filter: 'blur(12px)' },
-                  visible: { 
-                    y: "0%", scale: 1, opacity: 1, rotateX: 0, filter: 'blur(0px)', 
-                    transition: { type: "spring", stiffness: 110, damping: 12, mass: 1.1 } 
-                  }
-                }}
-                className="block text-5xl sm:text-6xl md:text-[5.5rem] lg:text-[6.5rem] font-black tracking-tighter leading-[0.9] text-gradient drop-shadow-md"
+              <SpecialText 
+                className="block text-4xl sm:text-5xl md:text-[4.5rem] lg:text-[5rem] font-black tracking-tighter leading-[0.9] text-text-primary drop-shadow-md"
                 style={{ fontFamily: 'var(--font-display)' }}
+                inView={true}
+                delay={1.5}
               >
                 Start production.
-              </motion.span>
+              </SpecialText>
             </div>
           </motion.h2>
         </div>
 
-        {/* Divider */}
-        <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent mb-12" />
+      </div>
 
-        {/* Unified Trust Showcase */}
-        <TrustShowcase />
+      {/* Unified Trust Showcase */}
+      <TrustShowcase />
 
-        {/* Divider */}
-        <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent my-12" />
-
+      <div className="max-w-[1400px] mx-auto px-6 md:px-12">
         {/* Product Showcase */}
         <ProductShowcase />
       </div>

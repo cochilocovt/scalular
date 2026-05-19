@@ -36,7 +36,7 @@ export function FAQAccordion({ items, darkMode = false }: FAQAccordionProps) {
             <span className={`font-bold text-sm md:text-base leading-snug ${darkMode ? 'text-white' : 'text-text-primary'}`}>
               {item.question}
             </span>
-            <span className={`shrink-0 w-7 h-7 rounded-full flex items-center justify-center ${darkMode ? 'bg-[#0EA5E9]/10 text-[#0EA5E9]' : 'bg-primary/10 text-primary'}`}>
+            <span className={`shrink-0 w-7 h-7 rounded-full flex items-center justify-center ${darkMode ? 'bg-[#043377]/10 text-[#043377]' : 'bg-primary/10 text-primary'}`}>
               {open === i ? <Minus className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
             </span>
           </button>

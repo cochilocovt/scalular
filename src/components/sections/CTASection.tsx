@@ -59,18 +59,17 @@ export function CTASection() {
               size="lg"
               href="https://app.scalular.com/quote"
               target="_blank"
-              baseColor="#5580DE"
+              baseColor="#043377"
             />
 
-            <a
+            <GetStartedButton
+              label="Book a Strategy Call & Demo"
+              size="lg"
               href="https://calendly.com/scalular"
               target="_blank"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-border bg-surface hover:bg-surface-hover text-text-primary text-sm font-semibold transition-colors group"
-            >
-              <Calendar className="w-4 h-4 text-primary" />
-              Book a Strategy Call & Demo
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </a>
+              baseColor="#475569"
+              icon={<Calendar className="w-4 h-4 md:w-[18px] md:h-[18px] text-white opacity-80" strokeWidth={2.5} />}
+            />
           </div>
 
           {/* Trust badges — FULL OPACITY, not faded */}

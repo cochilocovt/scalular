@@ -118,7 +118,6 @@ export const GARMENT_CATALOG: GarmentEntry[] = [
   { id: 'pants',        name: 'Pants',           url: '/models/pants.glb',                   description: 'Tailored trousers — slim & relaxed fits',          category: 'Bottoms' },
   { id: 'shorts',       name: 'Shorts',          url: '/models/man_shorts.glb',              description: 'Casual & performance shorts',                     category: 'Bottoms' },
   { id: 'dress',        name: 'Dress',           url: '/models/dress.glb',                   description: 'A-line & shift dresses in woven & knit',          category: 'Dresses' },
-  { id: 'skirt',        name: 'Skirt',           url: '/models/pleated_skirt.glb',           description: 'A-line, pencil & pleated skirt styles',           category: 'Bottoms' },
   { id: 'boxers',       name: 'Boxers',          url: '/models/white_boxer.glb',             description: 'Woven boxer shorts in cotton poplin',             category: 'Underwear' },
   { id: 'boxer-briefs', name: 'Boxer Briefs',    url: '/models/free_mens_boxer_briefs__low_poly_3d_model.glb', description: 'Stretch boxer briefs with waistband',             category: 'Underwear' },
   { id: 'joggers',      name: 'Joggers',         url: '/models/dillard_darren_joggers.glb',  description: 'Tapered joggers with elasticated cuffs',          category: 'Bottoms' },

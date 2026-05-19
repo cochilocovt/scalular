@@ -11,13 +11,13 @@ import { GetStartedButton } from '@/components/ui/get-started-button';
 const VALUES = [
   {
     icon: MapPin,
-    color: '#0EA5E9',
+    color: '#043377',
     title: 'On-Ground Support and Traceability',
     description: 'Our on-ground team actively manages production, resolving issues in real time while ensuring complete traceability from raw material sourcing to packaging.',
   },
   {
     icon: CreditCard,
-    color: '#38BDF8',
+    color: '#727cb1',
     title: 'Factoring & Payment Solutions',
     description: 'Flexible payment support backed by factoring services, helping buyers manage cash flow while ensuring factories are paid smoothly and on time.',
   },
@@ -38,13 +38,13 @@ const VALUES = [
 const SUSTAINABILITY = [
   {
     icon: Leaf,
-    color: '#0EA5E9',
+    color: '#043377',
     title: 'Sustainable Sourcing Practices',
     description: 'Scalular partners with factories that prioritize eco-friendly and sustainable manufacturing. Our apparel sourcing approach reduces environmental impact by supporting facilities that use energy-efficient processes and sustainable materials.',
   },
   {
     icon: ShieldCheck,
-    color: '#38BDF8',
+    color: '#727cb1',
     title: 'Ethical Standards in Apparel',
     description: 'We ensure all our partner factories follow labor-friendly practices, promoting fair wages, safe working conditions, and ethical garment sourcing. Our commitment helps brands align with global ethical standards.',
   },
@@ -81,29 +81,17 @@ export default function AboutPage() {
   const heroOpacity = useTransform(scrollYProgress, [0, 0.1], [1, 0]);
   const heroScale = useTransform(scrollYProgress, [0, 0.1], [1, 0.9]);
 
-  // The dark mode background fades in to completely consume the light theme
-  const darkBgOpacity = useTransform(scrollYProgress, [0.05, 0.15], [0, 1]);
+
 
   // Image scales from a constrained card to full-bleed cinematic width
   const imageScale = useTransform(scrollYProgress, [0.05, 0.2], [0.9, 1.1]);
   const imageRadius = useTransform(scrollYProgress, [0.05, 0.2], ['24px', '0px']);
 
   return (
-    <main id="main-content" className="flex flex-col min-h-screen relative selection:bg-[#0EA5E9]/30 selection:text-[#0EA5E9]">
+    <main id="main-content" className="flex flex-col min-h-screen relative selection:bg-[#043377]/30 selection:text-[#043377]">
 
-      {/* ── Fixed Dark Background Layer (Fades in on scroll) ── */}
-      <motion.div
-        className="fixed inset-0 bg-[#0A0F1C] z-[-1] pointer-events-none"
-        style={{ opacity: darkBgOpacity }}
-      >
-        {/* Subtle Frosted Noise Texture (Option B) */}
-        <div
-          className="absolute inset-0 opacity-[0.015] mix-blend-overlay pointer-events-none"
-          style={{ backgroundImage: "url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MDAiIGhlaWdodD0iNDAwIj4KICA8ZmlsdGVyIGlkPSJuIj4KICAgIDxmZVR1cmJ1bGVuY2UgdHlwZT0iZnJhY3RhbE5vaXNlIiBiYXNlRnJlcXVlbmN5PSIwLjgiIG51bU9jdGF2ZXM9IjMiIHN0aXRjaFRpbGVzPSJzdGl0Y2giLz4KICA8L2ZpbHRlcj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZmZmIiBmaWx0ZXI9InVybCgjbikiLz4KPC9zdmc+')", backgroundRepeat: "repeat" }}
-        />
-      </motion.div>
-      {/* ── Fixed Light Background Layer ── */}
-      <div className="fixed inset-0 bg-[#F4F7FC] z-[-2] pointer-events-none" />
+      {/* ── Fixed Background Layer (matching homepage bg-background) ── */}
+      <div className="fixed inset-0 bg-background z-[-2] pointer-events-none" />
 
       {/* ── Hero (Light Mode) ─────────────────────────────────────────────── */}
       <motion.section
@@ -119,7 +107,7 @@ export default function AboutPage() {
             className="text-3xl sm:text-5xl md:text-8xl lg:text-[7rem] font-black text-[#0F172A] leading-[0.95] tracking-tighter mb-8"
           >
             Where Global Apparel<br />
-            Meets <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#171B2E] to-[#0EA5E9]">Agile Execution.</span>
+            Meets <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#171B2E] to-[#043377]">Agile Execution.</span>
           </motion.h1>
 
           <motion.div
@@ -152,7 +140,7 @@ export default function AboutPage() {
       </section>
 
       {/* ── Dark Mode Sections ──────────────────────────────────────────── */}
-      <div className="relative z-20 text-white pb-32 pt-20">
+      <div className="relative z-20 text-slate-900 pb-32 pt-20">
 
         {/* ── Mission & Stats ──────────────────────────────────────────── */}
         <section className="py-12 md:py-24 px-6 md:px-12">
@@ -163,13 +151,13 @@ export default function AboutPage() {
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.8, ease: "easeOut" }}
             >
-              <div className="text-[11px] font-black tracking-[0.4em] uppercase text-[#0EA5E9] mb-6 flex items-center gap-3">
-                <span className="w-8 h-[2px] bg-[#0EA5E9]"></span> Our Mission & Vision
+              <div className="text-[11px] font-black tracking-[0.4em] uppercase text-[#043377] mb-6 flex items-center gap-3">
+                <span className="w-8 h-[2px] bg-[#043377]"></span> Our Mission & Vision
               </div>
-              <h2 className="text-3xl sm:text-4xl md:text-6xl font-black text-white tracking-tighter leading-[1.05] mb-8">
-                Making Global Manufacturing <span className="text-[#0EA5E9]">Seamless.</span>
+              <h2 className="text-3xl sm:text-4xl md:text-6xl font-black text-slate-900 tracking-tighter leading-[1.05] mb-8">
+                Making Global Manufacturing <span className="text-[#043377]">Seamless.</span>
               </h2>
-              <div className="space-y-6 text-white/70 text-lg md:text-xl leading-relaxed font-light">
+              <div className="space-y-6 text-slate-600 text-lg md:text-xl leading-relaxed font-light">
                 <div>
                   Scalular is built to bridge the gap between buyers and factories through faster sourcing, transparent pricing, and agile execution.
                 </div>
@@ -192,14 +180,14 @@ export default function AboutPage() {
                   initial="hidden"
                   whileInView="show"
                   viewport={{ once: true, margin: "-50px" }}
-                  whileHover={{ scale: 1.05, backgroundColor: 'rgba(255,255,255,0.08)' }}
-                  className="bg-white/[0.03] border border-white/[0.08] backdrop-blur-md rounded-3xl p-6 md:p-8 text-center transition-all duration-300"
+                  whileHover={{ scale: 1.05, backgroundColor: 'rgba(255,255,255,0.8)' }}
+                  className="bg-white/40 border border-slate-200/50 backdrop-blur-md rounded-3xl p-6 md:p-8 text-center transition-all duration-300"
                 >
-                  <Icon className="w-8 h-8 text-[#0EA5E9] mx-auto mb-4 opacity-80" />
-                  <div className="text-4xl md:text-5xl font-black text-white tracking-tighter">
+                  <Icon className="w-8 h-8 text-[#043377] mx-auto mb-4 opacity-80" />
+                  <div className="text-4xl md:text-5xl font-black text-slate-900 tracking-tighter">
                     <AnimatedCounter target={target} suffix={suffix} />
                   </div>
-                  <div className="text-xs font-bold text-white/50 uppercase tracking-widest mt-2">{label}</div>
+                  <div className="text-xs font-bold text-slate-500 uppercase tracking-widest mt-2">{label}</div>
                 </motion.div>
               ))}
             </div>
@@ -214,18 +202,18 @@ export default function AboutPage() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                className="text-[11px] font-black tracking-[0.4em] uppercase text-[#0EA5E9] mb-6 flex items-center gap-3"
+                className="text-[11px] font-black tracking-[0.4em] uppercase text-[#043377] mb-6 flex items-center gap-3"
               >
-                <span className="w-8 h-[2px] bg-[#0EA5E9]"></span> What Sets Us Apart
+                <span className="w-8 h-[2px] bg-[#043377]"></span> What Sets Us Apart
               </motion.div>
               <motion.h2
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.1 }}
-                className="text-3xl sm:text-5xl md:text-7xl font-black text-white tracking-tighter"
+                className="text-3xl sm:text-5xl md:text-7xl font-black text-slate-900 tracking-tighter"
               >
-                Why <span className="text-[#0EA5E9]">Choose Us?</span>
+                Why <span className="text-[#043377]">Choose Us?</span>
               </motion.h2>
             </div>
 
@@ -240,14 +228,14 @@ export default function AboutPage() {
                     initial="hidden"
                     whileInView="show"
                     viewport={{ once: true }}
-                    whileHover={{ y: -8, backgroundColor: 'rgba(255,255,255,0.06)' }}
-                    className="bg-white/[0.02] border border-white/[0.08] backdrop-blur-sm rounded-[2rem] p-8 md:p-10 transition-all duration-300 group"
+                    whileHover={{ y: -8, backgroundColor: 'rgba(255,255,255,0.8)' }}
+                    className="bg-white/40 border border-slate-200/50 backdrop-blur-sm rounded-[2rem] p-8 md:p-10 transition-all duration-300 group"
                   >
-                    <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-6 bg-white/5 border border-white/10 group-hover:scale-110 transition-transform duration-500 ease-out">
+                    <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-6 bg-white/80 border border-slate-200/60 shadow-sm group-hover:scale-110 transition-transform duration-500 ease-out">
                       <Icon className="w-7 h-7" style={{ color: v.color }} />
                     </div>
-                    <h3 className="text-2xl md:text-3xl font-black text-white mb-4 tracking-tight">{v.title}</h3>
-                    <div className="text-white/60 leading-relaxed text-base md:text-lg font-light">{v.description}</div>
+                    <h3 className="text-2xl md:text-3xl font-black text-slate-900 mb-4 tracking-tight">{v.title}</h3>
+                    <div className="text-slate-600 leading-relaxed text-base md:text-lg font-light">{v.description}</div>
                   </motion.div>
                 );
               })}
@@ -263,20 +251,20 @@ export default function AboutPage() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                className="inline-flex items-center gap-3 text-[11px] font-black tracking-[0.4em] uppercase text-[#0EA5E9] mb-6"
+                className="inline-flex items-center gap-3 text-[11px] font-black tracking-[0.4em] uppercase text-[#043377] mb-6"
               >
-                <span className="w-8 h-[2px] bg-[#0EA5E9]"></span>
+                <span className="w-8 h-[2px] bg-[#043377]"></span>
                 Sustainability
-                <span className="w-8 h-[2px] bg-[#0EA5E9]"></span>
+                <span className="w-8 h-[2px] bg-[#043377]"></span>
               </motion.div>
               <motion.h2
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.1 }}
-                className="text-5xl md:text-7xl font-black text-white tracking-tighter max-w-4xl mx-auto leading-[1.05]"
+                className="text-5xl md:text-7xl font-black text-slate-900 tracking-tighter max-w-4xl mx-auto leading-[1.05]"
               >
-                The Next Step in <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0EA5E9] to-[#38BDF8]">Sustainable Manufacturing</span>
+                The Next Step in <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#043377] to-[#727cb1]">Sustainable Manufacturing</span>
               </motion.h2>
             </div>
 
@@ -291,14 +279,14 @@ export default function AboutPage() {
                     initial="hidden"
                     whileInView="show"
                     viewport={{ once: true }}
-                    whileHover={{ y: -8, backgroundColor: 'rgba(255,255,255,0.06)' }}
-                    className="bg-white/[0.02] border border-white/[0.08] backdrop-blur-sm rounded-[2rem] p-8 transition-all duration-300 group"
+                    whileHover={{ y: -8, backgroundColor: 'rgba(255,255,255,0.8)' }}
+                    className="bg-white/40 border border-slate-200/50 backdrop-blur-sm rounded-[2rem] p-8 transition-all duration-300 group"
                   >
-                    <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-6 bg-white/5 border border-white/10 group-hover:rotate-12 transition-transform duration-500 ease-out">
+                    <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-6 bg-white/80 border border-slate-200/60 shadow-sm group-hover:rotate-12 transition-transform duration-500 ease-out">
                       <Icon className="w-7 h-7" style={{ color: s.color }} />
                     </div>
-                    <h3 className="text-2xl font-black text-white mb-4 tracking-tight">{s.title}</h3>
-                    <div className="text-white/60 leading-relaxed text-base font-light">{s.description}</div>
+                    <h3 className="text-2xl font-black text-slate-900 mb-4 tracking-tight">{s.title}</h3>
+                    <div className="text-slate-600 leading-relaxed text-base font-light">{s.description}</div>
                   </motion.div>
                 );
               })}
@@ -307,7 +295,7 @@ export default function AboutPage() {
         </section>
 
         {/* ── Supplier Network ──────────────────────────────────── */}
-        <section className="py-12 md:py-24 px-6 md:px-12 bg-white/[0.02] border-t border-b border-white/[0.05]">
+        <section className="py-12 md:py-24 px-6 md:px-12 bg-white/20 border-t border-b border-slate-200/50">
           <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
             <motion.div
               initial={{ opacity: 0, x: -30 }}
@@ -315,13 +303,13 @@ export default function AboutPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
             >
-              <div className="text-[11px] font-black tracking-[0.4em] uppercase text-[#0EA5E9] mb-6 flex items-center gap-3">
-                <span className="w-8 h-[2px] bg-[#0EA5E9]"></span> Robust Supplier Network
+              <div className="text-[11px] font-black tracking-[0.4em] uppercase text-[#043377] mb-6 flex items-center gap-3">
+                <span className="w-8 h-[2px] bg-[#043377]"></span> Robust Supplier Network
               </div>
-              <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter leading-[1.05] mb-8">
-                Powered by <br className="hidden md:block" /><span className="text-[#0EA5E9]">25+ Audited Manufacturing Partners.</span>
+              <h2 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tighter leading-[1.05] mb-8">
+                Powered by <br className="hidden md:block" /><span className="text-[#043377]">25+ Audited Manufacturing Partners.</span>
               </h2>
-              <div className="space-y-6 text-white/70 text-lg md:text-xl leading-relaxed font-light">
+              <div className="space-y-6 text-slate-600 text-lg md:text-xl leading-relaxed font-light">
                 <p>
                   Our network of trusted factories spans global sourcing hubs, specializing in apparel production across categories from knitwear to denim and beyond.
                 </p>
@@ -354,11 +342,11 @@ export default function AboutPage() {
                   initial="hidden"
                   whileInView="show"
                   viewport={{ once: true }}
-                  className="bg-white/5 border border-white/10 rounded-3xl p-6 text-center hover:bg-white/10 transition-colors"
+                  className="bg-white/40 border border-slate-200/50 rounded-3xl p-6 text-center hover:bg-white/60 transition-colors"
                 >
-                  <item.icon className="w-8 h-8 text-[#0EA5E9] mx-auto mb-4" />
-                  <div className="text-lg font-black text-white tracking-tight mb-1">{item.label}</div>
-                  <div className="text-sm text-white/50 font-light">{item.desc}</div>
+                  <item.icon className="w-8 h-8 text-[#043377] mx-auto mb-4" />
+                  <div className="text-lg font-black text-slate-900 tracking-tight mb-1">{item.label}</div>
+                  <div className="text-sm text-slate-500 font-light">{item.desc}</div>
                 </motion.div>
               ))}
             </motion.div>
@@ -372,9 +360,9 @@ export default function AboutPage() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="inline-flex items-center gap-3 text-[11px] font-black tracking-[0.4em] uppercase text-[#0EA5E9] mb-8"
+              className="inline-flex items-center gap-3 text-[11px] font-black tracking-[0.4em] uppercase text-[#043377] mb-8"
             >
-              <span className="w-8 h-[2px] bg-[#0EA5E9]"></span> Global Offices <span className="w-8 h-[2px] bg-[#0EA5E9]"></span>
+              <span className="w-8 h-[2px] bg-[#043377]"></span> Global Offices <span className="w-8 h-[2px] bg-[#043377]"></span>
             </motion.div>
 
             <div className="grid md:grid-cols-2 gap-12 text-left">
@@ -383,13 +371,13 @@ export default function AboutPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.1 }}
-                className="bg-white/[0.02] border border-white/[0.08] p-10 rounded-[2rem]"
+                className="bg-white/40 border border-slate-200/50 p-10 rounded-[2rem]"
               >
-                <Building2 className="w-8 h-8 text-[#0EA5E9] mb-6" />
-                <h3 className="text-3xl font-black text-white mb-2 tracking-tight">Sourcing Headquarters</h3>
-                <div className="text-xl text-white/80 mb-6 font-light">Tiruppur, India</div>
-                <div className="text-white/60 font-light mb-1">1/422 Green Avenue, Kozhippannai,</div>
-                <div className="text-white/60 font-light">Mangalam Road, Tiruppur – 641687</div>
+                <Building2 className="w-8 h-8 text-[#043377] mb-6" />
+                <h3 className="text-3xl font-black text-slate-900 mb-2 tracking-tight">Sourcing Headquarters</h3>
+                <div className="text-xl text-slate-700 mb-6 font-light">Tiruppur, India</div>
+                <div className="text-slate-600 font-light mb-1">1/422 Green Avenue, Kozhippannai,</div>
+                <div className="text-slate-600 font-light">Mangalam Road, Tiruppur – 641687</div>
               </motion.div>
 
               <motion.div
@@ -397,13 +385,13 @@ export default function AboutPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.2 }}
-                className="bg-white/[0.02] border border-white/[0.08] p-10 rounded-[2rem]"
+                className="bg-white/40 border border-slate-200/50 p-10 rounded-[2rem]"
               >
-                <Globe className="w-8 h-8 text-[#38BDF8] mb-6" />
-                <h3 className="text-3xl font-black text-white mb-2 tracking-tight">Corporate LLC</h3>
-                <div className="text-xl text-white/80 mb-6 font-light">Dubai, UAE</div>
-                <div className="text-white/60 font-light mb-1">Central Business District,</div>
-                <div className="text-white/60 font-light">contactus@scalular.com · +91 8920029744</div>
+                <Globe className="w-8 h-8 text-[#727cb1] mb-6" />
+                <h3 className="text-3xl font-black text-slate-900 mb-2 tracking-tight">Corporate LLC</h3>
+                <div className="text-xl text-slate-700 mb-6 font-light">Dubai, UAE</div>
+                <div className="text-slate-600 font-light mb-1">Central Business District,</div>
+                <div className="text-slate-600 font-light">contactus@scalular.com · +91 8920029744</div>
               </motion.div>
             </div>
           </div>
@@ -417,16 +405,16 @@ export default function AboutPage() {
               whileInView={{ opacity: 1, y: 0, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, ease: "easeOut" }}
-              className="text-3xl sm:text-5xl md:text-8xl font-black text-white tracking-tighter mb-6 leading-[0.95]"
+              className="text-3xl sm:text-5xl md:text-8xl font-black text-slate-900 tracking-tighter mb-6 leading-[0.95]"
             >
-              Ready to <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0EA5E9] to-[#38BDF8]">Partner?</span>
+              Ready to <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#043377] to-[#727cb1]">Partner?</span>
             </motion.h2>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1, duration: 0.8 }}
-              className="text-white/80 text-xl md:text-2xl mb-12 font-light max-w-2xl mx-auto"
+              className="text-slate-700 text-xl md:text-2xl mb-12 font-light max-w-2xl mx-auto"
             >
               Whether you're a brand looking to source smarter, or a factory wanting to reach more buyers — Scalular opens the door.
             </motion.div>
@@ -445,10 +433,10 @@ export default function AboutPage() {
               />
               <Link
                 href="/partner"
-                className="inline-flex items-center gap-3 text-white font-bold text-lg hover:text-[#0EA5E9] transition-colors group"
+                className="inline-flex items-center gap-3 text-slate-900 font-bold text-lg hover:text-[#043377] transition-colors group"
               >
                 Become a Factory Partner
-                <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-[#0EA5E9]/20 group-hover:translate-x-1 transition-all">
+                <div className="w-8 h-8 rounded-full bg-black/5 flex items-center justify-center group-hover:bg-[#043377]/20 group-hover:translate-x-1 transition-all">
                   <ArrowRight className="w-4 h-4" />
                 </div>
               </Link>

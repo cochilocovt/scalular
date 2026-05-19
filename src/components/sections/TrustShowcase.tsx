@@ -101,7 +101,7 @@ export function TrustShowcase() {
       </div>
 
       {/* Marquee Content */}
-      <div className="relative w-full max-w-[100vw] overflow-hidden -mx-6 px-6 md:-mx-12 md:px-12">
+      <div className="relative w-full overflow-hidden">
         {/* Fades for seamless marquee edges */}
         <div className="absolute left-0 top-0 bottom-0 w-16 md:w-32 z-10 pointer-events-none"
           style={{ background: 'linear-gradient(to right, var(--background), transparent)' }} />

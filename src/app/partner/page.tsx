@@ -12,7 +12,7 @@ import { AnimatedCounter } from '@/components/ui/AnimatedCounter';
 const BENEFITS = [
   {
     icon: Globe,
-    color: '#0EA5E9',
+    color: '#043377',
     title: 'Global Buyer Access',
     description: (
       <>
@@ -23,7 +23,7 @@ const BENEFITS = [
   },
   {
     icon: Package,
-    color: '#38BDF8',
+    color: '#727cb1',
     title: 'Consistent Volume Based Orders',
     description: (
       <>
@@ -96,7 +96,6 @@ const PROOF_STATS = [
 
 export default function PartnerPage() {
   const { scrollYProgress } = useScroll({ offset: ["start start", "end end"] });
-  const darkBgOpacity = useTransform(scrollYProgress, [0.08, 0.18], [0, 1]);
   const heroOpacity = useTransform(scrollYProgress, [0, 0.12], [1, 0]);
   const heroScale = useTransform(scrollYProgress, [0, 0.12], [1, 0.92]);
   const imageY = useTransform(scrollYProgress, [0, 0.2], [0, -80]);
@@ -109,19 +108,10 @@ export default function PartnerPage() {
   });
 
   return (
-    <main id="main-content" className="flex flex-col min-h-screen relative selection:bg-[#0EA5E9]/30 selection:text-[#0EA5E9]">
+    <main id="main-content" className="flex flex-col min-h-screen relative selection:bg-[#043377]/30 selection:text-[#043377]">
 
-      {/* ── Fixed Background Layers ── */}
-      <motion.div
-        className="fixed inset-0 bg-[#0A0F1C] z-[-1] pointer-events-none"
-        style={{ opacity: darkBgOpacity }}
-      >
-        <div
-          className="absolute inset-0 opacity-[0.015] mix-blend-overlay pointer-events-none"
-          style={{ backgroundImage: "url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MDAiIGhlaWdodD0iNDAwIj4KICA8ZmlsdGVyIGlkPSJuIj4KICAgIDxmZVR1cmJ1bGVuY2UgdHlwZT0iZnJhY3RhbE5vaXNlIiBiYXNlRnJlcXVlbmN5PSIwLjgiIG51bU9jdGF2ZXM9IjMiIHN0aXRjaFRpbGVzPSJzdGl0Y2giLz4KICA8L2ZpbHRlcj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZmZmIiBmaWx0ZXI9InVybCgjbikiLz4KPC9zdmc+')", backgroundRepeat: "repeat" }}
-        />
-      </motion.div>
-      <div className="fixed inset-0 bg-[#F4F7FC] z-[-2] pointer-events-none" />
+      {/* ── Fixed Background Layer (matching homepage bg-background) ── */}
+      <div className="fixed inset-0 bg-background z-[-2] pointer-events-none" />
 
       {/* ═══ HERO (Light Mode) ═══ */}
       <motion.section
@@ -149,7 +139,7 @@ export default function PartnerPage() {
             className="text-3xl sm:text-5xl md:text-8xl lg:text-[7rem] font-black text-[#0F172A] leading-[0.95] tracking-tighter mb-8"
           >
             Grow Your Factory<br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#171B2E] to-[#0EA5E9]">With Global Brands.</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#171B2E] to-[#043377]">With Global Brands.</span>
           </motion.h1>
 
           <motion.div
@@ -168,7 +158,7 @@ export default function PartnerPage() {
             className="flex flex-col sm:flex-row items-center justify-center gap-5"
           >
             <GetStartedButton label="Apply Now" size="lg" href="#apply" />
-            <a href="#how-it-works" className="inline-flex items-center gap-2 text-[#171B2E] font-bold text-sm hover:text-[#0EA5E9] hover:gap-3 transition-all">
+            <a href="#how-it-works" className="inline-flex items-center gap-2 text-[#171B2E] font-bold text-sm hover:text-[#043377] hover:gap-3 transition-all">
               See How It Works <ArrowRight className="w-4 h-4" />
             </a>
           </motion.div>
@@ -178,7 +168,7 @@ export default function PartnerPage() {
 
 
       {/* ═══ DARK MODE SECTIONS ═══ */}
-      <div className="relative z-20 text-white pb-32">
+      <div className="relative z-20 text-slate-900 pb-32">
 
         {/* ── Benefits ── */}
         <section className="py-12 md:py-24 px-6 md:px-12">
@@ -188,18 +178,18 @@ export default function PartnerPage() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                className="text-[11px] font-black tracking-[0.4em] uppercase text-[#0EA5E9] mb-6 flex items-center gap-3"
+                className="text-[11px] font-black tracking-[0.4em] uppercase text-[#043377] mb-6 flex items-center gap-3"
               >
-                <span className="w-8 h-[2px] bg-[#0EA5E9]" /> Why Partner With Scalular
+                <span className="w-8 h-[2px] bg-[#043377]" /> Why Partner With Scalular
               </motion.div>
               <motion.h2
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.1 }}
-                className="text-3xl sm:text-5xl md:text-7xl font-black text-white tracking-tighter"
+                className="text-3xl sm:text-5xl md:text-7xl font-black text-slate-900 tracking-tighter"
               >
-                Built for <span className="text-[#0EA5E9]">Factory Growth.</span>
+                Built for <span className="text-[#043377]">Factory Growth.</span>
               </motion.h2>
             </div>
 
@@ -214,14 +204,14 @@ export default function PartnerPage() {
                     initial="hidden"
                     whileInView="show"
                     viewport={{ once: true }}
-                    whileHover={{ y: -8, backgroundColor: 'rgba(255,255,255,0.06)' }}
-                    className="bg-white/[0.02] border border-white/[0.08] backdrop-blur-sm rounded-[2rem] p-8 md:p-10 transition-all duration-300 group"
+                    whileHover={{ y: -8, backgroundColor: 'rgba(255,255,255,0.8)' }}
+                    className="bg-white/40 border border-slate-200/50 backdrop-blur-sm rounded-[2rem] p-8 md:p-10 transition-all duration-300 group"
                   >
-                    <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-6 bg-white/5 border border-white/10 group-hover:scale-110 transition-transform duration-500 ease-out">
+                    <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-6 bg-white/80 border border-slate-200/60 shadow-sm group-hover:scale-110 transition-transform duration-500 ease-out">
                       <Icon className="w-7 h-7" style={{ color: b.color }} />
                     </div>
-                    <h3 className="text-2xl md:text-3xl font-black text-white mb-4 tracking-tight">{b.title}</h3>
-                    <div className="text-white/60 leading-relaxed text-base md:text-lg font-light">{b.description}</div>
+                    <h3 className="text-2xl md:text-3xl font-black text-slate-900 mb-4 tracking-tight">{b.title}</h3>
+                    <div className="text-slate-600 leading-relaxed text-base md:text-lg font-light">{b.description}</div>
                   </motion.div>
                 );
               })}
@@ -230,7 +220,7 @@ export default function PartnerPage() {
         </section>
 
         {/* ── Social Proof Counter Strip ── */}
-        <section className="py-16 px-6 md:px-12 border-t border-b border-white/[0.05] bg-white/[0.02]">
+        <section className="py-16 px-6 md:px-12 border-t border-b border-slate-200/50 bg-white/20">
           <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8">
             {PROOF_STATS.map((s, i) => (
               <motion.div
@@ -242,10 +232,10 @@ export default function PartnerPage() {
                 viewport={{ once: true }}
                 className="text-center"
               >
-                <div className="text-4xl md:text-5xl font-black text-white tracking-tighter">
+                <div className="text-4xl md:text-5xl font-black text-slate-900 tracking-tighter">
                   <AnimatedCounter target={s.target} suffix={s.suffix} />
                 </div>
-                <div className="text-xs font-bold text-white/50 uppercase tracking-widest mt-2">{s.label}</div>
+                <div className="text-xs font-bold text-slate-500 uppercase tracking-widest mt-2">{s.label}</div>
               </motion.div>
             ))}
           </div>
@@ -259,18 +249,18 @@ export default function PartnerPage() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                className="text-[11px] font-black tracking-[0.4em] uppercase text-[#0EA5E9] mb-6 flex items-center gap-3"
+                className="text-[11px] font-black tracking-[0.4em] uppercase text-[#043377] mb-6 flex items-center gap-3"
               >
-                <span className="w-8 h-[2px] bg-[#0EA5E9]" /> Process
+                <span className="w-8 h-[2px] bg-[#043377]" /> Process
               </motion.div>
               <motion.h2
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.1 }}
-                className="text-3xl sm:text-5xl md:text-7xl font-black text-white tracking-tighter"
+                className="text-3xl sm:text-5xl md:text-7xl font-black text-slate-900 tracking-tighter"
               >
-                From Application to <span className="text-[#0EA5E9]">First Order.</span>
+                From Application to <span className="text-[#043377]">First Order.</span>
               </motion.h2>
             </div>
 
@@ -288,13 +278,13 @@ export default function PartnerPage() {
                     viewport={{ once: true }}
                     className="relative"
                   >
-                    <div className="bg-white/[0.02] border border-white/[0.08] rounded-[2rem] p-5 md:p-6 lg:p-8 text-center relative z-10">
-                      <div className="text-[10px] font-black tracking-[0.3em] text-[#0EA5E9]/60 mb-4">{s.step}</div>
-                      <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mx-auto mb-5">
-                        <Icon className="w-7 h-7 text-[#0EA5E9]" />
+                    <div className="bg-white/40 border border-slate-200/50 rounded-[2rem] p-5 md:p-6 lg:p-8 text-center relative z-10">
+                      <div className="text-[10px] font-black tracking-[0.3em] text-[#043377]/60 mb-4">{s.step}</div>
+                      <div className="w-14 h-14 rounded-2xl bg-white/80 border border-slate-200/60 flex items-center justify-center mx-auto mb-5">
+                        <Icon className="w-7 h-7 text-[#043377]" />
                       </div>
-                      <h3 className="text-xl font-black text-white mb-3 tracking-tight">{s.title}</h3>
-                      <div className="text-white/60 text-sm leading-relaxed font-light">{s.description}</div>
+                      <h3 className="text-xl font-black text-slate-900 mb-3 tracking-tight">{s.title}</h3>
+                      <div className="text-slate-600 text-sm leading-relaxed font-light">{s.description}</div>
                     </div>
                   </motion.div>
                 );
@@ -304,32 +294,32 @@ export default function PartnerPage() {
         </section>
 
         {/* ── Certifications Marquee ── */}
-        <section className="py-16 px-6 md:px-12 border-t border-white/[0.05]">
+        <section className="py-16 px-6 md:px-12 border-t border-slate-200/50">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                className="text-[11px] font-black tracking-[0.4em] uppercase text-[#0EA5E9] mb-6 inline-flex items-center gap-3"
+                className="text-[11px] font-black tracking-[0.4em] uppercase text-[#043377] mb-6 inline-flex items-center gap-3"
               >
-                <span className="w-8 h-[2px] bg-[#0EA5E9]" /> Standards We Recognize <span className="w-8 h-[2px] bg-[#0EA5E9]" />
+                <span className="w-8 h-[2px] bg-[#043377]" /> Standards We Recognize <span className="w-8 h-[2px] bg-[#043377]" />
               </motion.div>
               <motion.h2
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.1 }}
-                className="text-4xl md:text-5xl font-black text-white tracking-tighter mb-4"
+                className="text-4xl md:text-5xl font-black text-slate-900 tracking-tighter mb-4"
               >
-                Accepted <span className="text-[#0EA5E9]">Certifications</span>
+                Accepted <span className="text-[#043377]">Certifications</span>
               </motion.h2>
               <motion.div
                 initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.15 }}
-                className="text-white/60 max-w-xl mx-auto font-light"
+                className="text-slate-600 max-w-xl mx-auto font-light"
               >
                 Holding at least one major certification accelerates your audit and increases match rates with premium buyers.
               </motion.div>
@@ -337,15 +327,15 @@ export default function PartnerPage() {
 
             {/* Scrolling cert ticker */}
             <div className="overflow-hidden relative">
-              <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-[#0A0F1C] to-transparent z-10 pointer-events-none" />
-              <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-[#0A0F1C] to-transparent z-10 pointer-events-none" />
+              <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
+              <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
               <div className="animate-marquee whitespace-nowrap">
                 {[...CERTS, ...CERTS].map((cert, i) => (
                   <span
                     key={`${cert}-${i}`}
-                    className="inline-flex items-center gap-2 mx-4 px-5 py-3 rounded-full bg-white/[0.04] border border-white/[0.08] text-white/80 text-sm font-bold"
+                    className="inline-flex items-center gap-2 mx-4 px-5 py-3 rounded-full bg-white/40 border border-slate-200/50 text-slate-900 text-sm font-bold"
                   >
-                    <CheckCircle className="w-4 h-4 text-[#0EA5E9]" />
+                    <CheckCircle className="w-4 h-4 text-[#043377]" />
                     {cert}
                   </span>
                 ))}
@@ -374,7 +364,7 @@ export default function PartnerPage() {
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-700"
                   />
-                  <div className="absolute inset-0 bg-[#0A0F1C]/30 group-hover:bg-[#0A0F1C]/10 transition-colors duration-500" />
+                  <div className="absolute inset-0 bg-black/20 group-hover:bg-black/5 transition-colors duration-500" />
                 </motion.div>
               ))}
             </div>
@@ -389,25 +379,25 @@ export default function PartnerPage() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                className="text-[11px] font-black tracking-[0.4em] uppercase text-[#0EA5E9] mb-6 inline-flex items-center gap-3"
+                className="text-[11px] font-black tracking-[0.4em] uppercase text-[#043377] mb-6 inline-flex items-center gap-3"
               >
-                <span className="w-8 h-[2px] bg-[#0EA5E9]" /> Apply Now
+                <span className="w-8 h-[2px] bg-[#043377]" /> Apply Now
               </motion.div>
               <motion.h2
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.1 }}
-                className="text-3xl sm:text-4xl md:text-6xl font-black text-white tracking-tighter mb-4"
+                className="text-3xl sm:text-4xl md:text-6xl font-black text-slate-900 tracking-tighter mb-4"
               >
-                Start Your <span className="text-[#0EA5E9]">Application.</span>
+                Start Your <span className="text-[#043377]">Application.</span>
               </motion.h2>
               <motion.div
                 initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.15 }}
-                className="text-white/60 font-light"
+                className="text-slate-600 font-light"
               >
                 Takes less than 5 minutes. Our team will review and respond within 2 business days.
               </motion.div>
@@ -419,31 +409,31 @@ export default function PartnerPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              <PartnerForm darkMode />
+              <PartnerForm />
             </motion.div>
           </div>
         </section>
 
         {/* ── FAQ ── */}
-        <section className="py-12 md:py-24 px-6 md:px-12 border-t border-white/[0.05]">
+        <section className="py-12 md:py-24 px-6 md:px-12 border-t border-slate-200/50">
           <div className="max-w-2xl mx-auto">
             <div className="text-center mb-12">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                className="text-[11px] font-black tracking-[0.4em] uppercase text-[#0EA5E9] mb-6 inline-flex items-center gap-3"
+                className="text-[11px] font-black tracking-[0.4em] uppercase text-[#043377] mb-6 inline-flex items-center gap-3"
               >
-                <span className="w-8 h-[2px] bg-[#0EA5E9]" /> FAQ
+                <span className="w-8 h-[2px] bg-[#043377]" /> FAQ
               </motion.div>
               <motion.h2
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.1 }}
-                className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tighter"
+                className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tighter"
               >
-                Common <span className="text-[#0EA5E9]">Questions</span>
+                Common <span className="text-[#043377]">Questions</span>
               </motion.h2>
             </div>
 
@@ -453,7 +443,7 @@ export default function PartnerPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              <FAQAccordion items={FAQ_ITEMS} darkMode />
+              <FAQAccordion items={FAQ_ITEMS} />
             </motion.div>
           </div>
         </section>

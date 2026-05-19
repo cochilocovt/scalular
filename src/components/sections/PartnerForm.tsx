@@ -55,7 +55,7 @@ export function PartnerForm({ darkMode = false }: PartnerFormProps) {
   const inputCls = (field: keyof FormState) => darkMode
     ? `w-full px-4 py-3 rounded-xl bg-white/[0.04] border ${
         errors[field] ? 'border-red-500' : 'border-white/[0.1]'
-      } text-sm focus:outline-none focus:ring-2 focus:ring-[#0EA5E9]/40 focus:border-[#0EA5E9]/50 transition-all`
+      } text-sm focus:outline-none focus:ring-2 focus:ring-[#043377]/40 focus:border-[#043377]/50 transition-all`
     : `w-full px-4 py-3 rounded-xl bg-surface border ${
         errors[field] ? 'border-destructive' : 'border-border'
       } text-text-primary placeholder:text-text-secondary/40 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all`;
@@ -81,8 +81,8 @@ export function PartnerForm({ darkMode = false }: PartnerFormProps) {
             transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             className={`${cardCls} text-center`}
           >
-            <div className={`w-16 h-16 rounded-full ${darkMode ? 'bg-[#0EA5E9]/10 border border-[#0EA5E9]/20' : 'bg-success/10 border border-success/20'} flex items-center justify-center mx-auto mb-6`}>
-              <CheckCircle2 className={`w-8 h-8 ${darkMode ? 'text-[#0EA5E9]' : 'text-success'}`} />
+            <div className={`w-16 h-16 rounded-full ${darkMode ? 'bg-[#043377]/10 border border-[#043377]/20' : 'bg-success/10 border border-success/20'} flex items-center justify-center mx-auto mb-6`}>
+              <CheckCircle2 className={`w-8 h-8 ${darkMode ? 'text-[#043377]' : 'text-success'}`} />
             </div>
             <h3 className={`text-2xl font-black mb-3 ${darkMode ? 'text-white' : 'text-text-primary'}`}>Application Received!</h3>
             <div className={`leading-relaxed max-w-sm mx-auto ${darkMode ? 'text-white/60' : 'text-text-secondary'}`}>

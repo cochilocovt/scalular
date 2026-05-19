@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useEffect, useRef, Suspense } from 'react';
-import { motion } from 'framer-motion';
+import { useState, useEffect, useRef, useCallback, Suspense } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Canvas } from '@react-three/fiber';
 import { Environment, Html, OrbitControls } from '@react-three/drei';
 import { useGLTF } from '@react-three/drei';
@@ -41,12 +41,26 @@ function SafeCanvas({ children, isMobileCanvas = false }: { children: React.Reac
   );
 }
 
+/* ─── Ticker config ──────────────────────────────────────── */
+const VISIBLE_RANGE = 4; // 4 above + active + 4 below = 9 visible
+const TICKER_SLOT_STYLES: Record<number, { fontSize: number; opacity: number; height: number }> = {
+  0: { fontSize: 34, opacity: 1, height: 54 },      // ACTIVE (center)
+  1: { fontSize: 18, opacity: 0.38, height: 36 },   // ±1
+  2: { fontSize: 15, opacity: 0.22, height: 30 },   // ±2
+  3: { fontSize: 13, opacity: 0.12, height: 26 },   // ±3
+  4: { fontSize: 12, opacity: 0.06, height: 24 },   // ±4 (outermost)
+};
+
 /* ─── Main Component ─────────────────────────────────────── */
 export function ProductShowcase() {
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [rawActiveIndex, setActiveIndex] = useState(0);
+  const activeIndex = rawActiveIndex >= GARMENT_CATALOG.length ? 0 : rawActiveIndex;
   const [isHovered, setIsHovered] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const interactTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const directionRef = useRef(1); // 1 = forward, -1 = backward
+  const wheelAccumRef = useRef(0);
+  const wheelTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   /* ── Responsive check ───────────────────────────────────── */
   useEffect(() => {
@@ -60,8 +74,9 @@ export function ProductShowcase() {
   useEffect(() => {
     if (isHovered) return;
     const interval = setInterval(() => {
+      directionRef.current = 1;
       setActiveIndex((prev) => (prev + 1) % GARMENT_CATALOG.length);
-    }, isMobile ? 3000 : 2000);
+    }, isMobile ? 3000 : 2500);
     return () => clearInterval(interval);
   }, [isHovered, isMobile]);
 
@@ -82,6 +97,40 @@ export function ProductShowcase() {
     }, 3000);
   };
 
+  /* ── Desktop scroll-wheel navigation ────────────────────── */
+  const handleWheel = useCallback((e: React.WheelEvent) => {
+    wheelAccumRef.current += e.deltaY;
+    if (Math.abs(wheelAccumRef.current) > 50) {
+      const dir = wheelAccumRef.current > 0 ? 1 : -1;
+      directionRef.current = dir;
+      setActiveIndex((prev) => {
+        const next = prev + dir;
+        return ((next % GARMENT_CATALOG.length) + GARMENT_CATALOG.length) % GARMENT_CATALOG.length;
+      });
+      wheelAccumRef.current = 0;
+      // Pause auto-cycle briefly on manual interaction
+      setIsHovered(true);
+      if (wheelTimeoutRef.current) clearTimeout(wheelTimeoutRef.current);
+      wheelTimeoutRef.current = setTimeout(() => setIsHovered(false), 3000);
+    }
+  }, []);
+
+  /* ── Compute 5 visible ticker items ─────────────────────── */
+  const tickerItems = [];
+  for (let offset = -VISIBLE_RANGE; offset <= VISIBLE_RANGE; offset++) {
+    const idx = ((activeIndex + offset) % GARMENT_CATALOG.length + GARMENT_CATALOG.length) % GARMENT_CATALOG.length;
+    const absOffset = Math.abs(offset);
+    const style = TICKER_SLOT_STYLES[absOffset];
+    tickerItems.push({
+      ...GARMENT_CATALOG[idx],
+      catalogIndex: idx,
+      offset,
+      absOffset,
+      isActive: offset === 0,
+      style,
+    });
+  }
+
   return (
     <div className="relative w-full py-0 md:py-4">
 
@@ -92,43 +141,93 @@ export function ProductShowcase() {
         </span>
       </div>
 
-      {/* ════════════════════ DESKTOP LAYOUT (unchanged) ════════════════════ */}
+      {/* ════════════════════ DESKTOP LAYOUT — Vertical Ticker ════════════════════ */}
       <div
-        className="hidden md:flex relative mx-auto w-full max-w-7xl h-[550px] flex-col-reverse md:flex-row overflow-hidden bg-background/50 rounded-3xl border border-border/50 shadow-xl z-10"
+        className="hidden md:flex relative mx-auto w-full max-w-7xl h-[550px] flex-row overflow-hidden bg-background/50 rounded-3xl border border-border/50 shadow-xl z-10"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
+        onWheel={handleWheel}
       >
         <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-primary via-blue-600 to-transparent z-30 opacity-80" />
 
-        {/* Left Side: Static List */}
-        <div className="relative w-full md:w-[45%] h-full flex flex-col justify-center border-r border-border/50">
-          <div className="w-full h-full relative overflow-hidden flex flex-col items-start justify-center px-12 py-2">
-            {GARMENT_CATALOG.map((entry, idx) => {
-              const isActive = idx === activeIndex;
-              return (
-                <div
-                  key={entry.id}
-                  className="relative w-full flex items-center cursor-pointer"
-                  style={{
-                    height: isActive ? '44px' : '24px',
-                    opacity: isActive ? 1 : 0.45,
-                    transition: 'all 0.3s cubic-bezier(0.25, 1, 0.5, 1)',
-                  }}
-                  onClick={() => setActiveIndex(idx)}
-                >
-                  <h3
-                    className="font-display font-black leading-none uppercase tracking-tighter whitespace-nowrap overflow-hidden text-ellipsis w-full"
-                    style={{
-                      fontSize: isActive ? '32px' : '13px',
-                      color: isActive ? 'var(--color-primary)' : 'var(--color-blue-400)',
-                      transition: 'all 0.3s cubic-bezier(0.25, 1, 0.5, 1)',
+        {/* Left Side: Scroll-Reveal Ticker */}
+        <div className="relative w-full md:w-[45%] h-full flex flex-col border-r border-border/50">
+
+          {/* Ticker viewport */}
+          <div className="flex-1 flex flex-col items-start justify-center px-12 overflow-hidden relative">
+            {/* Edge fade masks */}
+            <div className="absolute top-0 left-0 right-0 h-28 z-10 pointer-events-none" style={{ background: 'linear-gradient(to bottom, var(--background), transparent)' }} />
+            <div className="absolute bottom-0 left-0 right-0 h-28 z-10 pointer-events-none" style={{ background: 'linear-gradient(to top, var(--background), transparent)' }} />
+
+            {/* 5 visible garment names */}
+            <div className="relative w-full flex flex-col items-start justify-center">
+              <AnimatePresence mode="popLayout" initial={false}>
+                {tickerItems.map((item) => (
+                  <motion.div
+                    key={item.id}
+                    layout
+                    initial={{ opacity: 0, y: directionRef.current * 36 }}
+                    animate={{ opacity: item.style.opacity, y: 0 }}
+                    exit={{ opacity: 0, y: directionRef.current * -36 }}
+                    transition={{
+                      duration: 0.45,
+                      ease: [0.25, 1, 0.5, 1],
+                      layout: { duration: 0.4, ease: [0.25, 1, 0.5, 1] },
+                    }}
+                    className="relative w-full flex items-center cursor-pointer"
+                    style={{ height: item.style.height }}
+                    onClick={() => {
+                      directionRef.current = item.catalogIndex > activeIndex ? 1 : -1;
+                      setActiveIndex(item.catalogIndex);
+                      setIsHovered(true);
+                      if (wheelTimeoutRef.current) clearTimeout(wheelTimeoutRef.current);
+                      wheelTimeoutRef.current = setTimeout(() => setIsHovered(false), 3000);
                     }}
                   >
-                    {entry.name}
-                  </h3>
-                </div>
-              );
-            })}
+                    {/* Active accent bar */}
+                    {item.isActive && (
+                      <motion.div
+                        layoutId="ticker-accent"
+                        className="absolute left-0 w-[3px] rounded-full"
+                        style={{ height: '55%', top: '22.5%', background: 'var(--color-primary)' }}
+                        transition={{ duration: 0.35, ease: [0.25, 1, 0.5, 1] }}
+                      />
+                    )}
+                    <h3
+                      className="font-display font-black leading-none uppercase tracking-tighter whitespace-nowrap"
+                      style={{
+                        fontSize: `${item.style.fontSize}px`,
+                        color: item.isActive ? 'var(--color-primary)' : 'var(--color-blue-400)',
+                        paddingLeft: item.isActive ? 16 : 0,
+                        transition: 'color 0.3s cubic-bezier(0.25,1,0.5,1), padding-left 0.3s cubic-bezier(0.25,1,0.5,1)',
+                      }}
+                    >
+                      {item.name}
+                    </h3>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            </div>
+          </div>
+
+          {/* Counter + Progress bar */}
+          <div className="px-12 pb-8 flex flex-col gap-2.5">
+            <span
+              className="text-[11px] font-bold tracking-[0.15em] uppercase"
+              style={{ color: 'var(--color-blue-400)', fontFamily: 'var(--font-display)' }}
+            >
+              {String(activeIndex + 1).padStart(2, '0')}
+              <span style={{ opacity: 0.4, margin: '0 4px' }}>/</span>
+              {String(GARMENT_CATALOG.length).padStart(2, '0')}
+            </span>
+            <div className="w-full h-[2px] rounded-full overflow-hidden" style={{ background: 'var(--border)' }}>
+              <motion.div
+                className="h-full rounded-full"
+                style={{ background: 'var(--color-primary)' }}
+                animate={{ width: `${((activeIndex + 1) / GARMENT_CATALOG.length) * 100}%` }}
+                transition={{ duration: 0.45, ease: [0.25, 1, 0.5, 1] }}
+              />
+            </div>
           </div>
         </div>
 

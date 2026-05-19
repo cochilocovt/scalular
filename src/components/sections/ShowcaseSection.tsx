@@ -1,53 +1,50 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import { ProductShowcase } from './ProductShowcase';
 import { TrustShowcase } from './TrustShowcase';
-import { SpecialText } from '@/components/ui/special-text';
+import { TextAnimate } from '@/components/ui/text-animate';
 
 export function ShowcaseSection() {
   return (
-    <section id="showcase" className="relative w-full bg-mesh-gradient py-20 overflow-hidden">
+    <section id="showcase" className="relative w-full bg-mesh-gradient py-12 overflow-hidden">
       {/* Subtle top border */}
       <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
 
       <div className="max-w-[1400px] mx-auto px-6 md:px-12">
         {/* Section intro */}
-        <div className="text-center mb-16 flex flex-col items-center">
-          <motion.h2
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            variants={{
-              hidden: { opacity: 0 },
-              visible: {
-                opacity: 1,
-                transition: { staggerChildren: 0.2 }
-              }
-            }}
-            className="flex flex-col items-center"
+        <div className="text-center mb-8 flex flex-col items-center">
+          <h2
+            className="flex flex-col items-center w-full"
             style={{ perspective: "1000px" }}
           >
-            <div className="overflow-hidden pb-2 w-full flex justify-center">
-              <SpecialText 
-                className="block text-3xl sm:text-4xl md:text-[4rem] lg:text-[4.5rem] font-black tracking-tighter text-text-primary/70 drop-shadow-sm mb-2"
+            <div className="overflow-hidden pb-0 w-full flex justify-center">
+              <TextAnimate 
+                as="span"
+                className="font-display block text-3xl sm:text-4xl md:text-[3.25rem] lg:text-[3.75rem] font-extrabold tracking-tighter text-text-primary/70 drop-shadow-sm mb-0"
                 style={{ fontFamily: 'var(--font-display)' }}
-                inView={true}
+                by="word"
+                animation="fadeIn"
+                duration={1.2}
+                stagger={0.2}
               >
                 Skip negotiation.
-              </SpecialText>
+              </TextAnimate>
             </div>
-            <div className="overflow-hidden pb-4 w-full flex justify-center">
-              <SpecialText 
-                className="block text-4xl sm:text-5xl md:text-[4.5rem] lg:text-[5rem] font-black tracking-tighter leading-[0.9] text-text-primary drop-shadow-md"
+            <div className="overflow-hidden pb-0 w-full flex justify-center -mt-1 md:-mt-2 lg:-mt-3">
+              <TextAnimate 
+                as="span"
+                className="font-display block text-4xl sm:text-5xl md:text-[4rem] lg:text-[4.5rem] font-extrabold tracking-tighter leading-[0.9] text-text-primary drop-shadow-md"
                 style={{ fontFamily: 'var(--font-display)' }}
-                inView={true}
-                delay={1.5}
+                delay={1.4}
+                by="word"
+                animation="fadeIn"
+                duration={1.2}
+                stagger={0.2}
               >
                 Start production.
-              </SpecialText>
+              </TextAnimate>
             </div>
-          </motion.h2>
+          </h2>
         </div>
 
       </div>

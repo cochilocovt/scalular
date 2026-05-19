@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Canvas } from '@react-three/fiber';
 import { Environment, Html, OrbitControls } from '@react-three/drei';
 import { useGLTF } from '@react-three/drei';
+import { ChevronUp, ChevronDown } from 'lucide-react';
 import { GARMENT_CATALOG, GLBModel } from '@/components/3d/GarmentModels';
 
 /* ─── Loader ────────────────────────────────────────────── */
@@ -59,8 +60,6 @@ export function ProductShowcase() {
   const [isMobile, setIsMobile] = useState(false);
   const interactTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const directionRef = useRef(1); // 1 = forward, -1 = backward
-  const wheelAccumRef = useRef(0);
-  const wheelTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   /* ── Responsive check ───────────────────────────────────── */
   useEffect(() => {
@@ -80,6 +79,13 @@ export function ProductShowcase() {
     return () => clearInterval(interval);
   }, [isHovered, isMobile]);
 
+  /* ── Cleanup interaction timeout on unmount ─────────────── */
+  useEffect(() => {
+    return () => {
+      if (interactTimeoutRef.current) clearTimeout(interactTimeoutRef.current);
+    };
+  }, []);
+
   /* ── Preload next GLB on mobile ─────────────────────────── */
   useEffect(() => {
     if (!isMobile) return;
@@ -97,22 +103,29 @@ export function ProductShowcase() {
     }, 3000);
   };
 
-  /* ── Desktop scroll-wheel navigation ────────────────────── */
-  const handleWheel = useCallback((e: React.WheelEvent) => {
-    wheelAccumRef.current += e.deltaY;
-    if (Math.abs(wheelAccumRef.current) > 50) {
-      const dir = wheelAccumRef.current > 0 ? 1 : -1;
-      directionRef.current = dir;
-      setActiveIndex((prev) => {
-        const next = prev + dir;
-        return ((next % GARMENT_CATALOG.length) + GARMENT_CATALOG.length) % GARMENT_CATALOG.length;
-      });
-      wheelAccumRef.current = 0;
-      // Pause auto-cycle briefly on manual interaction
-      setIsHovered(true);
-      if (wheelTimeoutRef.current) clearTimeout(wheelTimeoutRef.current);
-      wheelTimeoutRef.current = setTimeout(() => setIsHovered(false), 3000);
-    }
+  /* ── Desktop Up/Down Arrow Navigation ───────────────────── */
+  const handlePrev = useCallback(() => {
+    directionRef.current = -1;
+    setActiveIndex((prev) => {
+      const next = prev - 1;
+      return ((next % GARMENT_CATALOG.length) + GARMENT_CATALOG.length) % GARMENT_CATALOG.length;
+    });
+    // Pause auto-cycle briefly on manual interaction
+    setIsHovered(true);
+    if (interactTimeoutRef.current) clearTimeout(interactTimeoutRef.current);
+    interactTimeoutRef.current = setTimeout(() => setIsHovered(false), 3000);
+  }, []);
+
+  const handleNext = useCallback(() => {
+    directionRef.current = 1;
+    setActiveIndex((prev) => {
+      const next = prev + 1;
+      return ((next % GARMENT_CATALOG.length) + GARMENT_CATALOG.length) % GARMENT_CATALOG.length;
+    });
+    // Pause auto-cycle briefly on manual interaction
+    setIsHovered(true);
+    if (interactTimeoutRef.current) clearTimeout(interactTimeoutRef.current);
+    interactTimeoutRef.current = setTimeout(() => setIsHovered(false), 3000);
   }, []);
 
   /* ── Compute 5 visible ticker items ─────────────────────── */
@@ -146,7 +159,6 @@ export function ProductShowcase() {
         className="hidden md:flex relative mx-auto w-full max-w-7xl h-[550px] flex-row overflow-hidden bg-background/50 rounded-3xl border border-border/50 shadow-xl z-10"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
-        onWheel={handleWheel}
       >
         <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-primary via-blue-600 to-transparent z-30 opacity-80" />
 
@@ -155,9 +167,27 @@ export function ProductShowcase() {
 
           {/* Ticker viewport */}
           <div className="flex-1 flex flex-col items-start justify-center px-12 overflow-hidden relative">
+            {/* Up Arrow Button */}
+            <button
+              onClick={handlePrev}
+              className="absolute top-6 left-12 z-20 p-2 rounded-full border border-border/40 bg-background/30 text-blue-400 hover:text-primary hover:border-primary/50 hover:bg-primary/5 transition-all duration-300 backdrop-blur-sm group focus:outline-none cursor-pointer"
+              aria-label="Previous garment"
+            >
+              <ChevronUp className="w-5 h-5 transition-transform duration-300 group-hover:-translate-y-0.5" />
+            </button>
+
             {/* Edge fade masks */}
             <div className="absolute top-0 left-0 right-0 h-28 z-10 pointer-events-none" style={{ background: 'linear-gradient(to bottom, var(--background), transparent)' }} />
             <div className="absolute bottom-0 left-0 right-0 h-28 z-10 pointer-events-none" style={{ background: 'linear-gradient(to top, var(--background), transparent)' }} />
+
+            {/* Down Arrow Button */}
+            <button
+              onClick={handleNext}
+              className="absolute bottom-6 left-12 z-20 p-2 rounded-full border border-border/40 bg-background/30 text-blue-400 hover:text-primary hover:border-primary/50 hover:bg-primary/5 transition-all duration-300 backdrop-blur-sm group focus:outline-none cursor-pointer"
+              aria-label="Next garment"
+            >
+              <ChevronDown className="w-5 h-5 transition-transform duration-300 group-hover:translate-y-0.5" />
+            </button>
 
             {/* 5 visible garment names */}
             <div className="relative w-full flex flex-col items-start justify-center">
@@ -180,8 +210,8 @@ export function ProductShowcase() {
                       directionRef.current = item.catalogIndex > activeIndex ? 1 : -1;
                       setActiveIndex(item.catalogIndex);
                       setIsHovered(true);
-                      if (wheelTimeoutRef.current) clearTimeout(wheelTimeoutRef.current);
-                      wheelTimeoutRef.current = setTimeout(() => setIsHovered(false), 3000);
+                      if (interactTimeoutRef.current) clearTimeout(interactTimeoutRef.current);
+                      interactTimeoutRef.current = setTimeout(() => setIsHovered(false), 3000);
                     }}
                   >
                     {/* Active accent bar */}

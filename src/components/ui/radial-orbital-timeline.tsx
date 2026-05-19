@@ -199,9 +199,6 @@ export default function RadialOrbitalTimeline({
                   transition={{ duration: 0.4, ease: "easeOut" }}
                   className="flex flex-col"
                 >
-                  <div className="text-[10px] font-bold uppercase tracking-[0.25em] text-primary mb-3">
-                    {activeItem.category}
-                  </div>
                   <h3
                     className="text-3xl font-extrabold text-text-primary tracking-tight leading-[1.1] mb-3"
                     style={{ fontFamily: 'var(--font-display)' }}
@@ -403,9 +400,6 @@ export default function RadialOrbitalTimeline({
                   animation: 'fadeSlideIn 0.35s ease forwards',
                 }}
               >
-                <div className="text-xs font-semibold uppercase tracking-[0.2em] text-primary mb-2">
-                  {activeItem.category}
-                </div>
                 <h3
                   className="text-2xl md:text-3xl font-bold text-text-primary tracking-tight mb-3"
                   style={{ fontFamily: 'var(--font-display)' }}

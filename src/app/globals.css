@@ -115,7 +115,7 @@
   --selection-bg:          rgba(114, 124, 177, 0.25);
   --ring: oklch(0.708 0 0);
   --ring-offset:           #E7E3D1;
-  --background: oklch(1 0 0);
+  --background: #E7E3D1;
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);

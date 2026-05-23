@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef } from 'react';
+import { useState, useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Globe, Package, TrendingUp, Users, CheckCircle, ArrowRight, Building2, ClipboardCheck, Handshake, Truck, Factory, Award, ShieldCheck, Calculator } from 'lucide-react';
 import Image from 'next/image';
@@ -58,7 +58,7 @@ const BENEFITS = [
 
 const STEPS = [
   { icon: ClipboardCheck, step: '01', title: 'Apply', description: 'Fill out our partner application with your factory details, certifications, and product specialties.' },
-  { icon: Calculator, step: '02', title: 'Costing Exercise', description: 'We evaluate pricing, production feasibility, and commercial competitiveness to ensure your costs align with buyer expectations and market benchmarks before live orders.' },
+  { icon: Calculator, step: '02', title: 'Costing Exercise', description: 'We evaluate pricing and production competitiveness to align costs with market and buyer expectations.' },
   { icon: Building2, step: '03', title: 'Audit', description: 'Our on-ground team conducts a factory audit covering quality, capacity, ethical standards, and compliance.' },
   { icon: Handshake, step: '04', title: 'Onboard', description: 'Once verified, you join the Scalular platform — your factory profile goes live to global brands.' },
   { icon: Truck, step: '05', title: 'Receive Orders', description: 'Start receiving matched purchase orders from brands that fit your specialties and minimum order quantities.' },
@@ -70,13 +70,30 @@ const CERTS = [
 ];
 
 const FAQ_ITEMS = [
-  { question: 'What types of factories can apply?', answer: 'We partner with apparel manufacturers producing any of our 17 product categories — from T-shirts and hoodies to dresses and denim. Your factory must have a minimum capacity of 5,000 units/month and meet our baseline ethical standards audit.' },
-  { question: 'Is there a cost to join the partner network?', answer: 'There is no upfront fee to apply or join. Scalular earns a platform fee on orders fulfilled through our system. This keeps our interests aligned — we only succeed when you succeed.' },
-  { question: 'How long does the audit process take?', answer: 'The audit process typically takes 2–4 weeks from application approval. This includes document review, a scheduled on-site visit, and compliance verification. Factories with existing certifications (GOTS, OEKO-TEX, WRAP, etc.) move through faster.' },
-  { question: 'What certifications are preferred?', answer: 'We prefer factories with at least one major certification: GOTS, OEKO-TEX, WRAP, Fairtrade, or equivalent. Factories without certifications can still apply — we work with you to establish a compliance roadmap.' },
-  { question: 'How are orders matched to factories?', answer: 'Our AI-powered matching system pairs buyer requests with factories based on product type, capacity, certifications, MOQ, lead time, and geographic proximity. You\'ll only receive inquiries you\'re actually equipped to fulfill.' },
-  { question: 'Can I set minimum order quantities?', answer: 'Yes. Your factory profile includes your MOQ, lead times, and capacity windows. Brands can only request quotes within your stated parameters.' },
-  { question: 'What happens after I submit the application?', answer: 'Our team reviews every application within 2 business days. If your factory meets our initial criteria, we schedule a call to discuss the audit process and answer any questions.' },
+  {
+    question: 'What types of factories can apply?',
+    answer: 'We work with audited factories across various apparel categories. Preference is given to vertically integrated or technically strong facilities with proven export experience and consistent quality standards.',
+  },
+  {
+    question: 'Is there a cost to join the partner network?',
+    answer: 'No. There is no fee to apply or join the Scalular partner network. Factories are evaluated based on capability, compliance, pricing, and execution.',
+  },
+  {
+    question: 'What certifications are preferred?',
+    answer: 'We typically prefer factories with certifications such as WRAP, SMETA, BSCI, GOTS, OEKO-TEX, SLCP, SEDEX, or equivalent social and technical compliance standards.',
+  },
+  {
+    question: 'How are orders matched to factories?',
+    answer: 'Orders are allocated based on category expertise, pricing competitiveness, compliance level, production capacity, lead times, and historical performance.',
+  },
+  {
+    question: 'Can I set minimum order quantities?',
+    answer: 'Yes. Factories maintain full control over their MOQ requirements, production timelines, and category focus areas.',
+  },
+  {
+    question: 'What happens after I submit the application?',
+    answer: 'Our sourcing team reviews your submission, evaluates your capabilities and certifications, and reaches out if your factory aligns with current or upcoming production requirements followed by a costing exercise to benchmark competitiveness.',
+  },
 ];
 
 const fadeUp = {
@@ -94,7 +111,225 @@ const PROOF_STATS = [
   { target: 1, suffix: 'M+', label: 'Pcs/Month' },
 ];
 
+/* ── Custom Animated Icons for 5-Step Progress ── */
+
+function AnimatedApplyIcon({ isHovered }: { isHovered: boolean }) {
+  return (
+    <svg
+      width="28"
+      height="28"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="#043377"
+      strokeWidth="2.2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="overflow-visible"
+    >
+      <rect x="8" y="2" width="8" height="4" rx="1" ry="1" fill="#fff" />
+      <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+      <motion.path
+        d="M9 2h6v2H9z"
+        animate={{ y: isHovered ? [0, -2, 0] : 0 }}
+        transition={{ duration: 0.4, ease: "easeInOut" }}
+      />
+      <motion.path
+        d="m9 14 2 2 4-4"
+        animate={isHovered ? { pathLength: [0, 1] } : { pathLength: 1 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+      />
+      <motion.line x1="8" y1="10" x2="16" y2="10" strokeOpacity="0.4" />
+    </svg>
+  );
+}
+
+function AnimatedCalculatorIcon({ isHovered }: { isHovered: boolean }) {
+  return (
+    <svg
+      width="28"
+      height="28"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="#043377"
+      strokeWidth="2.2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="overflow-visible"
+    >
+      <rect x="4" y="2" width="16" height="20" rx="2" ry="2" />
+      <line x1="8" y1="6" x2="16" y2="6" />
+      <motion.path
+        d="M16 6h-2"
+        stroke="#043377"
+        animate={{ strokeOpacity: isHovered ? [1, 0.2, 1] : 1 }}
+        transition={{ repeat: isHovered ? Infinity : 0, duration: 0.8, ease: "easeInOut" }}
+      />
+      {/* Row 1 */}
+      <motion.circle cx="8" cy="11" r="1" animate={{ scale: isHovered ? [1, 0.7, 1] : 1 }} style={{ transformOrigin: "center" }} transition={{ delay: 0, duration: 0.4 }} />
+      <motion.circle cx="12" cy="11" r="1" animate={{ scale: isHovered ? [1, 0.7, 1] : 1 }} style={{ transformOrigin: "center" }} transition={{ delay: 0.1, duration: 0.4 }} />
+      <motion.circle cx="16" cy="11" r="1" animate={{ scale: isHovered ? [1, 0.7, 1] : 1 }} style={{ transformOrigin: "center" }} transition={{ delay: 0.2, duration: 0.4 }} />
+      {/* Row 2 */}
+      <motion.circle cx="8" cy="15" r="1" animate={{ scale: isHovered ? [1, 0.7, 1] : 1 }} style={{ transformOrigin: "center" }} transition={{ delay: 0.05, duration: 0.4 }} />
+      <motion.circle cx="12" cy="15" r="1" animate={{ scale: isHovered ? [1, 0.7, 1] : 1 }} style={{ transformOrigin: "center" }} transition={{ delay: 0.15, duration: 0.4 }} />
+      <motion.circle cx="16" cy="15" r="1" animate={{ scale: isHovered ? [1, 0.7, 1] : 1 }} style={{ transformOrigin: "center" }} transition={{ delay: 0.25, duration: 0.4 }} />
+      {/* Row 3 */}
+      <motion.circle cx="8" cy="19" r="1" animate={{ scale: isHovered ? [1, 0.7, 1] : 1 }} style={{ transformOrigin: "center" }} transition={{ delay: 0.1, duration: 0.4 }} />
+      <motion.circle cx="12" cy="19" r="1" animate={{ scale: isHovered ? [1, 0.7, 1] : 1 }} style={{ transformOrigin: "center" }} transition={{ delay: 0.2, duration: 0.4 }} />
+      <motion.rect x="15" y="18" width="2" height="2" rx="0.5" fill="#043377" animate={{ scale: isHovered ? [1, 0.7, 1] : 1 }} style={{ transformOrigin: "center" }} transition={{ delay: 0.3, duration: 0.4 }} />
+    </svg>
+  );
+}
+
+function AnimatedAuditIcon({ isHovered }: { isHovered: boolean }) {
+  return (
+    <svg
+      width="28"
+      height="28"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="#043377"
+      strokeWidth="2.2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="overflow-visible"
+    >
+      <path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+      <path d="M20 20V10a2 2 0 0 0-2-2h-2" />
+      <path d="M4 20V14a2 2 0 0 1 2-2h2" />
+      <rect x="10" y="14" width="4" height="6" />
+      <motion.line
+        x1="3"
+        y1="3"
+        x2="21"
+        y2="3"
+        stroke="#727cb1"
+        strokeWidth="1.5"
+        initial={{ y: 0, opacity: 0 }}
+        animate={isHovered ? { y: [2, 16, 2], opacity: [0, 1, 1, 0] } : { y: 0, opacity: 0 }}
+        transition={{ repeat: Infinity, duration: 1.6, ease: "easeInOut" }}
+      />
+    </svg>
+  );
+}
+
+function AnimatedOnboardIcon({ isHovered }: { isHovered: boolean }) {
+  return (
+    <svg
+      width="28"
+      height="28"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="#043377"
+      strokeWidth="2.2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="overflow-visible"
+    >
+      <motion.path
+        d="M18 8h2a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2"
+        animate={isHovered ? { x: [0, 1, -1, 0], y: [0, -1, 1, 0] } : { x: 0, y: 0 }}
+        transition={{ duration: 0.6, ease: "easeInOut" }}
+      />
+      <motion.path
+        d="M6 16H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1h2"
+        animate={isHovered ? { x: [0, -1, 1, 0], y: [0, 1, -1, 0] } : { x: 0, y: 0 }}
+        transition={{ duration: 0.6, ease: "easeInOut" }}
+      />
+      <motion.g
+        animate={isHovered ? { y: [0, -2, 2, -1, 0] } : { y: 0 }}
+        transition={{ duration: 0.6, ease: "easeInOut" }}
+      >
+        <path d="m11 17 2 2a1 1 0 0 0 1.4 0l4-4a1 1 0 0 0 0-1.4l-2.6-2.6a1 1 0 0 0-1.4 0l-1.6 1.6" />
+        <path d="m13 11-2-2a1 1 0 0 0-1.4 0l-4 4a1 1 0 0 0 0 1.4l2.6 2.6a1 1 0 0 0 1.4 0l1.6-1.6" />
+      </motion.g>
+    </svg>
+  );
+}
+
+function AnimatedTruckIcon({ isHovered }: { isHovered: boolean }) {
+  return (
+    <svg
+      width="28"
+      height="28"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="#043377"
+      strokeWidth="2.2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="overflow-visible"
+    >
+      <motion.line
+        x1="2"
+        y1="8"
+        x2="5"
+        y2="8"
+        stroke="#727cb1"
+        strokeWidth="1.5"
+        animate={isHovered ? { x: [-3, 5], strokeOpacity: [0, 1, 0] } : { strokeOpacity: 0 }}
+        transition={{ repeat: Infinity, duration: 0.6, ease: "linear" }}
+      />
+      <motion.line
+        x1="1"
+        y1="13"
+        x2="4"
+        y2="13"
+        stroke="#727cb1"
+        strokeWidth="1.5"
+        animate={isHovered ? { x: [-4, 4], strokeOpacity: [0, 1, 0] } : { strokeOpacity: 0 }}
+        transition={{ repeat: Infinity, duration: 0.6, ease: "linear", delay: 0.2 }}
+      />
+      <motion.g
+        animate={isHovered ? {
+          y: [0, -1, 0, -0.5, 0],
+          rotate: [0, 1, -1, 0]
+        } : { y: 0, rotate: 0 }}
+        style={{ transformOrigin: "bottom right" }}
+        transition={{ repeat: isHovered ? Infinity : 0, duration: 0.4, ease: "easeInOut" }}
+      >
+        <polygon points="14 2 18 6 18 12 14 12" />
+        <rect x="3" y="6" width="11" height="6" />
+        <polygon points="18 8 21 8 23 11 23 12 18 12" />
+      </motion.g>
+      <motion.circle
+        cx="7.5"
+        cy="16.5"
+        r="2.5"
+        animate={isHovered ? { rotate: 360 } : {}}
+        style={{ transformOrigin: "center" }}
+        transition={{ repeat: Infinity, duration: 0.5, ease: "linear" }}
+      />
+      <motion.circle
+        cx="18.5"
+        cy="16.5"
+        r="2.5"
+        animate={isHovered ? { rotate: 360 } : {}}
+        style={{ transformOrigin: "center" }}
+        transition={{ repeat: Infinity, duration: 0.5, ease: "linear" }}
+      />
+    </svg>
+  );
+}
+
+function renderStepIcon(step: string, isHovered: boolean) {
+  switch (step) {
+    case '01':
+      return <AnimatedApplyIcon isHovered={isHovered} />;
+    case '02':
+      return <AnimatedCalculatorIcon isHovered={isHovered} />;
+    case '03':
+      return <AnimatedAuditIcon isHovered={isHovered} />;
+    case '04':
+      return <AnimatedOnboardIcon isHovered={isHovered} />;
+    case '05':
+      return <AnimatedTruckIcon isHovered={isHovered} />;
+    default:
+      return null;
+  }
+}
+
 export default function PartnerPage() {
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const { scrollYProgress } = useScroll({ offset: ["start start", "end end"] });
   const heroOpacity = useTransform(scrollYProgress, [0, 0.12], [1, 0]);
   const heroScale = useTransform(scrollYProgress, [0, 0.12], [1, 0.92]);
@@ -267,7 +502,39 @@ export default function PartnerPage() {
             {/* Timeline grid */}
             <div className="grid md:grid-cols-5 gap-4 lg:gap-6">
               {STEPS.map((s, i) => {
-                const Icon = s.icon;
+                const isHovered = hoveredIndex === i;
+                const isAdjacentLeft = hoveredIndex !== null && hoveredIndex === i + 1;
+                const isAdjacentRight = hoveredIndex !== null && hoveredIndex === i - 1;
+
+                let rotateZ = 0;
+                let y = 0;
+                let scale = 1;
+                let zIndex = 10;
+                let backgroundColor = "rgba(255, 255, 255, 0.4)";
+                let borderColor = "rgba(226, 232, 240, 0.5)"; // border-slate-200/50
+                let shadow = "none";
+
+                if (isHovered) {
+                  scale = 1.05;
+                  y = -12;
+                  rotateZ = 0;
+                  zIndex = 20;
+                  backgroundColor = "rgba(255, 255, 255, 0.85)";
+                  borderColor = "rgba(4, 51, 119, 0.25)";
+                  shadow = "0 20px 40px -15px rgba(4, 51, 119, 0.15)";
+                } else if (isAdjacentLeft) {
+                  rotateZ = -2;
+                  y = -3;
+                  scale = 0.98;
+                } else if (isAdjacentRight) {
+                  rotateZ = 2;
+                  y = -3;
+                  scale = 0.98;
+                } else if (hoveredIndex !== null) {
+                  scale = 0.96;
+                  y = 0;
+                }
+
                 return (
                   <motion.div
                     key={s.step}
@@ -278,14 +545,68 @@ export default function PartnerPage() {
                     viewport={{ once: true }}
                     className="relative"
                   >
-                    <div className="bg-white/40 border border-slate-200/50 rounded-[2rem] p-5 md:p-6 lg:p-8 text-center relative z-10">
-                      <div className="text-[10px] font-black tracking-[0.3em] text-[#043377]/60 mb-4">{s.step}</div>
-                      <div className="w-14 h-14 rounded-2xl bg-white/80 border border-slate-200/60 flex items-center justify-center mx-auto mb-5">
-                        <Icon className="w-7 h-7 text-[#043377]" />
+                    {/* Connection Line */}
+                    {i < 4 && (
+                      <div className="hidden md:block absolute left-1/2 top-[78px] md:top-[82px] lg:top-[90px] w-[calc(100%+16px)] lg:w-[calc(100%+24px)] h-[2px] z-0 pointer-events-none">
+                        <svg className="w-full h-full" overflow="visible">
+                          <line
+                            x1="0"
+                            y1="0"
+                            x2="100%"
+                            y2="0"
+                            stroke="rgba(226, 232, 240, 0.4)"
+                            strokeWidth="2"
+                            strokeDasharray="6,6"
+                          />
+                          <motion.line
+                            x1="0"
+                            y1="0"
+                            x2="100%"
+                            y2="0"
+                            stroke="#043377"
+                            strokeWidth="2"
+                            strokeDasharray="6,6"
+                            initial={{ pathLength: 0, strokeDashoffset: 0 }}
+                            whileInView={{ pathLength: 1 }}
+                            viewport={{ once: true }}
+                            animate={{ strokeDashoffset: [-12, 0] }}
+                            transition={{
+                              pathLength: { duration: 0.6, delay: i * 0.15 + 0.3, ease: "easeOut" },
+                              strokeDashoffset: { repeat: Infinity, ease: "linear", duration: 1 }
+                            }}
+                          />
+                        </svg>
                       </div>
-                      <h3 className="text-xl font-black text-slate-900 mb-3 tracking-tight">{s.title}</h3>
+                    )}
+
+                    {/* Interactive Card */}
+                    <motion.div
+                      animate={{
+                        scale,
+                        y,
+                        rotateZ,
+                        zIndex,
+                        backgroundColor,
+                        borderColor,
+                        boxShadow: shadow,
+                      }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 300,
+                        damping: 22,
+                        mass: 0.8,
+                      }}
+                      onMouseEnter={() => setHoveredIndex(i)}
+                      onMouseLeave={() => setHoveredIndex(null)}
+                      className="border rounded-[2rem] px-4 py-5 md:px-3 md:py-6 lg:px-4 lg:py-8 text-center relative z-10 h-full cursor-pointer"
+                    >
+                      <div className="text-[10px] font-black tracking-[0.3em] text-[#043377]/60 mb-4">{s.step}</div>
+                      <div className="w-14 h-14 rounded-2xl bg-white/80 border border-slate-200/60 flex items-center justify-center mx-auto mb-5 relative z-10">
+                        {renderStepIcon(s.step, isHovered)}
+                      </div>
+                      <h3 className="text-xl md:text-xs lg:text-sm xl:text-base 2xl:text-xl font-black text-slate-900 mb-3 tracking-tight whitespace-nowrap">{s.title}</h3>
                       <div className="text-slate-600 text-sm leading-relaxed font-light">{s.description}</div>
-                    </div>
+                    </motion.div>
                   </motion.div>
                 );
               })}

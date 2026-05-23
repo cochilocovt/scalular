@@ -1,10 +1,11 @@
 'use client';
 
-import React, { useState } from 'react';
-import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
+import React, { useState, useRef, useEffect } from 'react';
+import { motion, AnimatePresence, useScroll, useMotionValueEvent, useMotionValue, useSpring } from 'framer-motion';
 import { FileText, Menu, X, User } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 import logoIcon from '@/assets/logo-icon.png';
 
 const NAV_LINKS = [
@@ -15,11 +16,80 @@ const NAV_LINKS = [
   { label: 'Partner',    href: '/partner' },
 ];
 
+interface MagneticLinkProps {
+  children: React.ReactNode;
+  onHoverStart: () => void;
+}
+
+function MagneticLink({ children, onHoverStart }: MagneticLinkProps) {
+  const ref = useRef<HTMLDivElement>(null);
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  
+  const springConfig = { damping: 15, stiffness: 150 };
+  const springX = useSpring(x, springConfig);
+  const springY = useSpring(y, springConfig);
+
+  const [shouldReduceMotion, setShouldReduceMotion] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setShouldReduceMotion(mediaQuery.matches);
+    const handler = (e: MediaQueryListEvent) => setShouldReduceMotion(e.matches);
+    mediaQuery.addEventListener('change', handler);
+    return () => mediaQuery.removeEventListener('change', handler);
+  }, []);
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (shouldReduceMotion || !ref.current) return;
+    const { clientX, clientY } = e;
+    const { left, top, width, height } = ref.current.getBoundingClientRect();
+    const centerX = left + width / 2;
+    const centerY = top + height / 2;
+    
+    // Subtle magnetic pull scaled to 22% of displacement
+    const distanceX = clientX - centerX;
+    const distanceY = clientY - centerY;
+    
+    x.set(distanceX * 0.22);
+    y.set(distanceY * 0.22);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
+
+  return (
+    <motion.div
+      ref={ref}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      onMouseEnter={onHoverStart}
+      style={{ x: springX, y: springY }}
+      className="relative z-10"
+    >
+      {children}
+    </motion.div>
+  );
+}
+
 export function Navbar() {
+  const pathname = usePathname();
   const { scrollY } = useScroll();
   const [hidden, setHidden] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [hoveredLabel, setHoveredLabel] = useState<string | null>(null);
+  const [shouldReduceMotion, setShouldReduceMotion] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setShouldReduceMotion(mediaQuery.matches);
+    const handler = (e: MediaQueryListEvent) => setShouldReduceMotion(e.matches);
+    mediaQuery.addEventListener('change', handler);
+    return () => mediaQuery.removeEventListener('change', handler);
+  }, []);
 
   useMotionValueEvent(scrollY, 'change', (latest) => {
     const previous = scrollY.getPrevious() ?? 0;
@@ -31,6 +101,19 @@ export function Navbar() {
     }
     setScrolled(latest > 50);
   });
+
+  // Identify active label based on pathname matching
+  const activeLabel = NAV_LINKS.find(link => {
+    if (link.href.startsWith('/#')) {
+      return pathname === '/';
+    }
+    if (link.href === '/') {
+      return pathname === '/';
+    }
+    return pathname === link.href || pathname.startsWith(link.href + '/');
+  })?.label || null;
+
+  const currentUnderline = hoveredLabel ?? activeLabel;
 
   return (
     <>
@@ -59,16 +142,42 @@ export function Navbar() {
         </Link>
 
         {/* Desktop nav links */}
-        <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-primary-foreground/70">
-          {NAV_LINKS.map(({ label, href }) => (
-            <Link
-              key={label}
-              href={href}
-              className="hover:text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground/50 focus-visible:ring-offset-2 focus-visible:ring-offset-primary transition-colors duration-200 rounded-sm"
-            >
-              {label}
-            </Link>
-          ))}
+        <nav 
+          className="hidden md:flex items-center gap-2 text-sm font-medium text-primary-foreground/70"
+          onMouseLeave={() => setHoveredLabel(null)}
+        >
+          {NAV_LINKS.map(({ label, href }) => {
+            const isActive = activeLabel === label;
+            const isHovered = hoveredLabel === label;
+            const isHighlighted = hoveredLabel ? isHovered : isActive;
+            
+            return (
+              <MagneticLink
+                key={label}
+                onHoverStart={() => setHoveredLabel(label)}
+              >
+                <Link
+                  href={href}
+                  className={`relative block px-3 py-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground/50 focus-visible:ring-offset-2 focus-visible:ring-offset-primary rounded-sm transition-colors duration-300 ${
+                    isHighlighted ? 'text-primary-foreground' : 'text-primary-foreground/50'
+                  }`}
+                >
+                  {label}
+                  {currentUnderline === label && (
+                    <motion.div
+                      layoutId="nav-underline"
+                      className="absolute bottom-0 left-3 right-3 h-[2px] bg-primary-foreground rounded-full"
+                      transition={
+                        shouldReduceMotion
+                          ? { duration: 0 }
+                          : { type: 'spring', stiffness: 380, damping: 30 }
+                      }
+                    />
+                  )}
+                </Link>
+              </MagneticLink>
+            );
+          })}
         </nav>
 
         {/* Right side controls */}

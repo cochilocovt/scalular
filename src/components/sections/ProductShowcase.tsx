@@ -43,13 +43,14 @@ function SafeCanvas({ children, isMobileCanvas = false }: { children: React.Reac
 }
 
 /* ─── Ticker config ──────────────────────────────────────── */
-const VISIBLE_RANGE = 4; // 4 above + active + 4 below = 9 visible
+const VISIBLE_RANGE = 5; // 5 above + active + 5 below = 11 visible
 const TICKER_SLOT_STYLES: Record<number, { fontSize: number; opacity: number; height: number }> = {
-  0: { fontSize: 34, opacity: 1, height: 54 },      // ACTIVE (center)
-  1: { fontSize: 18, opacity: 0.38, height: 36 },   // ±1
-  2: { fontSize: 15, opacity: 0.22, height: 30 },   // ±2
-  3: { fontSize: 13, opacity: 0.12, height: 26 },   // ±3
-  4: { fontSize: 12, opacity: 0.06, height: 24 },   // ±4 (outermost)
+  0: { fontSize: 56, opacity: 1, height: 72 },      // ACTIVE (center)
+  1: { fontSize: 24, opacity: 0.65, height: 40 },   // ±1
+  2: { fontSize: 18, opacity: 0.45, height: 32 },   // ±2
+  3: { fontSize: 15, opacity: 0.30, height: 28 },   // ±3
+  4: { fontSize: 13, opacity: 0.15, height: 24 },   // ±4
+  5: { fontSize: 11, opacity: 0.05, height: 22 },   // ±5 (outermost)
 };
 
 /* ─── Main Component ─────────────────────────────────────── */
@@ -156,9 +157,7 @@ export function ProductShowcase() {
 
       {/* ════════════════════ DESKTOP LAYOUT — Vertical Ticker ════════════════════ */}
       <div
-        className="hidden md:flex relative mx-auto w-full max-w-7xl h-[550px] flex-row overflow-hidden bg-background/50 rounded-3xl border border-border/50 shadow-xl z-10"
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
+        className="hidden md:flex relative mx-auto w-full max-w-7xl h-[650px] flex-row overflow-hidden bg-background/40 backdrop-blur-sm rounded-[2.5rem] border border-border/30 shadow-2xl z-10"
       >
         <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-primary via-blue-600 to-transparent z-30 opacity-80" />
 
@@ -170,23 +169,23 @@ export function ProductShowcase() {
             {/* Up Arrow Button */}
             <button
               onClick={handlePrev}
-              className="absolute top-6 left-12 z-20 p-2 rounded-full border border-border/40 bg-background/30 text-blue-400 hover:text-primary hover:border-primary/50 hover:bg-primary/5 transition-all duration-300 backdrop-blur-sm group focus:outline-none cursor-pointer"
+              className="absolute top-8 left-12 z-20 p-3 rounded-full border border-border/30 bg-background/40 text-blue-400 hover:text-primary hover:border-primary/60 hover:bg-primary/10 transition-all duration-300 backdrop-blur-md group focus:outline-none cursor-pointer shadow-lg"
               aria-label="Previous garment"
             >
-              <ChevronUp className="w-5 h-5 transition-transform duration-300 group-hover:-translate-y-0.5" />
+              <ChevronUp className="w-6 h-6 transition-transform duration-300 group-hover:-translate-y-1" />
             </button>
 
             {/* Edge fade masks */}
-            <div className="absolute top-0 left-0 right-0 h-28 z-10 pointer-events-none" style={{ background: 'linear-gradient(to bottom, var(--background), transparent)' }} />
-            <div className="absolute bottom-0 left-0 right-0 h-28 z-10 pointer-events-none" style={{ background: 'linear-gradient(to top, var(--background), transparent)' }} />
+            <div className="absolute top-0 left-0 right-0 h-40 z-10 pointer-events-none" style={{ background: 'linear-gradient(to bottom, var(--background), transparent)' }} />
+            <div className="absolute bottom-0 left-0 right-0 h-40 z-10 pointer-events-none" style={{ background: 'linear-gradient(to top, var(--background), transparent)' }} />
 
             {/* Down Arrow Button */}
             <button
               onClick={handleNext}
-              className="absolute bottom-6 left-12 z-20 p-2 rounded-full border border-border/40 bg-background/30 text-blue-400 hover:text-primary hover:border-primary/50 hover:bg-primary/5 transition-all duration-300 backdrop-blur-sm group focus:outline-none cursor-pointer"
+              className="absolute bottom-8 left-12 z-20 p-3 rounded-full border border-border/30 bg-background/40 text-blue-400 hover:text-primary hover:border-primary/60 hover:bg-primary/10 transition-all duration-300 backdrop-blur-md group focus:outline-none cursor-pointer shadow-lg"
               aria-label="Next garment"
             >
-              <ChevronDown className="w-5 h-5 transition-transform duration-300 group-hover:translate-y-0.5" />
+              <ChevronDown className="w-6 h-6 transition-transform duration-300 group-hover:translate-y-1" />
             </button>
 
             {/* 5 visible garment names */}
@@ -218,17 +217,17 @@ export function ProductShowcase() {
                     {item.isActive && (
                       <motion.div
                         layoutId="ticker-accent"
-                        className="absolute left-0 w-[3px] rounded-full"
-                        style={{ height: '55%', top: '22.5%', background: 'var(--color-primary)' }}
+                        className="absolute left-0 w-[4px] rounded-full"
+                        style={{ height: '75%', top: '12.5%', background: 'var(--color-primary)' }}
                         transition={{ duration: 0.35, ease: [0.25, 1, 0.5, 1] }}
                       />
                     )}
                     <h3
-                      className="font-display font-black leading-none uppercase tracking-tighter whitespace-nowrap"
+                      className={`font-display leading-none uppercase whitespace-nowrap ${item.isActive ? 'font-black tracking-tighter' : 'font-medium tracking-wider'}`}
                       style={{
                         fontSize: `${item.style.fontSize}px`,
                         color: item.isActive ? 'var(--color-primary)' : 'var(--color-blue-400)',
-                        paddingLeft: item.isActive ? 16 : 0,
+                        paddingLeft: item.isActive ? 24 : 0,
                         transition: 'color 0.3s cubic-bezier(0.25,1,0.5,1), padding-left 0.3s cubic-bezier(0.25,1,0.5,1)',
                       }}
                     >

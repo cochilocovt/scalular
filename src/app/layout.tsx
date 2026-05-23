@@ -1,20 +1,18 @@
 import type { Metadata } from 'next';
-import { Plus_Jakarta_Sans, Outfit } from 'next/font/google';
+import { Plus_Jakarta_Sans, Outfit, Geist } from 'next/font/google';
 import './globals.css';
 import { Navbar } from '@/components/ui/Navbar';
 import { SharedFooter } from '@/components/ui/SharedFooter';
 import { SmoothScroll } from '@/components/ui/SmoothScroll';
 import { SectionScrollbar } from '@/components/ui/SectionScrollbar';
+import { cn } from "@/lib/utils";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
-  variable: '--font-display',
+  variable: '--font-display-custom',
   subsets: ['latin'],
 });
 
-const outfit = Outfit({
-  variable: '--font-sans',
-  subsets: ['latin'],
-});
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 export const metadata: Metadata = {
   title: 'Scalular | Global Apparel Sourcing, Simplified',
@@ -27,7 +25,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${plusJakartaSans.variable} ${outfit.variable} antialiased light`} suppressHydrationWarning>
+    <html lang="en" className={cn("antialiased", "light", plusJakartaSans.variable, "font-sans", geist.variable)} suppressHydrationWarning>
       <body className="relative min-h-full flex flex-col bg-background text-text-primary font-sans" suppressHydrationWarning>
         <SmoothScroll>
           <a

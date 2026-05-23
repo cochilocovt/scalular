@@ -16,7 +16,7 @@ export function SharedFooter() {
                 Scalular
               </span>
             </Link>
-            <p className="text-xs text-primary-foreground/70 font-medium max-w-[220px]">
+            <p className="text-xs font-medium max-w-[220px]" style={{ color: '#ffffff' }}>
               Skip negotiation. Start production.
             </p>
           </div>
@@ -45,8 +45,8 @@ export function SharedFooter() {
 
         {/* Bottom row */}
         <div className="pt-6 border-t border-primary-foreground/10 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-xs text-primary-foreground/50">© 2026 Scalular. All rights reserved.</p>
-          <p className="text-xs text-primary-foreground/40">Built in Tiruppur — India&apos;s knitwear capital · contactus@scalular.com</p>
+          <p className="text-xs" style={{ color: '#ffffff' }}>© 2026 Scalular. All rights reserved.</p>
+          <p className="text-xs" style={{ color: '#ffffff' }}>Built in Tiruppur — India&apos;s knitwear capital · contactus@scalular.com</p>
         </div>
       </div>
     </footer>

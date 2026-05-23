@@ -7,6 +7,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { AnimatedCounter } from '@/components/ui/AnimatedCounter';
 import { GetStartedButton } from '@/components/ui/get-started-button';
+import { FAQAccordion } from '@/components/ui/FAQAccordion';
 
 const VALUES = [
   {
@@ -72,6 +73,49 @@ const fadeUp = {
     transition: { duration: 0.8, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] },
   }),
 };
+
+const FAQ_ITEMS = [
+  {
+    question: 'What is Scalular?',
+    answer: 'Scalular is a global sourcing and manufacturing platform connecting brands, retailers, and factories through a vetted production network across multiple countries and categories.',
+  },
+  {
+    question: 'Is there a subscription or joining fee?',
+    answer: 'No. There are no subscription fees or upfront charges to join or work with Scalular.',
+  },
+  {
+    question: 'How does Scalular ensure transparency?',
+    answer: 'We maintain clear visibility across pricing, production status, compliance, timelines, and factory capabilities to ensure aligned expectations throughout the process.',
+  },
+  {
+    question: 'Is my data and product information confidential?',
+    answer: 'Yes. All tech packs, pricing, product details, and business information shared with Scalular are handled confidentially and only shared with relevant production partners when required.',
+  },
+  {
+    question: 'Are all factories audited and verified?',
+    answer: 'We work with factories that meet defined compliance, capability, and quality standards. Many facilities within the network hold certifications such as WRAP, SMETA, BSCI, SLCP, GOTS, and OEKO-TEX.',
+  },
+  {
+    question: 'How are production partners selected?',
+    answer: 'Factories are matched based on category expertise, manufacturing intent, pricing competitiveness, compliance requirements, capacity, lead times, and technical capabilities.',
+  },
+  {
+    question: 'Can Scalular support both low and high MOQs?',
+    answer: 'Yes. We support a wide range of production scales depending on the category, complexity, and factory capability.',
+  },
+  {
+    question: 'Which countries does Scalular operate in?',
+    answer: 'Our production network spans India, Bangladesh, Vietnam, China, Sri Lanka, Kenya, and other strategic sourcing regions.',
+  },
+  {
+    question: 'What categories does Scalular support?',
+    answer: 'We support apparel, innerwear, knitwear, denim, childrenswear, outerwear, accessories, home textiles, and lifestyle products.',
+  },
+  {
+    question: 'Does Scalular support FOB programs?',
+    answer: 'Yes. We support FOB production models depending on the sourcing structure and destination market.',
+  },
+];
 
 export default function AboutPage() {
   // Track window scroll directly to avoid position:static warnings on container ref
@@ -394,6 +438,40 @@ export default function AboutPage() {
                 <div className="text-slate-600 font-light">contactus@scalular.com · +91 8920029744</div>
               </motion.div>
             </div>
+          </div>
+        </section>
+
+        {/* ── FAQ ── */}
+        <section className="py-12 md:py-24 px-6 md:px-12 border-t border-slate-200/50">
+          <div className="max-w-2xl mx-auto">
+            <div className="text-center mb-12">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="text-[11px] font-black tracking-[0.4em] uppercase text-[#043377] mb-6 inline-flex items-center gap-3"
+              >
+                <span className="w-8 h-[2px] bg-[#043377]" /> FAQ
+              </motion.div>
+              <motion.h2
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.1 }}
+                className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tighter"
+              >
+                Common <span className="text-[#043377]">Questions</span>
+              </motion.h2>
+            </div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
+              <FAQAccordion items={FAQ_ITEMS} />
+            </motion.div>
           </div>
         </section>
 

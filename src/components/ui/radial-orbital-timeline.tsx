@@ -35,18 +35,7 @@ export default function RadialOrbitalTimeline({
   const orbitRef = useRef<HTMLDivElement>(null);
   const nodeRefs = useRef<Record<number, HTMLDivElement | null>>({});
 
-  // Auto-select first node on mount to teach the interaction pattern
-  useEffect(() => {
-    if (timelineData.length > 0 && activeNodeId === null) {
-      const timer = setTimeout(() => {
-        setActiveNodeId(timelineData[0].id);
-        setAutoRotate(false);
-        centerViewOnNode(timelineData[0].id);
-      }, 800);
-      return () => clearTimeout(timer);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [timelineData]);
+  // Removed auto-select first node on mount to allow user interaction via central logo
 
   const handleContainerClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === containerRef.current || e.target === orbitRef.current) {
@@ -66,24 +55,20 @@ export default function RadialOrbitalTimeline({
     }
   };
 
-  // Auto-cycle through services every 5.5 seconds
-  useEffect(() => {
-    // Only auto-cycle if a node is currently selected
-    if (activeNodeId === null) return;
+  const goToNextService = () => {
+    if (timelineData.length === 0) return;
+    const currentIndex = timelineData.findIndex(item => item.id === activeNodeId);
+    let nextIndex = 0;
+    if (currentIndex !== -1) {
+      nextIndex = (currentIndex + 1) % timelineData.length;
+    }
+    const nextId = timelineData[nextIndex].id;
+    setActiveNodeId(nextId);
+    setAutoRotate(false);
+    centerViewOnNode(nextId);
+  };
 
-    const cycleTimer = setInterval(() => {
-      const currentIndex = timelineData.findIndex(item => item.id === activeNodeId);
-      if (currentIndex === -1) return;
-      
-      const nextIndex = (currentIndex + 1) % timelineData.length;
-      const nextId = timelineData[nextIndex].id;
-      
-      setActiveNodeId(nextId);
-      centerViewOnNode(nextId);
-    }, 5500);
-
-    return () => clearInterval(cycleTimer);
-  }, [activeNodeId, timelineData]);
+  // Removed auto-cycle to let the user control navigation by pressing the central logo
 
   useEffect(() => {
     if (!autoRotate) return;
@@ -208,10 +193,15 @@ export default function RadialOrbitalTimeline({
                   <p className="text-sm sm:text-base text-text-secondary leading-relaxed line-clamp-4 pr-4">
                     {activeItem.content}
                   </p>
+                  <div className="flex items-center gap-1.5 text-[11px] text-primary/85 font-bold tracking-wide uppercase mt-3 select-none animate-pulse">
+                    <span>Press to view Next</span>
+                    <span>→</span>
+                  </div>
                 </motion.div>
               ) : (
-                <div className="text-text-secondary/50 text-sm font-medium mt-auto mb-auto text-center">
-                  Rotate dial to select
+                <div className="text-text-secondary/50 text-sm font-medium mt-auto mb-auto text-center flex flex-col items-center gap-1.5">
+                  <p className="font-semibold text-text-primary">Press in the center</p>
+                  <p className="text-xs text-text-secondary/60">to view Next, or drag to explore</p>
                 </div>
               )}
             </AnimatePresence>
@@ -311,8 +301,43 @@ export default function RadialOrbitalTimeline({
 
             {/* Center mechanical hub */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[160px] h-[160px] rounded-full border border-border/50 bg-background flex items-center justify-center pointer-events-none shadow-[0_0_50px_rgba(0,0,0,0.1),inset_0_0_30px_rgba(0,0,0,0.05)]">
-              <div className="w-[100px] h-[100px] rounded-full border border-border/30 flex items-center justify-center bg-surface/50">
-                 <Image src={logo} alt="Scalular" width={48} height={48} className="rounded-full opacity-60 grayscale" loading="lazy" />
+              <div className="flex flex-col items-center justify-center gap-1 pointer-events-auto">
+                <motion.div
+                  className="w-14 h-14 rounded-full border border-border/30 flex items-center justify-center bg-surface/50 cursor-pointer relative"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    goToNextService();
+                  }}
+                  animate={{
+                    scale: [1, 1.06, 1],
+                  }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                >
+                  <Image src={logo} alt="Scalular" width={48} height={48} className="rounded-full opacity-90" loading="lazy" />
+                  {/* Pulsing halo */}
+                  <motion.div
+                    className="absolute -inset-1 rounded-full border border-primary/50 pointer-events-none"
+                    animate={{
+                      scale: [1, 1.3, 1],
+                      opacity: [0.6, 0, 0.6]
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      ease: "easeInOut"
+                    }}
+                  />
+                </motion.div>
+                <div className="text-[9px] text-text-secondary/60 font-semibold tracking-wider uppercase text-center pointer-events-none select-none max-w-[80px] leading-tight">
+                  Press
+                </div>
+                <div className="text-[8px] text-primary/70 font-medium tracking-normal text-center pointer-events-none select-none max-w-[80px] leading-tight">
+                  to view Next
+                </div>
               </div>
             </div>
           </div>
@@ -327,9 +352,44 @@ export default function RadialOrbitalTimeline({
               style={{ perspective: '1200px' }}
             >
               {/* Central Logo Node */}
-              <div className="absolute w-14 h-14 rounded-full flex items-center justify-center z-10 shadow-md">
-              <Image src={logo} alt="Scalular" width={56} height={56} className="rounded-full" loading="eager" />
-            </div>
+              <div className="absolute flex flex-col items-center justify-center z-10 gap-1.5">
+                <motion.div
+                  className="w-14 h-14 rounded-full flex items-center justify-center shadow-lg cursor-pointer bg-background relative"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    goToNextService();
+                  }}
+                  animate={{
+                    scale: [1, 1.06, 1],
+                  }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                >
+                  <Image src={logo} alt="Scalular" width={56} height={56} className="rounded-full select-none" loading="eager" />
+                  {/* Pulsing halo */}
+                  <motion.div
+                    className="absolute -inset-1 rounded-full border border-primary/50 pointer-events-none"
+                    animate={{
+                      scale: [1, 1.3, 1],
+                      opacity: [0.6, 0, 0.6]
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      ease: "easeInOut"
+                    }}
+                  />
+                </motion.div>
+                <div className="text-[9px] text-text-secondary/60 font-semibold tracking-wider uppercase text-center pointer-events-none select-none max-w-[90px] leading-tight mt-1">
+                  Press
+                </div>
+                <div className="text-[8px] text-primary/70 font-medium tracking-normal text-center pointer-events-none select-none max-w-[90px] leading-tight">
+                  to view Next
+                </div>
+              </div>
 
             <div className="absolute w-[340px] h-[340px] rounded-full border border-border opacity-40"></div>
             <div className="absolute w-[340px] h-[340px] rounded-full bg-primary/3 blur-3xl opacity-15"></div>
@@ -406,14 +466,18 @@ export default function RadialOrbitalTimeline({
                 >
                   {activeItem.title}
                 </h3>
-                <p className="text-base text-text-secondary leading-relaxed mb-6 whitespace-pre-line">
+                <p className="text-base text-text-secondary leading-relaxed mb-4 whitespace-pre-line">
                   {activeItem.content}
                 </p>
+                <div className="flex items-center gap-2 text-xs text-primary/80 font-bold tracking-wide uppercase select-none animate-pulse">
+                  <span>Press to view Next</span>
+                  <span>→</span>
+                </div>
               </div>
             );
           })() : (
             <div className="text-text-secondary/50">
-              <p className="text-sm font-medium">Select a service to learn more</p>
+              <p className="text-sm font-medium">Press in the center to view services</p>
             </div>
           )}
         </div>

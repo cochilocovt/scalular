@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence, Variants, Easing } from 'framer-motion';
 import { GlobeCdn } from '../ui/cobe-globe-cdn';
 import { GetStartedButton } from '../ui/get-started-button';
+import { BorderBeam } from '@/components/ui/border-beam';
 import Image from 'next/image';
 import { MapPin, Award, FileText, Lock } from 'lucide-react';
 import { FACTORY_MAP, FACTORY_IDS } from '@/data/factories';
@@ -208,23 +209,41 @@ export function ScrollStory() {
           variants={textVariants}
           initial="hidden"
           animate="visible"
-          className="flex flex-col items-center mt-2 mb-1 md:mt-6 md:mb-2 w-full md:max-w-2xl mx-auto md:bg-transparent md:backdrop-blur-3xl md:rounded-[24px] md:p-6 md:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)]"
+          className="relative overflow-hidden flex flex-col items-center mt-2 mb-1 md:mt-6 md:mb-2 w-full md:max-w-2xl mx-auto md:bg-neutral-100 md:rounded-[28px] md:p-8 md:border-2 md:border-primary/40 md:ring-1 md:ring-primary/15 md:ring-inset"
         >
-          <GetStartedButton
-            label="Get Your Instant Quote"
-            size="lg"
-            href="https://app.scalular.com/quote"
-            target="_blank"
-            withLamp={false}
-            baseColor="#043377"
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.75, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            className="relative z-10"
+          >
+            <GetStartedButton
+              label="Get Your Instant Quote"
+              size="lg"
+              href="https://app.scalular.com/quote"
+              target="_blank"
+              withLamp={false}
+              baseColor="#043377"
+            />
+          </motion.div>
+
+          {/* Gradient divider — animated width reveal */}
+          <motion.div
+            initial={{ width: 0, opacity: 0 }}
+            animate={{ width: 192, opacity: 1 }}
+            transition={{ delay: 1.0, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            className="hidden md:block h-[1px] my-5 relative z-10"
+            style={{
+              background: 'linear-gradient(to right, transparent, var(--color-blue-400), transparent)',
+            }}
           />
 
           {/* Text hint container */}
-          <div className="hidden md:flex flex-col items-center gap-2 mt-4">
+          <div className="hidden md:flex flex-col items-center gap-2 relative z-10">
             <motion.div 
-              initial={{ opacity: 0, y: 5 }}
+              initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.2, duration: 0.8 }}
+              transition={{ delay: 1.2, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
               className="flex items-center gap-2 text-text-secondary"
             >
               <FileText className="w-4 h-4 text-[#5580DE]" />
@@ -234,9 +253,9 @@ export function ScrollStory() {
             </motion.div>
 
             <motion.div 
-              initial={{ opacity: 0, y: 5 }}
+              initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.3, duration: 0.8 }}
+              transition={{ delay: 1.35, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
               className="flex items-center gap-2 text-text-secondary"
             >
               <Lock className="w-4 h-4 text-[#5580DE]" />
@@ -245,6 +264,15 @@ export function ScrollStory() {
               </span>
             </motion.div>
           </div>
+          <BorderBeam 
+            size={180}
+            duration={7}
+            borderWidth={4}
+            colorFrom="#10b981"
+            colorTo="#3b82f6"
+            borderRadius={28}
+            className="hidden md:block"
+          />
         </motion.div>
       </div>
 

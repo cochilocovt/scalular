@@ -209,7 +209,7 @@ export function ScrollStory() {
           variants={textVariants}
           initial="hidden"
           animate="visible"
-          className="relative overflow-hidden flex flex-col items-center mt-2 mb-1 md:mt-6 md:mb-2 w-full md:max-w-2xl mx-auto md:bg-neutral-100 md:rounded-[28px] md:p-8 md:border-2 md:border-primary/40 md:ring-1 md:ring-primary/15 md:ring-inset"
+          className="relative overflow-hidden flex flex-col items-center mt-2 mb-1 md:mt-6 md:mb-2 w-full md:max-w-2xl mx-auto md:bg-[#e6f2ff] md:rounded-[28px] md:p-8 md:border-2 md:border-blue-200 md:ring-1 md:ring-blue-100/50 md:ring-inset"
         >
           <motion.div
             initial={{ opacity: 0, y: 12 }}
@@ -223,7 +223,7 @@ export function ScrollStory() {
               href="https://app.scalular.com/quote"
               target="_blank"
               withLamp={false}
-              baseColor="#043377"
+              baseColor="#1d4ed8"
             />
           </motion.div>
 

@@ -193,10 +193,6 @@ export default function RadialOrbitalTimeline({
                   <p className="text-sm sm:text-base text-text-secondary leading-relaxed line-clamp-4 pr-4">
                     {activeItem.content}
                   </p>
-                  <div className="flex items-center gap-1.5 text-[11px] text-primary/85 font-bold tracking-wide uppercase mt-3 select-none animate-pulse">
-                    <span>Press to view Next</span>
-                    <span>→</span>
-                  </div>
                 </motion.div>
               ) : (
                 <div className="text-text-secondary/50 text-sm font-medium mt-auto mb-auto text-center flex flex-col items-center gap-1.5">
@@ -466,13 +462,9 @@ export default function RadialOrbitalTimeline({
                 >
                   {activeItem.title}
                 </h3>
-                <p className="text-base text-text-secondary leading-relaxed mb-4 whitespace-pre-line">
+                <p className="text-base text-text-secondary leading-relaxed mb-6 whitespace-pre-line">
                   {activeItem.content}
                 </p>
-                <div className="flex items-center gap-2 text-xs text-primary/80 font-bold tracking-wide uppercase select-none animate-pulse">
-                  <span>Press to view Next</span>
-                  <span>→</span>
-                </div>
               </div>
             );
           })() : (

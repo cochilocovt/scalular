@@ -4,7 +4,14 @@ import { ProductShowcase } from './ProductShowcase';
 import { TrustShowcase } from './TrustShowcase';
 import { TextAnimate } from '@/components/ui/text-animate';
 
-export function ShowcaseSection() {
+interface LogoItem {
+  id: string;
+  category: string;
+  src: string;
+  alt: string;
+}
+
+export function ShowcaseSection({ trustedByLogos }: { trustedByLogos: LogoItem[] }) {
   return (
     <section id="showcase" className="relative w-full bg-mesh-gradient py-12 overflow-hidden">
       {/* Subtle top border */}
@@ -51,7 +58,7 @@ export function ShowcaseSection() {
       </div>
 
       {/* Unified Trust Showcase */}
-      <TrustShowcase />
+      <TrustShowcase initialLogos={trustedByLogos} />
 
       <div className="max-w-[1400px] mx-auto px-6 md:px-12">
         {/* Product Showcase */}

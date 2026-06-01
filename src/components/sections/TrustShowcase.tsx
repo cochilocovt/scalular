@@ -40,10 +40,19 @@ const EXTRACTED_LOGOS = [
   { id: 's4', category: 'stores', src: '/images/extracted_logos/page6_img18.png', alt: 'Store Catered' },
 ];
 
-export function TrustShowcase() {
+interface LogoItem {
+  id: string;
+  category: string;
+  src: string;
+  alt: string;
+}
+
+export function TrustShowcase({ initialLogos }: { initialLogos?: LogoItem[] }) {
   const [activeTab, setActiveTab] = useState(TABS[0].id);
 
-  const displayedLogos = EXTRACTED_LOGOS.filter((logo) => logo.category === activeTab);
+  const logosList = initialLogos !== undefined ? initialLogos : EXTRACTED_LOGOS;
+
+  const displayedLogos = logosList.filter((logo) => logo.category === activeTab);
 
   return (
     <div className="w-full py-10 md:py-16 relative overflow-hidden">

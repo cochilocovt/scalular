@@ -54,6 +54,13 @@ export function TrustShowcase({ initialLogos }: { initialLogos?: LogoItem[] }) {
 
   const displayedLogos = logosList.filter((logo) => logo.category === activeTab);
 
+  // Dynamically calculate animation duration based on logo count to maintain uniform scrolling speed.
+  // Major Importers category has 7 items and flows at a comfortable speed with a 40s duration.
+  const baseItems = 7;
+  const baseDuration = 40;
+  const numItems = displayedLogos.length;
+  const marqueeDuration = numItems > 0 ? (numItems / baseItems) * baseDuration : baseDuration;
+
   return (
     <div className="w-full py-10 md:py-16 relative overflow-hidden">
       {/* Title & Tabs section */}
@@ -130,7 +137,7 @@ export function TrustShowcase({ initialLogos }: { initialLogos?: LogoItem[] }) {
             <div 
               className="flex items-center gap-6 md:gap-8 py-4 will-change-transform"
               style={{ 
-                animation: 'marquee-left 40s linear infinite',
+                animation: `marquee-left ${marqueeDuration}s linear infinite`,
                 width: 'max-content',
                 transform: 'translateZ(0)'
               }}

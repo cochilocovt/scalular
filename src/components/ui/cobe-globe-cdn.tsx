@@ -337,20 +337,55 @@ export function GlobeCdn({
         // Collision-aware vertical nudging for hub labels
         // Only process visible hubs to avoid unnecessary work
         const visibleHubs = projectedMarkers.filter(m => m.isBuyer && m.visible);
-        visibleHubs.sort((a, b) => a.y - b.y);
+        
+        // Find the active factory if it's visible to act as a static blocker (we don't nudge it)
+        const activeFactory = activeId ? projectedMarkers.find(m => m.id === activeId && m.visible) : null;
+        
+        // Merge them into a single list for collision checking
+        const collisionItems = [...visibleHubs] as any[];
+        if (activeFactory) {
+          collisionItems.push({
+            ...activeFactory,
+            // Shift its center y upwards slightly to match its visual transform (translateY(-24px) etc.)
+            y: activeFactory.y - (30 / size),
+            isStatic: true
+          });
+        }
 
-        const MIN_GAP = 0.08; // 8% of globe size ≈ 30px on a 400px globe
+        // Sort items by y coordinate from top to bottom
+        collisionItems.sort((a, b) => a.y - b.y);
+
+        // Badge dimensions in normalized coordinates
+        const badgeWidth = isMobile ? (85 / size) : (125 / size);
+        const badgeHeight = isMobile ? (26 / size) : (36 / size);
         const nudges: Record<string, number> = {};
 
-        for (let i = 1; i < visibleHubs.length; i++) {
-          const prev = visibleHubs[i - 1];
-          const curr = visibleHubs[i];
-          const prevNudge = nudges[prev.id] || 0;
-          const effectivePrevY = prev.y + prevNudge;
-          const gap = curr.y - effectivePrevY;
+        for (let i = 0; i < collisionItems.length; i++) {
+          const curr = collisionItems[i];
+          if (curr.isStatic) continue; // Static blockers can't be nudged
 
-          if (gap < MIN_GAP) {
-            nudges[curr.id] = (nudges[curr.id] || 0) + (MIN_GAP - gap);
+          let nudgeY = 0;
+
+          // Compare with all elements above it to find any horizontal overlap
+          for (let j = 0; j < i; j++) {
+            const prev = collisionItems[j];
+            
+            // Check horizontal overlap
+            const horizOverlap = Math.abs(curr.x - prev.x) < badgeWidth;
+            if (horizOverlap) {
+              const prevNudge = nudges[prev.id] || 0;
+              const effectivePrevY = prev.y + prevNudge;
+              const currY = curr.y + nudgeY;
+              
+              // If there's vertical overlap with this pushed element, adjust nudgeY
+              if (currY < effectivePrevY + badgeHeight) {
+                nudgeY = (effectivePrevY + badgeHeight) - curr.y;
+              }
+            }
+          }
+
+          if (nudgeY > 0) {
+            nudges[curr.id] = nudgeY;
           }
         }
 
@@ -618,14 +653,16 @@ export function GlobeCdn({
                 style={{
                   display: "flex",
                   alignItems: "center",
-                  gap: 8,
+                  gap: isMobile ? 6 : 8,
                   background: "var(--background)",
-                  padding: "8px 14px",
-                  borderRadius: 8,
-                  boxShadow: "0 8px 24px rgba(0, 0, 0, 0.4), 0 0 0 1px var(--glass-border)",
+                  padding: isMobile ? "4px 8px" : "8px 14px",
+                  borderRadius: isMobile ? 6 : 8,
+                  boxShadow: isMobile ? "0 4px 12px rgba(0, 0, 0, 0.3), 0 0 0 1px var(--glass-border)" : "0 8px 24px rgba(0, 0, 0, 0.4), 0 0 0 1px var(--glass-border)",
                   whiteSpace: "nowrap",
                   opacity: isConnected ? 1 : 0,
-                  transform: isConnected ? "translateY(-20px) scale(1)" : "translateY(0px) scale(0.9)",
+                  transform: isConnected 
+                    ? (isMobile ? "translateY(-14px) scale(1)" : "translateY(-20px) scale(1)") 
+                    : "translateY(0px) scale(0.9)",
                   transition: "opacity 0.5s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1)",
                   pointerEvents: isConnected ? "auto" : "none",
                   position: "relative",
@@ -633,17 +670,17 @@ export function GlobeCdn({
               >
                 <div
                   style={{
-                    width: 8,
-                    height: 8,
+                    width: isMobile ? 6 : 8,
+                    height: isMobile ? 6 : 8,
                     borderRadius: "50%",
                     background: m.color || "#171B2E",
-                    boxShadow: `0 0 12px ${m.color || "#171B2E"}`
+                    boxShadow: isMobile ? `0 0 8px ${m.color || "#171B2E"}` : `0 0 12px ${m.color || "#171B2E"}`
                   }}
                 />
                 <span
                   style={{
                     fontFamily: "var(--font-family)",
-                    fontSize: "0.65rem",
+                    fontSize: isMobile ? "0.55rem" : "0.65rem",
                     fontWeight: 700,
                     color: "var(--text-primary)",
                     letterSpacing: "0.1em",

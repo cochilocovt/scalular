@@ -30,7 +30,7 @@ jobs:
         run: npm run build
 
       - name: Deploy to Hostinger
-        uses: burnett01/rsync-deployments@7.0.1
+        uses: burnett01/rsync-deployments@v8
         with:
           switches: -avz --delete --exclude='api/' --chmod=Du=rwx,Dg=rx,Do=rx,Fu=rw,Fg=r,Fo=r
           path: out/
@@ -39,3 +39,5 @@ jobs:
           remote_port: '65002'
           remote_user: ${{ secrets.HOSTINGER_USER }}
           remote_key: ${{ secrets.HOSTINGER_SSH_KEY }}
+          legacy_allow_rsa_hostkeys: "true"
+          debug: "true"

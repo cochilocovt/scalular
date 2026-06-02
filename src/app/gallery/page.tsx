@@ -188,7 +188,7 @@ export default function GalleryPage() {
                     <span className="inline-block text-[9px] md:text-[10px] font-extrabold tracking-widest uppercase text-cyan-300 bg-slate-950/65 px-2.5 py-0.5 rounded-full border border-cyan-500/25 backdrop-blur-md">
                       {item.category}
                     </span>
-                    <h3 className="inline-block text-xs md:text-sm font-bold text-yellow-300 bg-slate-950/65 px-3 py-1 rounded-full border border-yellow-500/20 backdrop-blur-md leading-tight">
+                    <h3 className="inline-block text-xs md:text-sm font-bold text-cyan-300 bg-slate-950/65 px-3 py-1 rounded-full border border-cyan-500/20 backdrop-blur-md leading-tight">
                       {item.label}
                     </h3>
                   </div>

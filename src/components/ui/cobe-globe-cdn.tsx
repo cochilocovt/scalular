@@ -591,17 +591,17 @@ export function GlobeCdn({
                 style={{
                   display: "flex",
                   alignItems: "center",
-                  gap: 6,
+                  gap: isMobile ? 4 : 6,
                   background: "var(--background)",
-                  padding: "6px 10px",
-                  borderRadius: 6,
+                  padding: isMobile ? "3px 6px" : "6px 10px",
+                  borderRadius: isMobile ? 4 : 6,
                   boxShadow: "0 4px 12px var(--neu-shadow-dark), 0 0 0 1px var(--glass-border)",
                   whiteSpace: "nowrap" as const,
                   opacity: isActive ? 1 : 0,
                   transform: isActive 
                     ? (m.id === 'srilanka' 
-                      ? "translateY(24px) scale(1)" 
-                      : "translateY(-24px) scale(1)") 
+                      ? (isMobile ? "translateY(16px) scale(0.95)" : "translateY(24px) scale(1)") 
+                      : (isMobile ? "translateY(-16px) scale(0.95)" : "translateY(-24px) scale(1)")) 
                     : "translateY(-14px) scale(0.95)",
                   transition: "opacity 0.4s ease, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1)",
                   pointerEvents: isActive ? "auto" : "none",
@@ -615,8 +615,8 @@ export function GlobeCdn({
                       top: m.id === 'srilanka' ? -4 : 'auto',
                       left: "50%",
                       transform: "translateX(-50%) rotate(45deg)",
-                      width: 8,
-                      height: 8,
+                      width: isMobile ? 6 : 8,
+                      height: isMobile ? 6 : 8,
                       background: "var(--background)",
                       borderTop: m.id === 'srilanka' ? "1px solid var(--glass-border)" : "none",
                       borderLeft: m.id === 'srilanka' ? "1px solid var(--glass-border)" : "none",
@@ -628,7 +628,7 @@ export function GlobeCdn({
                 <span
                   style={{
                     fontFamily: "var(--font-family)",
-                    fontSize: "0.6rem",
+                    fontSize: isMobile ? "0.5rem" : "0.6rem",
                     fontWeight: 600,
                     color: "var(--text-primary)",
                     letterSpacing: "0.02em",
@@ -674,15 +674,15 @@ export function GlobeCdn({
                 style={{
                   display: "flex",
                   alignItems: "center",
-                  gap: isMobile ? 6 : 8,
+                  gap: isMobile ? 4 : 8,
                   background: "var(--background)",
-                  padding: isMobile ? "4px 8px" : "8px 14px",
-                  borderRadius: isMobile ? 6 : 8,
-                  boxShadow: isMobile ? "0 4px 12px rgba(0, 0, 0, 0.3), 0 0 0 1px var(--glass-border)" : "0 8px 24px rgba(0, 0, 0, 0.4), 0 0 0 1px var(--glass-border)",
+                  padding: isMobile ? "3px 6px" : "8px 14px",
+                  borderRadius: isMobile ? 5 : 8,
+                  boxShadow: isMobile ? "0 2px 8px rgba(0, 0, 0, 0.2), 0 0 0 1px var(--glass-border)" : "0 8px 24px rgba(0, 0, 0, 0.4), 0 0 0 1px var(--glass-border)",
                   whiteSpace: "nowrap",
                   opacity: isConnected ? 1 : 0,
                   transform: isConnected 
-                    ? (isMobile ? "translateY(-14px) scale(1)" : "translateY(-20px) scale(1)") 
+                    ? (isMobile ? "translateY(-10px) scale(0.95)" : "translateY(-20px) scale(1)") 
                     : "translateY(0px) scale(0.9)",
                   transition: "opacity 0.5s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1)",
                   pointerEvents: isConnected ? "auto" : "none",
@@ -691,24 +691,24 @@ export function GlobeCdn({
               >
                 <div
                   style={{
-                    width: isMobile ? 6 : 8,
-                    height: isMobile ? 6 : 8,
+                    width: isMobile ? 5 : 8,
+                    height: isMobile ? 5 : 8,
                     borderRadius: "50%",
                     background: m.color || "#171B2E",
-                    boxShadow: isMobile ? `0 0 8px ${m.color || "#171B2E"}` : `0 0 12px ${m.color || "#171B2E"}`
+                    boxShadow: isMobile ? `0 0 6px ${m.color || "#171B2E"}` : `0 0 12px ${m.color || "#171B2E"}`
                   }}
                 />
                 <span
                   style={{
                     fontFamily: "var(--font-family)",
-                    fontSize: isMobile ? "0.55rem" : "0.65rem",
+                    fontSize: isMobile ? "0.45rem" : "0.65rem",
                     fontWeight: 700,
                     color: "var(--text-primary)",
                     letterSpacing: "0.1em",
                     textTransform: "uppercase",
                   }}
                 >
-                  {m.region} HUB
+                  {isMobile ? m.region : `${m.region} HUB`}
                 </span>
               </div>
             </div>
@@ -742,28 +742,28 @@ export function GlobeCdn({
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  width: isMobile ? 24 : 32,
-                  height: isMobile ? 24 : 32,
+                  width: isMobile ? 18 : 32,
+                  height: isMobile ? 18 : 32,
                   background: "var(--color-neutral-100)",
-                  border: `2px solid ${m.color}`,
+                  border: `${isMobile ? 1.5 : 2}px solid ${m.color}`,
                   borderRadius: "50%",
-                  boxShadow: `0 0 16px ${m.color}, inset 0 0 8px ${m.color}`,
+                  boxShadow: isMobile ? `0 0 8px ${m.color}, inset 0 0 4px ${m.color}` : `0 0 16px ${m.color}, inset 0 0 8px ${m.color}`,
                   pointerEvents: "auto",
                 }}
               >
                 {isHQ ? (
                   <Building2 
                     style={{ 
-                      width: isMobile ? 12 : 16, 
-                      height: isMobile ? 12 : 16, 
+                      width: isMobile ? 10 : 16, 
+                      height: isMobile ? 10 : 16, 
                       color: m.color 
                     }} 
                   />
                 ) : (
                   <Briefcase 
                     style={{ 
-                      width: isMobile ? 12 : 16, 
-                      height: isMobile ? 12 : 16, 
+                      width: isMobile ? 10 : 16, 
+                      height: isMobile ? 10 : 16, 
                       color: m.color 
                     }} 
                   />
@@ -778,17 +778,17 @@ export function GlobeCdn({
                   alignItems: "center",
                   background: "rgba(23, 27, 46, 0.92)",
                   border: "1px solid var(--glass-border)",
-                  padding: isMobile ? "2px 6px" : "4px 10px",
-                  borderRadius: 6,
-                  marginTop: 6,
-                  boxShadow: "0 6px 20px rgba(0, 0, 0, 0.4)",
+                  padding: isMobile ? "2px 5px" : "4px 10px",
+                  borderRadius: 5,
+                  marginTop: isMobile ? 3 : 6,
+                  boxShadow: isMobile ? "0 3px 10px rgba(0, 0, 0, 0.3)" : "0 6px 20px rgba(0, 0, 0, 0.4)",
                   pointerEvents: "auto",
                 }}
               >
                 <span
                   style={{
                     fontFamily: "var(--font-family)",
-                    fontSize: isMobile ? "0.55rem" : "0.65rem",
+                    fontSize: isMobile ? "0.45rem" : "0.65rem",
                     fontWeight: 800,
                     color: "#ffffff",
                     letterSpacing: "0.05em",
@@ -796,22 +796,24 @@ export function GlobeCdn({
                     lineHeight: 1.2,
                   }}
                 >
-                  {m.region}
+                  {isMobile ? `${m.region} (${isHQ ? 'HQ' : 'OFFICE'})` : m.region}
                 </span>
-                <span
-                  style={{
-                    fontFamily: "var(--font-family)",
-                    fontSize: isMobile ? "0.45rem" : "0.5rem",
-                    fontWeight: 700,
-                    color: m.color,
-                    letterSpacing: "0.02em",
-                    textTransform: "uppercase",
-                    lineHeight: 1.1,
-                    marginTop: 1,
-                  }}
-                >
-                  {m.specialty}
-                </span>
+                {!isMobile && (
+                  <span
+                    style={{
+                      fontFamily: "var(--font-family)",
+                      fontSize: "0.5rem",
+                      fontWeight: 700,
+                      color: m.color,
+                      letterSpacing: "0.02em",
+                      textTransform: "uppercase",
+                      lineHeight: 1.1,
+                      marginTop: 1,
+                    }}
+                  >
+                    {m.specialty}
+                  </span>
+                )}
               </div>
             </div>
           );

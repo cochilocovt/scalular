@@ -570,6 +570,7 @@ export function GlobeCdn({
                 opacity: `var(--cobe-visible-${m.id}, 0)`,
                 filter: `blur(calc((1 - var(--cobe-visible-${m.id}, 0)) * 8px))`,
                 transition: "opacity 0.3s, filter 0.3s",
+                zIndex: isActive ? 65 : 30,
               }}
             >
               {/* Factory Marker */}
@@ -597,7 +598,11 @@ export function GlobeCdn({
                   boxShadow: "0 4px 12px var(--neu-shadow-dark), 0 0 0 1px var(--glass-border)",
                   whiteSpace: "nowrap" as const,
                   opacity: isActive ? 1 : 0,
-                  transform: isActive ? "translateY(-24px) scale(1)" : "translateY(-14px) scale(0.95)",
+                  transform: isActive 
+                    ? (m.id === 'srilanka' 
+                      ? "translateY(24px) scale(1)" 
+                      : "translateY(-24px) scale(1)") 
+                    : "translateY(-14px) scale(0.95)",
                   transition: "opacity 0.4s ease, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1)",
                   pointerEvents: isActive ? "auto" : "none",
                 }}
@@ -606,14 +611,17 @@ export function GlobeCdn({
                   <div
                     style={{
                       position: "absolute",
-                      bottom: -4,
+                      bottom: m.id === 'srilanka' ? 'auto' : -4,
+                      top: m.id === 'srilanka' ? -4 : 'auto',
                       left: "50%",
                       transform: "translateX(-50%) rotate(45deg)",
                       width: 8,
                       height: 8,
                       background: "var(--background)",
-                      borderBottom: "1px solid var(--glass-border)",
-                      borderRight: "1px solid var(--glass-border)",
+                      borderTop: m.id === 'srilanka' ? "1px solid var(--glass-border)" : "none",
+                      borderLeft: m.id === 'srilanka' ? "1px solid var(--glass-border)" : "none",
+                      borderBottom: m.id === 'srilanka' ? "none" : "1px solid var(--glass-border)",
+                      borderRight: m.id === 'srilanka' ? "none" : "1px solid var(--glass-border)",
                     }}
                   />
                 )}

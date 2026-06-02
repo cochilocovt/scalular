@@ -56,7 +56,7 @@ export const FACTORIES: Factory[] = [
     specialty: 'Lingerie · Intimate Apparel',
     specialties: ['Lingerie', 'Activewear', 'Intimate Apparel'],
     certifications: ['WRAP', 'SLCP', 'SEDEX'],
-    accentColor: 'var(--color-blue-100)',
+    accentColor: '#0f766e',
     factoryCount: 5,
   },
   {
@@ -74,7 +74,7 @@ export const FACTORIES: Factory[] = [
     specialty: 'Scale · Technology · Accessories',
     specialties: ['Scale', 'Technology', 'Accessories'],
     certifications: ['WRAP', 'SEDEX', 'BCI'],
-    accentColor: 'var(--color-surface-muted)',
+    accentColor: '#991b1b',
     factoryCount: 9,
   },
 ];

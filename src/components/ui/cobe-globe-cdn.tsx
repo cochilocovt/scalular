@@ -49,6 +49,7 @@ const VAR_TO_HEX: Record<string, string> = {
 };
 
 function resolveHex(cssVar: string): string {
+  if (cssVar.startsWith('#')) return cssVar;
   return VAR_TO_HEX[cssVar] ?? '#171B2E';
 }
 

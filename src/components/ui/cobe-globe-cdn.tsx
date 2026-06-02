@@ -2,8 +2,9 @@
 
 import { useEffect, useRef, useCallback, useState } from "react"
 import createGlobe from "cobe"
+import { Building2, Briefcase } from "lucide-react"
 
-import { FACTORIES, BUYER_HUBS, SUPPLY_ARCS } from '@/data/factories';
+import { FACTORIES, BUYER_HUBS, SUPPLY_ARCS, OFFICES } from '@/data/factories';
 
 interface GlobeMarker {
   id: string
@@ -12,6 +13,8 @@ interface GlobeMarker {
   specialty: string
   color?: string
   isBuyer?: boolean
+  isOffice?: boolean
+  officeType?: 'hq' | 'office'
   factoryCount?: number
 }
 
@@ -66,6 +69,15 @@ const defaultMarkers: GlobeMarker[] = [
     specialty: h.label,
     color: resolveHex(h.accentColor),
     isBuyer: true as const,
+  })),
+  ...OFFICES.map(o => ({
+    id: o.id,
+    location: o.location,
+    region: o.name,
+    specialty: o.label,
+    color: o.accentColor,
+    isOffice: true as const,
+    officeType: o.type,
   })),
 ];
 
@@ -404,7 +416,7 @@ export function GlobeCdn({
         let minDistance = 0.2 // Tighter threshold so it only triggers near true center
 
         markers.forEach(m => {
-          if (m.isBuyer) return
+          if (m.isBuyer || m.isOffice) return
           // Marker phi in COBE terms. Cobe phi=0 is at lon=-90, so we add 1.5 * PI
           const markerPhi = (Math.PI * 1.5) - (m.location[1] * Math.PI) / 180
           // Calculate distance between current phi and marker phi
@@ -492,8 +504,9 @@ export function GlobeCdn({
     );
   };
 
-  const factories = markers.filter((m) => !m.isBuyer)
-  const hubs = markers.filter((m) => m.isBuyer)
+  const factories = markers.filter((m) => !m.isBuyer && !m.isOffice)
+  const hubs = markers.filter((m) => m.isBuyer && !m.isOffice)
+  const offices = markers.filter((m) => m.isOffice)
 
   return (
     <div ref={containerRef} className={`relative select-none flex items-center justify-center ${className}`}>
@@ -692,6 +705,108 @@ export function GlobeCdn({
               </div>
             </div>
           )
+        })}
+
+        {/* ── Relationship & HQ Offices floating markers ── */}
+        {offices.map((m) => {
+          const isHQ = m.officeType === 'hq';
+          return (
+            <div
+              key={m.id}
+              id={`marker-${m.id}`}
+              style={{
+                position: "absolute",
+                transform: "translate(-50%, -50%)",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                pointerEvents: "none",
+                opacity: `var(--cobe-visible-${m.id}, 0)`,
+                filter: `blur(calc((1 - var(--cobe-visible-${m.id}, 0)) * 8px))`,
+                transition: "opacity 0.3s, filter 0.3s",
+                zIndex: 50,
+              }}
+            >
+              {/* Icon with pulsing background container */}
+              <div
+                style={{
+                  position: "relative",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: isMobile ? 24 : 32,
+                  height: isMobile ? 24 : 32,
+                  background: "var(--color-neutral-100)",
+                  border: `2px solid ${m.color}`,
+                  borderRadius: "50%",
+                  boxShadow: `0 0 16px ${m.color}, inset 0 0 8px ${m.color}`,
+                  pointerEvents: "auto",
+                }}
+              >
+                {isHQ ? (
+                  <Building2 
+                    style={{ 
+                      width: isMobile ? 12 : 16, 
+                      height: isMobile ? 12 : 16, 
+                      color: m.color 
+                    }} 
+                  />
+                ) : (
+                  <Briefcase 
+                    style={{ 
+                      width: isMobile ? 12 : 16, 
+                      height: isMobile ? 12 : 16, 
+                      color: m.color 
+                    }} 
+                  />
+                )}
+              </div>
+
+              {/* Permanent label tag */}
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  background: "rgba(23, 27, 46, 0.92)",
+                  border: "1px solid var(--glass-border)",
+                  padding: isMobile ? "2px 6px" : "4px 10px",
+                  borderRadius: 6,
+                  marginTop: 6,
+                  boxShadow: "0 6px 20px rgba(0, 0, 0, 0.4)",
+                  pointerEvents: "auto",
+                }}
+              >
+                <span
+                  style={{
+                    fontFamily: "var(--font-family)",
+                    fontSize: isMobile ? "0.55rem" : "0.65rem",
+                    fontWeight: 800,
+                    color: "#ffffff",
+                    letterSpacing: "0.05em",
+                    textTransform: "uppercase",
+                    lineHeight: 1.2,
+                  }}
+                >
+                  {m.region}
+                </span>
+                <span
+                  style={{
+                    fontFamily: "var(--font-family)",
+                    fontSize: isMobile ? "0.45rem" : "0.5rem",
+                    fontWeight: 700,
+                    color: m.color,
+                    letterSpacing: "0.02em",
+                    textTransform: "uppercase",
+                    lineHeight: 1.1,
+                    marginTop: 1,
+                  }}
+                >
+                  {m.specialty}
+                </span>
+              </div>
+            </div>
+          );
         })}
         </div>
       </div>

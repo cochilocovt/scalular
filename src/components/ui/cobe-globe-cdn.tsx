@@ -416,7 +416,7 @@ export function GlobeCdn({
         let minDistance = 0.2 // Tighter threshold so it only triggers near true center
 
         markers.forEach(m => {
-          if (m.isBuyer || m.isOffice) return
+          if (m.isBuyer) return
           // Marker phi in COBE terms. Cobe phi=0 is at lon=-90, so we add 1.5 * PI
           const markerPhi = (Math.PI * 1.5) - (m.location[1] * Math.PI) / 180
           // Calculate distance between current phi and marker phi
@@ -718,6 +718,7 @@ export function GlobeCdn({
         {/* ── Relationship & HQ Offices floating markers ── */}
         {offices.map((m) => {
           const isHQ = m.officeType === 'hq';
+          const isActive = activeId === m.id;
           return (
             <div
               key={m.id}
@@ -732,7 +733,7 @@ export function GlobeCdn({
                 opacity: `var(--cobe-visible-${m.id}, 0)`,
                 filter: `blur(calc((1 - var(--cobe-visible-${m.id}, 0)) * 8px))`,
                 transition: "opacity 0.3s, filter 0.3s",
-                zIndex: 50,
+                zIndex: isActive ? 60 : 30,
               }}
             >
               {/* Icon with pulsing background container */}
@@ -770,7 +771,7 @@ export function GlobeCdn({
                 )}
               </div>
 
-              {/* Permanent label tag */}
+              {/* Label tag (only shown when active / in center of the globe) */}
               <div
                 style={{
                   display: "flex",
@@ -782,7 +783,12 @@ export function GlobeCdn({
                   borderRadius: 5,
                   marginTop: isMobile ? 3 : 6,
                   boxShadow: isMobile ? "0 3px 10px rgba(0, 0, 0, 0.3)" : "0 6px 20px rgba(0, 0, 0, 0.4)",
-                  pointerEvents: "auto",
+                  pointerEvents: isActive ? "auto" : "none",
+                  opacity: isActive ? 1 : 0,
+                  transform: isActive 
+                    ? "translateY(0px) scale(1)" 
+                    : "translateY(10px) scale(0.9)",
+                  transition: "opacity 0.4s ease, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1)",
                 }}
               >
                 <span

@@ -1,7 +1,7 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { type LucideIcon } from "lucide-react";
-import { motion, AnimatePresence, animate, AnimationPlaybackControls } from "framer-motion";
+import { motion, animate, AnimationPlaybackControls } from "framer-motion";
 import Image from "next/image";
 import logo from "@/assets/logo-icon.png";
 
@@ -33,6 +33,9 @@ export default function RadialOrbitalTimeline({
 
   const [autoRotate, setAutoRotate] = useState<boolean>(true);
   const [activeNodeId, setActiveNodeId] = useState<number | null>(null);
+  const [prevActiveItem, setPrevActiveItem] = useState<TimelineItem | null>(null);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const transitionTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [centerOffset] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const containerRef = useRef<HTMLDivElement>(null);
   const orbitRef = useRef<HTMLDivElement>(null);
@@ -49,11 +52,36 @@ export default function RadialOrbitalTimeline({
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const getReferenceIndex = () => {
+  const activeItem = timelineData.find((item) => item.id === activeNodeId) || null;
+
+  // Track previous active item for crossfade transitions
+  useEffect(() => {
+    if (activeItem) {
+      if (prevActiveItem && prevActiveItem.id !== activeItem.id) {
+        setIsTransitioning(true);
+        if (transitionTimeoutRef.current) clearTimeout(transitionTimeoutRef.current);
+        transitionTimeoutRef.current = setTimeout(() => {
+          setPrevActiveItem(activeItem);
+          setIsTransitioning(false);
+        }, 280);
+      } else if (!prevActiveItem) {
+        setPrevActiveItem(activeItem);
+      }
+    } else {
+      setPrevActiveItem(null);
+      setIsTransitioning(false);
+    }
+    return () => {
+      if (transitionTimeoutRef.current) clearTimeout(transitionTimeoutRef.current);
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeItem?.id]);
+
+  const getReferenceIndex = useCallback(() => {
     if (activeNodeId === null) return 0;
     const idx = timelineData.findIndex(item => item.id === activeNodeId);
     return idx === -1 ? 0 : idx;
-  };
+  }, [activeNodeId, timelineData]);
 
   const handleContainerClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === containerRef.current || e.target === orbitRef.current) {
@@ -82,7 +110,7 @@ export default function RadialOrbitalTimeline({
     }
   };
 
-  const goToNextService = () => {
+  const goToNextService = useCallback(() => {
     if (timelineData.length === 0) return;
     const currentIndex = timelineData.findIndex(item => item.id === activeNodeId);
     let nextIndex = 0;
@@ -96,9 +124,10 @@ export default function RadialOrbitalTimeline({
     if (!isMobile) {
       centerViewOnNode(nextId);
     }
-  };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeNodeId, timelineData, isMobile]);
 
-  const goToPrevService = () => {
+  const goToPrevService = useCallback(() => {
     if (timelineData.length === 0) return;
     const currentIndex = timelineData.findIndex(item => item.id === activeNodeId);
     let prevIndex = timelineData.length - 1;
@@ -112,7 +141,8 @@ export default function RadialOrbitalTimeline({
     if (!isMobile) {
       centerViewOnNode(prevId);
     }
-  };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeNodeId, timelineData, isMobile]);
 
   // Removed auto-cycle to let the user control navigation by pressing the central logo
 
@@ -122,7 +152,7 @@ export default function RadialOrbitalTimeline({
     let animationFrameId: number;
     let lastTime = performance.now();
 
-    const animate = (now: number) => {
+    const tick = (now: number) => {
       const delta = now - lastTime;
       lastTime = now;
       // ~0.3 degrees per 50ms = 6 degrees/second
@@ -130,10 +160,10 @@ export default function RadialOrbitalTimeline({
         const newAngle = (prev + (delta * 0.006)) % 360;
         return Number(newAngle.toFixed(3));
       });
-      animationFrameId = requestAnimationFrame(animate);
+      animationFrameId = requestAnimationFrame(tick);
     };
 
-    animationFrameId = requestAnimationFrame(animate);
+    animationFrameId = requestAnimationFrame(tick);
 
     return () => {
       cancelAnimationFrame(animationFrameId);
@@ -187,24 +217,8 @@ export default function RadialOrbitalTimeline({
     return { x, y, angle, zIndex, opacity };
   };
 
-  const activeItem = timelineData.find((item) => item.id === activeNodeId);
-
-  const textVariants = {
-    enter: (dir: number) => ({
-      x: dir > 0 ? 60 : -60,
-      opacity: 0,
-    }),
-    center: {
-      zIndex: 1,
-      x: 0,
-      opacity: 1,
-    },
-    exit: (dir: number) => ({
-      zIndex: 0,
-      x: dir < 0 ? 60 : -60,
-      opacity: 0,
-    })
-  };
+  // Determine which text to show: during transition show outgoing, after transition show incoming
+  const displayItem = isTransitioning ? prevActiveItem : activeItem;
 
   return (
     <div
@@ -216,37 +230,30 @@ export default function RadialOrbitalTimeline({
 
         {/* ── Mobile: Semi-Circle Navigation Arc ──────────── */}
         <div className="w-full flex lg:hidden relative flex-col bg-transparent">
-          {/* Content Area */}
-          <div className="w-full px-6 pt-6 pb-2 min-h-[190px] flex flex-col justify-start">
-            <AnimatePresence mode="wait" custom={direction}>
-              {activeItem ? (
-                <motion.div
-                  key={activeItem.id}
-                  custom={direction}
-                  variants={textVariants}
-                  initial="enter"
-                  animate="center"
-                  exit="exit"
-                  transition={{ duration: 0.35, ease: "easeOut" }}
-                  className="flex flex-col"
+          {/* Content Area — fixed height to prevent layout shifts */}
+          <div className="w-full px-6 pt-6 pb-2 h-[190px] flex flex-col justify-start overflow-hidden relative">
+            {displayItem ? (
+              <div
+                key={displayItem.id}
+                className="flex flex-col rot-text-enter"
+                style={{ willChange: 'transform, opacity' }}
+              >
+                <h3
+                  className="text-2xl font-extrabold text-text-primary tracking-tight leading-[1.1] mb-2"
+                  style={{ fontFamily: 'var(--font-display)' }}
                 >
-                  <h3
-                    className="text-2xl font-extrabold text-text-primary tracking-tight leading-[1.1] mb-2"
-                    style={{ fontFamily: 'var(--font-display)' }}
-                  >
-                    {activeItem.title}
-                  </h3>
-                  <p className="text-sm text-text-secondary leading-relaxed pr-2">
-                    {activeItem.content}
-                  </p>
-                </motion.div>
-              ) : (
-                <div className="text-text-secondary/50 text-sm font-medium my-auto text-center flex flex-col items-center gap-1.5 w-full pointer-events-auto">
-                  <p className="font-semibold text-text-primary">Press in the center</p>
-                  <p className="text-xs text-text-secondary/60">to view services, or swipe to explore</p>
-                </div>
-              )}
-            </AnimatePresence>
+                  {displayItem.title}
+                </h3>
+                <p className="text-sm text-text-secondary leading-relaxed pr-2 line-clamp-4">
+                  {displayItem.content}
+                </p>
+              </div>
+            ) : (
+              <div className="text-text-secondary/50 text-sm font-medium my-auto text-center flex flex-col items-center gap-1.5 w-full pointer-events-auto">
+                <p className="font-semibold text-text-primary">Press in the center</p>
+                <p className="text-xs text-text-secondary/60">to view services, or swipe to explore</p>
+              </div>
+            )}
           </div>
 
           {/* Semi-Circle Arc Area */}
@@ -304,8 +311,6 @@ export default function RadialOrbitalTimeline({
                 const isVisible = Math.abs(diff) <= 2;
 
                 // Semi-circle coordinates
-                // Center of the arc is at bottom middle of container (x=0, y=180px)
-                // Radius is 135px
                 const radius = 135;
                 const angleSpacing = 38;
                 const angle = 270 + diff * angleSpacing;
@@ -320,22 +325,21 @@ export default function RadialOrbitalTimeline({
                     className={`
                       absolute w-14 h-14 rounded-full flex items-center justify-center
                       border focus:outline-none focus:ring-2 focus:ring-primary/50
+                      rot-node
                       ${isActive
-                        ? 'bg-primary text-white border-blue-500 shadow-[0_0_12px_rgba(59,130,246,0.35)] scale-115'
+                        ? 'bg-primary text-white border-blue-500 shadow-[0_0_12px_rgba(59,130,246,0.35)]'
                         : 'bg-surface text-text-primary border-border hover:border-primary/50'
                       }
                     `}
                     style={{
                       left: "50%",
                       top: "180px",
-                      transform: `translate3d(${x}px, ${y}px, 0px) scale(${isActive ? 1.15 : 0.9})`,
+                      transform: `translate3d(${x}px, ${y}px, 0) scale(${isActive ? 1.15 : 0.9})`,
                       marginLeft: "-28px",
                       marginTop: "-28px",
                       zIndex: isActive ? 50 : 30 - Math.abs(diff),
                       opacity: isVisible ? (isActive ? 1 : (Math.abs(diff) === 1 ? 0.75 : 0.35)) : 0,
                       pointerEvents: isVisible ? 'auto' : 'none',
-                      transition: 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease, border-color 0.3s, background-color 0.3s',
-                      willChange: 'transform, opacity',
                     }}
                     onClick={(e) => {
                       e.stopPropagation();
@@ -356,7 +360,7 @@ export default function RadialOrbitalTimeline({
                 style={{
                   left: "50%",
                   top: "180px",
-                  transform: "translate(-50%, -50%)",
+                  transform: "translate3d(-50%, -50%, 0)",
                 }}
               >
                 <button
@@ -442,7 +446,7 @@ export default function RadialOrbitalTimeline({
                 transform: `translate3d(${position.x}px, ${position.y}px, 0px)`,
                 zIndex: isActive ? 200 : position.zIndex,
                 opacity: isActive ? 1 : position.opacity,
-                willChange: 'transform, opacity',
+                willChange: 'transform, opacity' as const,
               };
 
               return (
@@ -525,6 +529,35 @@ export default function RadialOrbitalTimeline({
           from { opacity: 0; transform: translateX(12px); }
           to   { opacity: 1; transform: translateX(0); }
         }
+
+        /* Mobile text entry — pure CSS, GPU-composited */
+        @keyframes rotTextEnter {
+          from {
+            opacity: 0;
+            transform: translate3d(0, 8px, 0);
+          }
+          to {
+            opacity: 1;
+            transform: translate3d(0, 0, 0);
+          }
+        }
+        .rot-text-enter {
+          animation: rotTextEnter 0.28s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+        }
+
+        /* Mobile node transitions — all GPU-composited */
+        .rot-node {
+          will-change: transform, opacity;
+          transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                      opacity 0.3s ease,
+                      border-color 0.2s ease,
+                      background-color 0.2s ease;
+          -webkit-transform: translateZ(0);
+          backface-visibility: hidden;
+          -webkit-backface-visibility: hidden;
+        }
+
+        /* Pulsing halos */
         @keyframes pulse-halo-1 {
           0% { transform: scale(1); opacity: 0.7; }
           50% { transform: scale(1.35); opacity: 0; }

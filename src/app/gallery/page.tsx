@@ -184,11 +184,11 @@ export default function GalleryPage() {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-300" />
                   
                   {/* Label / Caption */}
-                  <div className="absolute bottom-4 left-5 z-10 pr-4 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
-                    <span className="inline-block mb-1 text-[10px] font-bold tracking-widest uppercase text-white/70 bg-white/20 px-2 py-0.5 rounded-sm backdrop-blur-md">
+                  <div className="absolute bottom-4 left-4 z-10 pr-4 flex flex-col items-start gap-1.5 opacity-100 transition-all duration-300">
+                    <span className="inline-block text-[9px] md:text-[10px] font-extrabold tracking-widest uppercase text-cyan-300 bg-slate-950/65 px-2.5 py-0.5 rounded-full border border-cyan-500/25 backdrop-blur-md">
                       {item.category}
                     </span>
-                    <h3 className="text-sm md:text-base font-bold text-white tracking-tight leading-tight">
+                    <h3 className="inline-block text-xs md:text-sm font-bold text-yellow-300 bg-slate-950/65 px-3 py-1 rounded-full border border-yellow-500/20 backdrop-blur-md leading-tight">
                       {item.label}
                     </h3>
                   </div>

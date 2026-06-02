@@ -36,6 +36,8 @@ export default function RadialOrbitalTimeline({
   const [prevActiveItem, setPrevActiveItem] = useState<TimelineItem | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const transitionTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const serviceSeenCount = useRef<number>(0);
+  const [showOnboarding, setShowOnboarding] = useState(true);
   const [centerOffset] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const containerRef = useRef<HTMLDivElement>(null);
   const orbitRef = useRef<HTMLDivElement>(null);
@@ -107,6 +109,11 @@ export default function RadialOrbitalTimeline({
       if (!isMobile) {
         centerViewOnNode(id);
       }
+
+      serviceSeenCount.current += 1;
+      if (serviceSeenCount.current >= 2 && showOnboarding) {
+        setShowOnboarding(false);
+      }
     }
   };
 
@@ -124,8 +131,13 @@ export default function RadialOrbitalTimeline({
     if (!isMobile) {
       centerViewOnNode(nextId);
     }
+
+    serviceSeenCount.current += 1;
+    if (serviceSeenCount.current >= 2 && showOnboarding) {
+      setShowOnboarding(false);
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeNodeId, timelineData, isMobile]);
+  }, [activeNodeId, timelineData, isMobile, showOnboarding]);
 
   const goToPrevService = useCallback(() => {
     if (timelineData.length === 0) return;
@@ -141,8 +153,13 @@ export default function RadialOrbitalTimeline({
     if (!isMobile) {
       centerViewOnNode(prevId);
     }
+
+    serviceSeenCount.current += 1;
+    if (serviceSeenCount.current >= 2 && showOnboarding) {
+      setShowOnboarding(false);
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeNodeId, timelineData, isMobile]);
+  }, [activeNodeId, timelineData, isMobile, showOnboarding]);
 
   // Removed auto-cycle to let the user control navigation by pressing the central logo
 
@@ -288,11 +305,7 @@ export default function RadialOrbitalTimeline({
               }}
             />
 
-            {/* Instruction Pill Badge */}
-            <div className="absolute top-[105px] left-1/2 -translate-x-1/2 bg-surface px-3.5 py-1 rounded-full border border-border/40 shadow-sm text-[9px] text-text-secondary font-bold uppercase tracking-wider select-none pointer-events-none z-20 flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-primary/85 animate-ping" />
-              Tap center to view next
-            </div>
+
 
             {/* Nodes Group Container */}
             <div className="relative w-full h-full">
@@ -380,6 +393,47 @@ export default function RadialOrbitalTimeline({
                     className="rounded-full opacity-90 select-none pointer-events-none" 
                     loading="lazy" 
                   />
+                  {/* Onboarding cue — shown until 2 services seen */}
+                  {showOnboarding && (
+                    <>
+                      {/* Spinning crescent arc */}
+                      <svg
+                        className="absolute -inset-2 pointer-events-none onboard-arc"
+                        viewBox="0 0 72 72"
+                        fill="none"
+                      >
+                        <circle
+                          cx="36" cy="36" r="33"
+                          stroke="url(#arcGrad)"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeDasharray="52 156"
+                        />
+                        <defs>
+                          <linearGradient id="arcGrad" x1="0" y1="0" x2="72" y2="72">
+                            <stop offset="0%" stopColor="rgba(56,189,248,0.8)" />
+                            <stop offset="100%" stopColor="rgba(37,99,235,0.3)" />
+                          </linearGradient>
+                        </defs>
+                      </svg>
+
+                      {/* Tap finger icon */}
+                      <svg
+                        className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 pointer-events-none onboard-tap-icon"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="rgba(56,189,248,0.9)"
+                        strokeWidth="2.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="M15 13.5V8a2 2 0 0 0-4 0v5.5" />
+                        <path d="M14 13.5a2 2 0 0 1 4 0v1.5a6 6 0 0 1-6 6h-1a7 7 0 0 1-7-7V12a2 2 0 0 1 4 0" />
+                        <path d="M11 13.5V7a2 2 0 0 0-4 0v6.5" />
+                      </svg>
+                    </>
+                  )}
+
                   {/* Pulsing halos - Logo Inspired */}
                   {/* Inner Sky Blue */}
                   <div
@@ -584,6 +638,36 @@ export default function RadialOrbitalTimeline({
         .pulse-halo-desktop {
           animation: pulse-halo-desktop 2s infinite ease-in-out;
           will-change: transform, opacity;
+        }
+
+        /* Spinning crescent arc — slow continuous rotation */
+        @keyframes onboard-arc-spin {
+          from { transform: rotate(0deg); }
+          to   { transform: rotate(360deg); }
+        }
+        .onboard-arc {
+          animation: onboard-arc-spin 3s linear infinite;
+          will-change: transform;
+          -webkit-transform: translateZ(0);
+          backface-visibility: hidden;
+        }
+
+        /* Tap icon — gentle bob to draw attention */
+        @keyframes onboard-tap-bob {
+          0%, 100% { transform: translate3d(0, 0, 0) scale(1); opacity: 0.9; }
+          50%      { transform: translate3d(-1px, -2px, 0) scale(1.1); opacity: 1; }
+        }
+        .onboard-tap-icon {
+          animation: onboard-tap-bob 1.8s ease-in-out infinite;
+          will-change: transform, opacity;
+          -webkit-transform: translateZ(0);
+          backface-visibility: hidden;
+        }
+
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+          .onboard-arc { animation: none; }
+          .onboard-tap-icon { animation: none; opacity: 0.8; }
         }
       `}</style>
     </div>

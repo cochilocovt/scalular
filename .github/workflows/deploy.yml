@@ -31,5 +31,6 @@ jobs:
           path: out/
           remote_path: ~/public_html/
           remote_host: ${{ secrets.HOSTINGER_HOST }}
+          remote_port: '65002'
           remote_user: ${{ secrets.HOSTINGER_USER }}
           remote_key: ${{ secrets.HOSTINGER_SSH_KEY }}

@@ -10,9 +10,14 @@ import { cn } from "@/lib/utils";
 const plusJakartaSans = Plus_Jakarta_Sans({
   variable: '--font-display-custom',
   subsets: ['latin'],
+  preload: false,
 });
 
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
+const geist = Geist({
+  subsets: ['latin'],
+  variable: '--font-sans',
+  preload: false,
+});
 
 export const metadata: Metadata = {
   title: 'Scalular | Global Apparel Sourcing, Simplified',

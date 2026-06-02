@@ -25,6 +25,9 @@ export default function RadialOrbitalTimeline({
   const rotationAngleRef = useRef<number>(0);
   useEffect(() => { rotationAngleRef.current = rotationAngle; }, [rotationAngle]);
 
+  const touchStartX = useRef<number | null>(null);
+  const touchStartY = useRef<number | null>(null);
+
   const [direction, setDirection] = useState<1 | -1>(1);
   const animationRef = useRef<AnimationPlaybackControls | null>(null);
 
@@ -254,23 +257,32 @@ export default function RadialOrbitalTimeline({
             }}
           >
             {/* Gesture Detection Overlay */}
-            <motion.div
+            <div
               className="absolute inset-0 z-10 cursor-grab active:cursor-grabbing"
-              drag="x"
-              dragConstraints={{ left: 0, right: 0 }}
-              dragElastic={0.2}
-              onDragEnd={(event, info) => {
-                const swipeThreshold = 50;
-                if (info.offset.x < -swipeThreshold) {
-                  goToNextService();
-                } else if (info.offset.x > swipeThreshold) {
-                  goToPrevService();
+              onTouchStart={(e) => {
+                touchStartX.current = e.touches[0].clientX;
+                touchStartY.current = e.touches[0].clientY;
+              }}
+              onTouchEnd={(e) => {
+                if (touchStartX.current === null || touchStartY.current === null) return;
+                const diffX = e.changedTouches[0].clientX - touchStartX.current;
+                const diffY = e.changedTouches[0].clientY - touchStartY.current;
+                
+                // Only trigger horizontal swipe if horizontal movement is larger than vertical and exceeds threshold
+                if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 40) {
+                  if (diffX < 0) {
+                    goToNextService();
+                  } else {
+                    goToPrevService();
+                  }
                 }
+                touchStartX.current = null;
+                touchStartY.current = null;
               }}
             />
 
             {/* Instruction Pill Badge */}
-            <div className="absolute top-[105px] left-1/2 -translate-x-1/2 bg-surface/90 backdrop-blur-sm px-3.5 py-1 rounded-full border border-border/40 shadow-sm text-[9px] text-text-secondary font-bold uppercase tracking-wider select-none pointer-events-none z-20 flex items-center gap-1.5">
+            <div className="absolute top-[105px] left-1/2 -translate-x-1/2 bg-surface px-3.5 py-1 rounded-full border border-border/40 shadow-sm text-[9px] text-text-secondary font-bold uppercase tracking-wider select-none pointer-events-none z-20 flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-primary/85 animate-ping" />
               Tap center to view next
             </div>
@@ -309,20 +321,21 @@ export default function RadialOrbitalTimeline({
                       absolute w-14 h-14 rounded-full flex items-center justify-center
                       border focus:outline-none focus:ring-2 focus:ring-primary/50
                       ${isActive
-                        ? 'bg-primary text-white border-blue-500 shadow-[0_0_25px_rgba(59,130,246,0.45)] scale-115'
+                        ? 'bg-primary text-white border-blue-500 shadow-[0_0_12px_rgba(59,130,246,0.35)] scale-115'
                         : 'bg-surface text-text-primary border-border hover:border-primary/50'
                       }
                     `}
                     style={{
                       left: "50%",
                       top: "180px",
-                      transform: `translate(${x}px, ${y}px) scale(${isActive ? 1.15 : 0.9})`,
+                      transform: `translate3d(${x}px, ${y}px, 0px) scale(${isActive ? 1.15 : 0.9})`,
                       marginLeft: "-28px",
                       marginTop: "-28px",
                       zIndex: isActive ? 50 : 30 - Math.abs(diff),
                       opacity: isVisible ? (isActive ? 1 : (Math.abs(diff) === 1 ? 0.75 : 0.35)) : 0,
                       pointerEvents: isVisible ? 'auto' : 'none',
                       transition: 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease, border-color 0.3s, background-color 0.3s',
+                      willChange: 'transform, opacity',
                     }}
                     onClick={(e) => {
                       e.stopPropagation();
@@ -365,30 +378,12 @@ export default function RadialOrbitalTimeline({
                   />
                   {/* Pulsing halos - Logo Inspired */}
                   {/* Inner Sky Blue */}
-                  <motion.div
-                    className="absolute -inset-1.5 rounded-full border border-sky-400/50 pointer-events-none"
-                    animate={{
-                      scale: [1, 1.35, 1],
-                      opacity: [0.7, 0, 0.7]
-                    }}
-                    transition={{
-                      duration: 2.2,
-                      repeat: Infinity,
-                      ease: "easeInOut"
-                    }}
+                  <div
+                    className="absolute -inset-1.5 rounded-full border border-sky-400/50 pointer-events-none pulse-halo-1"
                   />
                   {/* Outer Royal Blue */}
-                  <motion.div
-                    className="absolute -inset-3 rounded-full border border-blue-500/20 pointer-events-none"
-                    animate={{
-                      scale: [1, 1.5, 1],
-                      opacity: [0.5, 0, 0.5]
-                    }}
-                    transition={{
-                      duration: 2.8,
-                      repeat: Infinity,
-                      ease: "easeInOut"
-                    }}
+                  <div
+                    className="absolute -inset-3 rounded-full border border-blue-500/20 pointer-events-none pulse-halo-2"
                   />
                 </button>
               </div>
@@ -423,17 +418,8 @@ export default function RadialOrbitalTimeline({
                 >
                   <Image src={logo} alt="Scalular" width={56} height={56} className="rounded-full select-none" loading="eager" />
                   {/* Pulsing halo */}
-                  <motion.div
-                    className="absolute -inset-1 rounded-full border border-primary/50 pointer-events-none"
-                    animate={{
-                      scale: [1, 1.3, 1],
-                      opacity: [0.6, 0, 0.6]
-                    }}
-                    transition={{
-                      duration: 2,
-                      repeat: Infinity,
-                      ease: "easeInOut"
-                    }}
+                  <div
+                    className="absolute -inset-1 rounded-full border border-primary/50 pointer-events-none pulse-halo-desktop"
                   />
                 </motion.div>
                 <div className="text-[9px] text-text-secondary/60 font-semibold tracking-wider uppercase text-center pointer-events-none select-none max-w-[90px] leading-tight mt-1">
@@ -453,9 +439,10 @@ export default function RadialOrbitalTimeline({
               const Icon = item.icon;
 
               const nodeStyle = {
-                transform: `translate(${position.x}px, ${position.y}px)`,
+                transform: `translate3d(${position.x}px, ${position.y}px, 0px)`,
                 zIndex: isActive ? 200 : position.zIndex,
                 opacity: isActive ? 1 : position.opacity,
+                willChange: 'transform, opacity',
               };
 
               return (
@@ -532,11 +519,38 @@ export default function RadialOrbitalTimeline({
         </div>
       </div>
 
-      {/* Inline keyframes for panel animation */}
+      {/* Inline keyframes for panel and pulsing animations */}
       <style>{`
         @keyframes fadeSlideIn {
           from { opacity: 0; transform: translateX(12px); }
           to   { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes pulse-halo-1 {
+          0% { transform: scale(1); opacity: 0.7; }
+          50% { transform: scale(1.35); opacity: 0; }
+          100% { transform: scale(1); opacity: 0.7; }
+        }
+        @keyframes pulse-halo-2 {
+          0% { transform: scale(1); opacity: 0.5; }
+          50% { transform: scale(1.5); opacity: 0; }
+          100% { transform: scale(1); opacity: 0.5; }
+        }
+        @keyframes pulse-halo-desktop {
+          0% { transform: scale(1); opacity: 0.6; }
+          50% { transform: scale(1.3); opacity: 0; }
+          100% { transform: scale(1); opacity: 0.6; }
+        }
+        .pulse-halo-1 {
+          animation: pulse-halo-1 2.2s infinite ease-in-out;
+          will-change: transform, opacity;
+        }
+        .pulse-halo-2 {
+          animation: pulse-halo-2 2.8s infinite ease-in-out;
+          will-change: transform, opacity;
+        }
+        .pulse-halo-desktop {
+          animation: pulse-halo-desktop 2s infinite ease-in-out;
+          will-change: transform, opacity;
         }
       `}</style>
     </div>

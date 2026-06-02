@@ -180,6 +180,85 @@ export function GlobeCdn({
         markersContainerRef.current.style.height = `${size}px`
       }
 
+      // Intercept getContext to prevent WebGL warnings from unbound vertex attribute arrays
+      const originalGetContext = canvas.getContext;
+      canvas.getContext = function (type: string, attribs?: any) {
+        const gl = (originalGetContext as any).call(canvas, type, attribs);
+        if (gl && (type === 'webgl' || type === 'webgl2')) {
+          const originalDrawArrays = gl.drawArrays;
+          const originalDrawElements = gl.drawElements;
+          
+          const cleanUnusedAttributes = (webglContext: any) => {
+            const program = webglContext.getParameter(webglContext.CURRENT_PROGRAM);
+            if (!program) return;
+            
+            const activeAttributes = webglContext.getProgramParameter(program, webglContext.ACTIVE_ATTRIBUTES);
+            const activeIndices = new Set<number>();
+            for (let i = 0; i < activeAttributes; i++) {
+              const info = webglContext.getActiveAttrib(program, i);
+              if (info) {
+                const loc = webglContext.getAttribLocation(program, info.name);
+                if (loc >= 0) {
+                  activeIndices.add(loc);
+                }
+              }
+            }
+            
+            const maxAttribs = webglContext.getParameter(webglContext.MAX_VERTEX_ATTRIBS) || 16;
+            for (let i = 0; i < maxAttribs; i++) {
+              if (!activeIndices.has(i)) {
+                webglContext.disableVertexAttribArray(i);
+              }
+            }
+          };
+
+          gl.drawArrays = function (mode: number, first: number, count: number) {
+            cleanUnusedAttributes(this);
+            return originalDrawArrays.call(this, mode, first, count);
+          };
+
+          gl.drawElements = function (mode: number, count: number, type: number, offset: number) {
+            cleanUnusedAttributes(this);
+            return originalDrawElements.call(this, mode, count, type, offset);
+          };
+
+          if ('drawArraysInstanced' in gl) {
+            const originalDrawArraysInstanced = (gl as any).drawArraysInstanced;
+            (gl as any).drawArraysInstanced = function (mode: number, first: number, count: number, instanceCount: number) {
+              cleanUnusedAttributes(this);
+              return originalDrawArraysInstanced.call(this, mode, first, count, instanceCount);
+            };
+          }
+          if ('drawElementsInstanced' in gl) {
+            const originalDrawElementsInstanced = (gl as any).drawElementsInstanced;
+            (gl as any).drawElementsInstanced = function (mode: number, count: number, type: number, offset: number, instanceCount: number) {
+              cleanUnusedAttributes(this);
+              return originalDrawElementsInstanced.call(this, mode, count, type, offset, instanceCount);
+            };
+          }
+
+          const originalGetExtension = gl.getExtension;
+          gl.getExtension = function (name: string) {
+            const ext = originalGetExtension.call(this, name);
+            if (ext && name.toLowerCase() === 'angle_instanced_arrays') {
+              const originalDrawArraysInstancedANGLE = ext.drawArraysInstancedANGLE;
+              const originalDrawElementsInstancedANGLE = ext.drawElementsInstancedANGLE;
+              
+              ext.drawArraysInstancedANGLE = function (mode: number, first: number, count: number, instanceCount: number) {
+                cleanUnusedAttributes(gl);
+                return originalDrawArraysInstancedANGLE.call(this, mode, first, count, instanceCount);
+              };
+              ext.drawElementsInstancedANGLE = function (mode: number, count: number, type: number, offset: number, instanceCount: number) {
+                cleanUnusedAttributes(gl);
+                return originalDrawElementsInstancedANGLE.call(this, mode, count, type, offset, instanceCount);
+              };
+            }
+            return ext;
+          };
+        }
+        return gl;
+      } as any;
+
       globe = createGlobe(canvas, {
         devicePixelRatio: Math.min(window.devicePixelRatio || 1, 2),
         width: size * 2, // internal resolution

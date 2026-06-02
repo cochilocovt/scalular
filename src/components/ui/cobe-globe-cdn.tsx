@@ -725,14 +725,14 @@ export function GlobeCdn({
               id={`marker-${m.id}`}
               style={{
                 position: "absolute",
-                transform: "translate(-50%, -50%)",
+                transform: isActive ? "translate(-50%, -50%) scale(1)" : "translate(-50%, -50%) scale(0.8)",
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
                 pointerEvents: "none",
-                opacity: `var(--cobe-visible-${m.id}, 0)`,
+                opacity: isActive ? `var(--cobe-visible-${m.id}, 0)` : 0,
                 filter: `blur(calc((1 - var(--cobe-visible-${m.id}, 0)) * 8px))`,
-                transition: "opacity 0.3s, filter 0.3s",
+                transition: "opacity 0.4s ease, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), filter 0.3s",
                 zIndex: isActive ? 60 : 30,
               }}
             >

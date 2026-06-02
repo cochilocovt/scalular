@@ -29,15 +29,25 @@ jobs:
       - name: Build static export
         run: npm run build
 
-      - name: Deploy to Hostinger
-        uses: burnett01/rsync-deployments@v8
-        with:
-          switches: -avz --delete --exclude='api/' --chmod=Du=rwx,Dg=rx,Do=rx,Fu=rw,Fg=r,Fo=r
-          path: out/
-          remote_path: ~/domains/scalular.com/public_html/
-          remote_host: ${{ secrets.HOSTINGER_HOST }}
-          remote_port: '65002'
-          remote_user: ${{ secrets.HOSTINGER_USER }}
-          remote_key: ${{ secrets.HOSTINGER_SSH_KEY }}
-          legacy_allow_rsa_hostkeys: "true"
-          debug: "true"
+      - name: Deploy to Hostinger via Rsync with Retries
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.HOSTINGER_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          
+          ssh-keyscan -p 65002 -H "${{ secrets.HOSTINGER_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null || true
+          
+          echo "Starting rsync deployment with retries..."
+          for i in {1..5}; do
+            echo "Attempt $i of 5..."
+            if rsync -avz --delete --exclude='api/' --chmod=Du=rwx,Dg=rx,Do=rx,Fu=rw,Fg=r,Fo=r \
+              -e "ssh -i ~/.ssh/id_rsa -p 65002 -o ConnectTimeout=15 -o ConnectionAttempts=3 -o StrictHostKeyChecking=no" \
+              out/ ${{ secrets.HOSTINGER_USER }}@${{ secrets.HOSTINGER_HOST }}:~/domains/scalular.com/public_html/; then
+                echo "Deployment successful on attempt $i!"
+                exit 0
+              fi
+            echo "Rsync connection failed/timed out, retrying in 15 seconds..."
+            sleep 15
+          done
+          echo "Error: Deployment failed after 5 attempts."
+          exit 1

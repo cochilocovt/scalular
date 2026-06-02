@@ -105,10 +105,10 @@ const fadeUp = {
 };
 
 const PROOF_STATS = [
-  { target: 200, suffix: '+', label: 'Brands Connected' },
-  { target: 30, suffix: '+', label: 'Factory Partners' },
-  { target: 10, suffix: '', label: 'Countries' },
-  { target: 1, suffix: 'M+', label: 'Pcs/Month' },
+  { target: 6, suffix: '', label: 'Countries' },
+  { target: 25, suffix: '+', label: 'Factories' },
+  { target: 3000, suffix: '+', label: 'Orders Completed' },
+  { target: 20, suffix: '+', label: 'Years of Experience' },
 ];
 
 /* ── Custom Animated Icons for 5-Step Progress ── */

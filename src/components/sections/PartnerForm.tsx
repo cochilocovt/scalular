@@ -1,8 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CheckCircle2 } from 'lucide-react';
+import { CheckCircle2, Loader2 } from 'lucide-react';
 import { GetStartedButton } from '@/components/ui/get-started-button';
 
 interface FormState {
@@ -29,6 +29,10 @@ export function PartnerForm({ darkMode = false }: PartnerFormProps) {
     streetAddress: '', fullAddress: '', city: '', state: '', zip: '', country: ''
   });
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [files, setFiles] = useState<FileList | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [errors, setErrors] = useState<Partial<Record<keyof FormState, string>>>({});
 
   const validate = () => {
@@ -41,10 +45,34 @@ export function PartnerForm({ darkMode = false }: PartnerFormProps) {
     return Object.keys(e).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
-    setSubmitted(true);
+    setSubmitting(true);
+    setSubmitError(null);
+
+    try {
+      const formData = new FormData();
+      Object.entries(form).forEach(([key, value]) => {
+        formData.append(key, value);
+      });
+      if (files) {
+        Array.from(files).forEach(file => formData.append('attachments', file));
+      }
+
+      const res = await fetch('/api/submit.php', { method: 'POST', body: formData });
+      const data = await res.json();
+
+      if (data.success) {
+        setSubmitted(true);
+      } else {
+        setSubmitError(data.error || 'Submission failed. Please try again.');
+      }
+    } catch {
+      setSubmitError('Network error. Please try again.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   // Dark mode styles
@@ -168,8 +196,31 @@ export function PartnerForm({ darkMode = false }: PartnerFormProps) {
               </div>
             </div>
 
+            {/* File Uploads */}
+            <div>
+              <label className={labelCls} style={darkLabelStyle}>Attachments (PDFs, Images)</label>
+              <input
+                ref={fileInputRef}
+                type="file"
+                multiple
+                accept=".pdf,image/*"
+                onChange={(e) => setFiles(e.target.files)}
+                className={inputCls('factoryName')}
+                style={darkInputStyle}
+              />
+              <div className={`text-xs mt-1 ${darkMode ? 'text-white/40' : 'text-text-secondary/60'}`}>
+                Max 10MB per file, 25MB total. PDF, JPG, PNG, WebP accepted.
+              </div>
+            </div>
+
+            {submitError && (
+              <div className={`text-sm text-center px-4 py-3 rounded-xl ${darkMode ? 'bg-red-500/10 border border-red-500/20 text-red-400' : 'bg-destructive/10 border border-destructive/20 text-destructive'}`}>
+                {submitError}
+              </div>
+            )}
+
             <div className="flex justify-center pt-2">
-              <GetStartedButton label="Submit Application" size="lg" />
+              <GetStartedButton label={submitting ? 'Submitting...' : 'Submit Application'} size="lg" disabled={submitting} />
             </div>
           </motion.form>
         )}

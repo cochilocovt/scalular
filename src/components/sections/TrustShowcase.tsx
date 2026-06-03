@@ -81,14 +81,14 @@ export function TrustShowcase({ initialLogos }: { initialLogos?: LogoItem[] }) {
           className="text-3xl md:text-5xl lg:text-5xl font-black text-text-primary tracking-tighter font-sans"
           style={{ fontFamily: 'var(--font-sans)' }}
         >
-          TRUSTED BY{' '}
+          OUR TEAM HAS WORKED{' '}
           <motion.span 
             className="text-gradient inline-block"
             animate={{ backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'] }}
             transition={{ duration: 6, ease: "linear", repeat: Infinity }}
             style={{ backgroundSize: '200% auto' }}
           >
-            LEADERS
+            WITH
           </motion.span>
         </motion.h3>
       </div>

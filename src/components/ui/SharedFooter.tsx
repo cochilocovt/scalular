@@ -46,7 +46,7 @@ export function SharedFooter() {
         {/* Bottom row */}
         <div className="pt-6 border-t border-primary-foreground/10 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-xs" style={{ color: '#ffffff' }}>© 2026 Scalular. All rights reserved.</p>
-          <p className="text-xs" style={{ color: '#ffffff' }}>Built in Tiruppur — India&apos;s knitwear capital · contactus@scalular.com</p>
+          <p className="text-xs" style={{ color: '#ffffff' }}>contactus@scalular.com</p>
         </div>
       </div>
     </footer>

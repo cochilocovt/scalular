@@ -2,7 +2,7 @@
 
 import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { Leaf, ShieldCheck, Zap, Award, Globe, Users, Package, ArrowRight, CheckCircle, Factory, Network, Sparkles, Building2, UserCircle, MapPin, CreditCard } from 'lucide-react';
+import { Leaf, ShieldCheck, Zap, Award, Globe, Users, Package, ArrowRight, CheckCircle, Factory, Network, Sparkles, Building2, UserCircle, MapPin, CreditCard, Clock } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { AnimatedCounter } from '@/components/ui/AnimatedCounter';
@@ -58,12 +58,10 @@ const SUSTAINABILITY = [
 ];
 
 const STATS = [
-  { target: 20, suffix: '+', label: 'Dedicated Employees', icon: UserCircle },
-  { target: 1, suffix: 'M+', label: 'Pcs/Month Capacity', icon: Package },
-  { target: 30, suffix: '+', label: 'Global Factory Units', icon: Factory },
-  { target: 10, suffix: '+', label: 'Certified Factories', icon: Award },
-  { target: 30, suffix: '+', label: 'QA & QC Experts', icon: CheckCircle },
-  { target: 10, suffix: '', label: 'Operating Countries', icon: Globe },
+  { target: 15, suffix: '+', label: 'Years of Experience', icon: Clock },
+  { target: 6, suffix: '', label: 'Countries', icon: Globe },
+  { target: 3000, suffix: '+', label: 'Orders Completed', icon: Package },
+  { target: 50, suffix: '+', label: 'Clients', icon: Users },
 ];
 
 const fadeUp = {
@@ -506,7 +504,7 @@ export default function AboutPage() {
               <GetStartedButton
                 label="Get a Free Quote"
                 size="lg"
-                href="https://app.scalular.com/quote"
+                href="https://erp.scalular.shop/instant-quote"
                 target="_blank"
               />
               <Link

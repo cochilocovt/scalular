@@ -57,7 +57,7 @@ export function CTASection() {
             <GetStartedButton
               label="Get Your Instant Quote"
               size="lg"
-              href="https://app.scalular.com/quote"
+              href="https://erp.scalular.shop/instant-quote"
               target="_blank"
               baseColor="#1d4ed8"
             />

@@ -11,6 +11,7 @@ env:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 120
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -29,6 +30,14 @@ jobs:
       - name: Build static export
         run: npm run build
 
+      - name: Build output summary
+        run: |
+          echo "=== Build output summary ==="
+          echo "Total size: $(du -sh out/ | cut -f1)"
+          echo "File count: $(find out/ -type f | wc -l)"
+          echo "Largest files:"
+          find out/ -type f -exec du -h {} + | sort -rh | head -20
+
       - name: Deploy to Hostinger via Rsync with Retries
         run: |
           mkdir -p ~/.ssh
@@ -37,16 +46,39 @@ jobs:
           
           ssh-keyscan -p 65002 -H "${{ secrets.HOSTINGER_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null || true
           
-          echo "Starting rsync deployment with retries..."
+          SSH_OPTS="-i ~/.ssh/id_rsa -p 65002 -o ConnectTimeout=30 -o ConnectionAttempts=3 -o StrictHostKeyChecking=no -o ServerAliveInterval=15 -o ServerAliveCountMax=4"
+          
+          echo "=== SSH connectivity check ==="
+          if ssh $SSH_OPTS ${{ secrets.HOSTINGER_USER }}@${{ secrets.HOSTINGER_HOST }} "echo 'SSH connection OK'" 2>&1; then
+            echo "SSH connection verified."
+          else
+            echo "WARNING: SSH connectivity check failed (exit code: $?). Will still attempt rsync."
+          fi
+          
+          echo ""
+          echo "=== Starting rsync deployment with retries ==="
           for i in {1..5}; do
-            echo "Attempt $i of 5..."
-            if rsync -avz --delete --exclude='api/' --chmod=Du=rwx,Dg=rx,Do=rx,Fu=rw,Fg=r,Fo=r \
-              -e "ssh -i ~/.ssh/id_rsa -p 65002 -o ConnectTimeout=15 -o ConnectionAttempts=3 -o StrictHostKeyChecking=no" \
-              out/ ${{ secrets.HOSTINGER_USER }}@${{ secrets.HOSTINGER_HOST }}:~/domains/scalular.com/public_html/; then
-                echo "Deployment successful on attempt $i!"
-                exit 0
-              fi
-            echo "Rsync connection failed/timed out, retrying in 15 seconds..."
+            echo ""
+            echo "--- Attempt $i of 5 ($(date -u '+%Y-%m-%d %H:%M:%S UTC')) ---"
+            START_TIME=$(date +%s)
+            
+            rsync -avz --progress --stats --delete --exclude='api/' \
+              --chmod=Du=rwx,Dg=rx,Do=rx,Fu=rw,Fg=r,Fo=r \
+              -e "ssh $SSH_OPTS" \
+              out/ ${{ secrets.HOSTINGER_USER }}@${{ secrets.HOSTINGER_HOST }}:~/domains/scalular.com/public_html/
+            RSYNC_EXIT=$?
+            
+            END_TIME=$(date +%s)
+            ELAPSED=$((END_TIME - START_TIME))
+            echo "Rsync exit code: $RSYNC_EXIT (took ${ELAPSED}s)"
+            
+            if [ $RSYNC_EXIT -eq 0 ]; then
+              echo "Deployment successful on attempt $i!"
+              exit 0
+            fi
+            
+            echo "Rsync failed. Exit code meanings: 12=protocol, 23=partial, 24=vanished, 30=timeout, 35=connection"
+            echo "Retrying in 15 seconds..."
             sleep 15
           done
           echo "Error: Deployment failed after 5 attempts."

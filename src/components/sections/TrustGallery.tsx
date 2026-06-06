@@ -6,12 +6,12 @@ import Link from 'next/link';
 
 /* ─── Photo data — curated selection from factory visits ─────────────── */
 const PHOTOS = [
-  { src: '/images/trust/sewing-floor-blue.jpg', alt: 'Production floor with workers sewing garments', label: 'Sewing Floor' },
-  { src: '/images/trust/production-floor-white.jpg', alt: 'Modern factory with quality inspection stations', label: 'Quality Control' },
-  { src: '/images/trust/cotton-processing.jpg', alt: 'Raw cotton processing facility', label: 'Cotton Processing' },
-  { src: '/images/trust/factory-walkway.jpg', alt: 'Factory supervisor inspecting workstations', label: 'Factory Walk' },
-  { src: '/images/trust/fabric-ironing.jpg', alt: 'Fabric cutting and ironing station', label: 'Finishing' },
-  { src: '/images/trust/yarn-spinning.jpg', alt: 'Industrial yarn spinning machinery', label: 'Spinning Mills' },
+  { src: '/images/trust/production/sewing-floor-blue.jpg', alt: 'Production floor with workers sewing garments', label: 'Sewing Floor' },
+  { src: '/images/trust/production/production-floor-white.jpg', alt: 'Modern factory with quality inspection stations', label: 'Quality Control' },
+  { src: '/images/trust/raw-materials/cotton-processing.jpg', alt: 'Raw cotton processing facility', label: 'Cotton Processing' },
+  { src: '/images/trust/inspection/factory-walkway.jpg', alt: 'Factory supervisor inspecting workstations', label: 'Factory Walk' },
+  { src: '/images/trust/production/fabric-ironing.jpg', alt: 'Fabric cutting and ironing station', label: 'Finishing' },
+  { src: '/images/trust/raw-materials/yarn-spinning.jpg', alt: 'Industrial yarn spinning machinery', label: 'Spinning Mills' },
 ];
 
 const METRICS = [

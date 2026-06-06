@@ -188,9 +188,6 @@ export default function GalleryPage() {
                     <span className="inline-block text-[9px] md:text-[10px] font-extrabold tracking-widest uppercase text-cyan-300 bg-slate-950/65 px-2.5 py-0.5 rounded-full border border-cyan-500/25 backdrop-blur-md">
                       {item.category}
                     </span>
-                    <h3 className="inline-block text-xs md:text-sm font-bold text-cyan-300 bg-slate-950/65 px-3 py-1 rounded-full border border-cyan-500/20 backdrop-blur-md leading-tight">
-                      {item.label}
-                    </h3>
                   </div>
                 </motion.div>
               );
@@ -250,13 +247,13 @@ export default function GalleryPage() {
                )}
                
                {/* Caption in Modal */}
-               <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-black/70 backdrop-blur-md rounded-full px-6 py-3 text-center pointer-events-none">
-                 <h2 className="text-white font-bold text-lg tracking-tight leading-none mb-1">
-                   {selectedMedia.label}
-                 </h2>
-                 <p className="text-white/70 text-xs uppercase tracking-widest font-semibold">
-                   {selectedMedia.category} • {selectedMedia.alt}
-                 </p>
+               <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-white/90 backdrop-blur-md rounded-full px-6 py-3 text-center pointer-events-none shadow-lg">
+                 <h2 className="text-slate-900 font-bold text-lg tracking-tight leading-none mb-1">
+                    {selectedMedia.category}
+                  </h2>
+                  <p className="text-slate-500 text-xs uppercase tracking-widest font-semibold">
+                    {selectedMedia.alt}
+                  </p>
                </div>
             </motion.div>
           </motion.div>

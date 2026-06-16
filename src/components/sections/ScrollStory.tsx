@@ -220,7 +220,7 @@ export function ScrollStory() {
             <GetStartedButton
               label="Get Your Instant Quote"
               size="lg"
-              href="https://erp.scalular.shop/instant-quote"
+              href="https://erp.scalular.com/instant-quote"
               target="_blank"
               withLamp={false}
               baseColor="#1d4ed8"

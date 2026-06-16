@@ -504,7 +504,7 @@ export default function AboutPage() {
               <GetStartedButton
                 label="Get a Free Quote"
                 size="lg"
-                href="https://erp.scalular.shop/instant-quote"
+                href="https://erp.scalular.com/instant-quote"
                 target="_blank"
               />
               <Link

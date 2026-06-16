@@ -356,7 +356,7 @@ export default function PartnerPage() {
         {/* Parallax factory image behind hero */}
         <motion.div style={{ y: imageY }} className="absolute inset-0 z-0 pointer-events-none">
           <Image
-            src="/images/trust/production-floor-white.jpg"
+            src="/images/trust/production/garment-sewing-floor-wide-view.jpg"
             alt="Apparel production floor"
             fill
             className="object-cover opacity-[0.07]"
@@ -669,7 +669,7 @@ export default function PartnerPage() {
         <section className="py-16 px-6 md:px-12">
           <div className="max-w-6xl mx-auto">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-              {['sewing-floor-blue.jpg', 'factory-walkway.jpg', 'cotton-processing.jpg', 'fabric-ironing.jpg'].map((img, i) => (
+              {['production/garment-sewing-hall-wide.jpg', 'production/stitching-floor-workers-aisle.jpg', 'raw-materials/raw-cotton-bales-with-visitors.jpg', 'production/ironing-station-workers-pressing.jpg'].map((img, i) => (
                 <motion.div
                   key={img}
                   custom={i}

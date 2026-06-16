@@ -6,10 +6,10 @@ import Link from 'next/link';
 
 /* ─── Photo data — curated selection from factory visits ─────────────── */
 const PHOTOS = [
-  { src: '/images/trust/production/sewing-floor-workers-blue-fabric.jpg', alt: 'Production floor with workers sewing garments', label: 'Sewing Floor' },
+  { src: '/images/trust/production/garment-sewing-hall-wide.jpg', alt: 'Production floor with workers sewing garments', label: 'Sewing Floor' },
   { src: '/images/trust/production/garment-sewing-floor-wide-view.jpg', alt: 'Modern factory with quality inspection stations', label: 'Quality Control' },
-  { src: '/images/trust/raw-materials/raw-cotton-bales-warehouse.jpg', alt: 'Raw cotton processing facility', label: 'Cotton Processing' },
-  { src: '/images/trust/inspection/supervisor-walking-sewing-floor.jpg', alt: 'Factory supervisor inspecting workstations', label: 'Factory Walk' },
+  { src: '/images/trust/raw-materials/raw-cotton-bales-with-visitors.jpg', alt: 'Raw cotton processing facility', label: 'Cotton Processing' },
+  { src: '/images/trust/inspection/fabric-inspection-machine-backlit.jpg', alt: 'Backlit fabric inspection machine checking cloth quality', label: 'Fabric Inspection' },
   { src: '/images/trust/production/ironing-station-workers-pressing.jpg', alt: 'Fabric cutting and ironing station', label: 'Finishing' },
   { src: '/images/trust/raw-materials/yarn-carding-drums-rieter.jpg', alt: 'Industrial yarn spinning machinery', label: 'Spinning Mills' },
 ];

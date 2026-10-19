@@ -4,7 +4,6 @@ import { useState, useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Globe, Package, TrendingUp, Users, CheckCircle, ArrowRight, Building2, ClipboardCheck, Handshake, Truck, Factory, Award, ShieldCheck, Calculator } from 'lucide-react';
 import Image from 'next/image';
-import { PartnerForm } from '@/components/sections/PartnerForm';
 import { FAQAccordion } from '@/components/ui/FAQAccordion';
 import { GetStartedButton } from '@/components/ui/get-started-button';
 import { AnimatedCounter } from '@/components/ui/AnimatedCounter';
@@ -392,7 +391,7 @@ export default function PartnerPage() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="flex flex-col sm:flex-row items-center justify-center gap-5"
           >
-            <GetStartedButton label="Apply Now" size="lg" href="#apply" />
+            <GetStartedButton label="Apply Now" size="lg" href="https://erp.scalular.com/onboarding/factory" />
             <a href="#how-it-works" className="inline-flex items-center gap-2 text-[#171B2E] font-bold text-sm hover:text-[#043377] hover:gap-3 transition-all">
               See How It Works <ArrowRight className="w-4 h-4" />
             </a>
@@ -729,8 +728,9 @@ export default function PartnerPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.2 }}
+              className="flex justify-center"
             >
-              <PartnerForm />
+              <GetStartedButton label="Apply Now" size="lg" href="https://erp.scalular.com/onboarding/factory" />
             </motion.div>
           </div>
         </section>
